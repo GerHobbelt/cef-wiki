@@ -136,13 +136,15 @@ python /path/to/automate/automate-git.py --download-dir=/path/to/download --bran
 
 By default the script will download depot\_tools, Chromium and CEF source code, run Debug and Release builds of CEF, and create a binary distribution package containing the build artifacts in the “/path/to/download/chromium/src/cef/binary\_distrib” directory. Future runs of the script will perform the minimum work necessary (unless otherwise configured using command-line flags). For example, if there are no pending CEF or Chromium updates the script will do nothing.
 
-If you run the script and CEF or Chromium updates are pending the “/path/to/download/chromium/src/cef” directory will be removed and replaced with a clean copy from “/path/to/download/cef\_(branch)” (specify the “--no-update” command-line flag to disable updates). Make sure to back up any changes that you made in the “/path/to/download/chromium/src/cef” directory before re-running the script.
+If you run the script and CEF or Chromium updates are pending the “/path/to/download/chromium/src/cef” directory will be removed and replaced with a clean copy from “/path/to/download/cef\_(branch)” (specify the `--no-update` command-line flag to disable updates). Make sure to back up any changes that you made in the “/path/to/download/chromium/src/cef” directory before re-running the script.
 
-The same download directory can be used for building multiple CEF branches (just specify a different “--branch” command-line value). The existing “/path/to/download/chromium/src/out” directory will be moved to “/path/to/download/out\_(previousbranch)” so that the build output from the previous branch is not lost. When you switch back to a previous branch the out directory will be restored to its original location.
+The same download directory can be used for building multiple CEF branches (just specify a different `--branch` command-line value). The existing “/path/to/download/chromium/src/out” directory will be moved to “/path/to/download/out\_(previousbranch)” so that the build output from the previous branch is not lost. When you switch back to a previous branch the out directory will be restored to its original location.
 
-If you receive Git errors when moving an existing checkout from one branch to another you can force a clean Chromium Git checkout (specify the  “--force-clean” command-line flag) and optionally a clean download of Chromium dependencies (specify the “--force-clean-deps” command-line flag). Any build output that currently exists in the “src/out” directory will be deleted. Re-downloading the Chromium dependencies can take approximately 30 minutes with a reasonably fast internet connection.
+The script will create a 32-bit build on Windows and Mac OS X by default. To create a 64-bit build on those platforms specify the `--x64-build` command-line flag. 32-bit builds on Mac OS X are [no longer supported](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/sdsDCkq_zwo/yep65H8Eg3sJ) starting with 2272 branch so this flag is now required when building 2272+ on that platform.
 
-Add the “--help” command-line switch to output a complete list of supported command-line options.
+If you receive Git errors when moving an existing checkout from one branch to another you can force a clean Chromium Git checkout (specify the  `--force-clean` command-line flag) and optionally a clean download of Chromium dependencies (specify the `--force-clean-deps` command-line flag). Any build output that currently exists in the “src/out” directory will be deleted. Re-downloading the Chromium dependencies can take approximately 30 minutes with a reasonably fast internet connection.
+
+Add the `--help` command-line switch to output a complete list of supported command-line options.
 
 ### DEPRECATED Automated SVN workflow (CEF1 and older CEF3 branches only)
 
@@ -367,4 +369,3 @@ cd /path/to/chromium/src/cef/tools
 If the process succeeds a binary distribution package will be created in the /path/to/chromium/src/cef/binary\_distrib directory.
 
 See the [make\_distrib.py](https://bitbucket.org/chromiumembedded/cef/src/master/tools/make_distrib.py#cl-192) script for additional usage options.
-
