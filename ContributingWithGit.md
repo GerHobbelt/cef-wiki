@@ -48,6 +48,13 @@ upstream        https://bitbucket.org/chromiumembedded/cef.git (fetch)
 upstream        https://bitbucket.org/chromiumembedded/cef.git (push)
 ```
 
+6\. Configure your name and email address.
+
+```
+git config user.name "User Name"
+git config user.email user@example.com
+```
+
 # Development
 
 You can now commit changes to your personal repository and merge upstream changes from the main CEF repository.
