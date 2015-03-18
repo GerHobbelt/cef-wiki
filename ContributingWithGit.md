@@ -30,7 +30,7 @@ git remote set-url origin https://<UserName>@bitbucket.org/<UserName>/cef.git
 4\. Set the remote upstream of the CEF checkout so that you can merge changes from the main CEF repository.
 
 ```
-git remote add upstream https://chromiumembedded@bitbucket.org/chromiumembedded/cef.git
+git remote add upstream https://bitbucket.org/chromiumembedded/cef.git
 ```
 
 5\. Verify that the remotes are configured correctly.
@@ -44,8 +44,8 @@ You should see output like the following:
 ```
 origin  https://<UserName>@bitbucket.org/<UserName>/cef.git (fetch)
 origin  https://<UserName>@bitbucket.org/<UserName>/cef.git (push)
-upstream        https://chromiumembedded@bitbucket.org/chromiumembedded/cef.git (fetch)
-upstream        https://chromiumembedded@bitbucket.org/chromiumembedded/cef.git (push)
+upstream        https://bitbucket.org/chromiumembedded/cef.git (fetch)
+upstream        https://bitbucket.org/chromiumembedded/cef.git (push)
 ```
 
 # Development
