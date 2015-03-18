@@ -136,7 +136,7 @@ git rebase upstream/master
 git push origin <BranchName>
 ```
 
-For more information on using the rebase command go [here](https://www.atlassian.com/git/tutorials/merging-vs-rebasing/the-golden-rule-of-rebasing).
+For more information on using the rebase command go [here](https://www.atlassian.com/git/tutorials/merging-vs-rebasing).
 
 # Pull Requests
 
