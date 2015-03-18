@@ -114,7 +114,7 @@ git branch -D <BranchName>
 git push origin --delete <BranchName>
 ```
 
-## Merge Upstream Changes
+## Rebase on Upstream Changes
 
 The main CEF repository will receive additional commits over time. You will want to include these changes in your personal repository.
 
@@ -128,13 +128,15 @@ git fetch upstream
 # Replace <BranchName> with the name of your branch.
 git checkout <BranchName>
 
-# Merge commits from the main CEF repository branch into your local branch.
+# Rebase your commits on top of any new commits from the main CEF repository.
 # Replace "master" with a different branch name as appropriate (e.g. "2171", "2272", etc).
-git merge upstream/master
+git rebase upstream/master
 
 # Push the modifications to your personal remote repository
 git push origin <BranchName>
 ```
+
+For more information on using the rebase command go [here](https://www.atlassian.com/git/tutorials/merging-vs-rebasing/the-golden-rule-of-rebasing).
 
 # Pull Requests
 
