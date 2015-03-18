@@ -213,7 +213,7 @@ gclient sync --revision <commit_hash> --jobs 16
 
 ```
 cd /path/to/chromium/src
-git clone https://chromiumembedded@bitbucket.org/chromiumembedded/cef.git
+git clone https://bitbucket.org/chromiumembedded/cef.git
 ```
 
 #### DEPRECATED Development SVN workflow (CEF1 and older CEF3 branches only)
@@ -288,7 +288,7 @@ gclient sync --jobs 16
 
 ```
 cd /path/to/chromium/src
-git clone https://chromiumembedded@bitbucket.org/chromiumembedded/cef.git
+git clone https://bitbucket.org/chromiumembedded/cef.git
 cd cef
 git checkout 1916
 ```
