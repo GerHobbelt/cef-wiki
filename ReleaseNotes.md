@@ -6,7 +6,7 @@ This Wiki page lists notes for CEF releases.
 
 **For more frequent updates download nightly builds from [http://cefbuilds.com](http://cefbuilds.com)**
 
-Not all revisions are listed here. View the [Changes list](http://code.google.com/p/chromiumembedded/source/list) to see the complete list of revisions.
+Not all revisions are listed here. View the [Commits list](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) to see the complete list of revisions.
 
 **January 27, 2015:** Version 3.2171.1979 for Windows, Mac OS X and Linux includes the following enhancements and bug fixes.
 
@@ -552,4 +552,3 @@ Not all revisions are listed here. View the [Changes list](http://code.google.co
 
   * Frame-dependent functions such as loading content and executing JavaScript have been moved to a new CefFrame class.  Use the new CefBrowser::Get\*Frame() methods to retrieve the appropriate CefFrame instance.  A CefFrame instance will now also be passed to CefHandler callback methods as appropriate.
   * The CEF JavaScript API now uses the V8 framework directly instead of creating NPObjects.  JavaScript object hierarchies can be written in native C++ code and exported to the JavaScript user-space, and user-space object hierarchies can be accessed from native C++ code. Furthermore, support for the V8 extension framework has been added via the new CefRegisterExtension() function. The CefJSHandler and CefVariant classes have been removed in favor of new CefV8Handler and CefV8Value classes. To attach values to the JavaScript 'window' object you must now implement the CefHandler::HandleJSBinding() callback method instead of calling the (now removed) CefBrowser::AddJSHandler() method.
-
