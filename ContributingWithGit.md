@@ -170,7 +170,7 @@ Once your personal changes are complete you can request that they be merged into
 
 * Rebase your changes on the upstream CEF (or JCEF) branch (see "Rebasing on Upstream Changes").
 * Squash your changes into a single commit (see "Squashing Commits").
-* Find or create an appropriate issue in the [CEF issue tracker](https://bitbucket.org/chromiumembedded/cef/issues?status=new&status=open) (or [JCEF issue tracker](https://bitbucket.org/chromiumembedded/java-cef/issues?status=new&status=open) if the change targets that project). Make sure the issue number if referenced in your commit description.
+* Find or create an appropriate issue in the [CEF issue tracker](https://bitbucket.org/chromiumembedded/cef/issues?status=new&status=open) (or [JCEF issue tracker](https://bitbucket.org/chromiumembedded/java-cef/issues?status=new&status=open) if the change targets that project). Make sure the issue number is referenced in your commit description.
 * Follow the style of existing CEF (or JCEF) source files. In general CEF uses the [Chromium coding style](http://www.chromium.org/developers/coding-style).
 * Include new or modified unit tests as appropriate to the functionality.
 * Remove unnecessary or unrelated changes.
@@ -223,7 +223,7 @@ squash 5410de3 Fix something else
 
 5\. Save the changes and close the file. A new file will now open containing the commit messages from all of the commits. Reword the commit message then save the changes and close the file.
 
-5\. Push the modifications to your personal remote repository.
+6\. Push the modifications to your personal remote repository.
 
 ```
 # If the branch has already been pushed to the remote repository you will need to add
