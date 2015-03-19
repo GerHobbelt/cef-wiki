@@ -109,24 +109,30 @@ git push origin <BranchName> --force
 
 ## Rebasing on Upstream Changes
 
-The main CEF repository will receive additional commits over time. You will want to include these changes in your personal repository.
+The main CEF repository will receive additional commits over time. You will want to include these changes in your personal repository. To keep Git history correct (showing upstream CEF commits on the CEF branch instead of on your personal branch) you will need to rebase the local CEF branch before rebasing your local personal branch.
 
 ```
 # Fetch changes from the main CEF repository. This does not apply them to any
 # particular branch.
 git fetch upstream
 
-# Check out the branch that you want to update.
+# Check out the local CEF branch that tracks the upstream CEF branch.
+# Replace "master" with a different branch name as appropriate (e.g. "2171", "2272", etc).
+git checkout master
+
+# Rebase your local CEF branch on top of the upstream CEF branch.
+# After this command your local CEF branch should be identical to the upstream CEF branch.
+git rebase upstream/master
+
+# Check out the personal branch that you want to update with changes from the CEF branch.
 # Replace <BranchName> with the name of your branch.
 git checkout <BranchName>
 
-# Rebase your commits on top of any new commits from the main CEF repository.
-# Replace "master" with a different branch name as appropriate (e.g. "2171", "2272", etc).
-git rebase upstream/master
+# Rebase your personal branch on top of the local CEF branch.
+# After this command your local commits will come after all CEF commits on the same branch.
+git rebase master
 
 # Push the modifications to your personal remote repository.
-# If you have personal commits on the branch that have already been pushed to the remote
-# repository you will need to add the  `--force` argument to update them.
 git push origin <BranchName>
 ```
 
