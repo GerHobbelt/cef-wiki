@@ -6,19 +6,21 @@ This Wiki page describes how to update CEF to use the newest Chromium revision.
 
 The Chromium developers work very hard to introduce new features and capabilities as quickly as possible. Consiquently, projects like CEF that depend on Chromium must also be updated regularly. The update process can be complicated and must be done carefully to avoid introducing new bugs and breakage. Below are the steps to follow when updating CEF to work with a new Chromium revision.
 
-1\. Update to the last "green" Chromium revision by viewing the [Chromium build waterfall](http://build.chromium.org/buildbot/waterfall/console). Choose the most recent revision that is green for all of the Windows builders and tests.
-
-2\. Create a diff of relevant directories between the last Chromium revision and new Chromium revision.
-
-With CEF1 the following files should be evaluated for changes:
+1\. Identify the commit hash for the last known compiling revision of Chromium (origin/lkcr):
 
 ```
-content/browser/in_process_webkit/*
-third_party/WebKit/Source/WebKit/chromium/public/*
-webkit/glue/webpreferences.h (watch for new WebKit features that may need to be enabled)
-webkit/support/simple_database_system.*
-webkit/tools/test_shell/*
+cd /path/to/chromium/src
+
+# Fetch the most recent Chromium sources without applying them to a branch.
+git fetch
+
+# Query the current value of origin/lkcr
+git log -1 origin/lkcr
 ```
+
+You can also view current build status on the [Chromium build waterfall](https://chromium-build.appspot.com/p/chromium/console).
+
+2\. Create a diff of relevant directories between the last Chromium commit hash and new Chromium commit hash.
 
 With CEF3 the following files should be evaluated for changes:
 
@@ -30,19 +32,6 @@ chrome/browser/printing/*
 
 On Windows you can create a batch script called `diff.bat` in the directory that contains the `src` folder.
 
-When using a Chromium SVN checkout:
-
-```
-@echo off
-cd src
-call svn diff content\shell -r %1:%2 > ..\diff_%1-%2.diff
-call svn diff content\content_shell.gypi -r %1:%2 >> ..\diff_%1-%2.diff
-call svn diff chrome\browser\printing -r %1:%2 >> ..\diff_%1-%2-2.diff
-cd ..
-```
-
-When using a Chromium Git checkout:
-
 ```
 @echo off
 cd src
@@ -52,18 +41,14 @@ cd ..
 
 And run it as follows:
 ```
-# SVN checkout
-diff.bat OLDREV NEWREV
-
-# Git checkout
 diff.bat OLDHASH NEWHASH
 ```
 
-This will be your guide to identifying what has changed. CEF began life as a customized version of test\_shell (CEF1) or content\_shell (CEF3) and there's still a one-to-one relationship between many of the files.
+This will be your guide to identifying what has changed. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files.
 
 3\. Make the necessary changes to CEF, build (clean if necessary) and fix whatever is broken.
 
-4\. Run the various CEF tests to make sure everything still works. This step will hopefully be automated at some point in the future.
+4\. Run cef\_unittests and the various tests available via the Tests menu in cefclient to verify that everything still works.
 
 In most cases (say, 90% of the time) any code breakage will be due to naming changes, minor code reorganization and/or project name/location changes. The remaining 10% can require pretty significant changes to CEF, usually due to the ongoing refactoring in Chromium code. If you identify a change to Chromium that has broken a required feature for CEF, and you can't work around the breakage by making reasonable changes to CEF, then you should work with the Chromium team to resolve the problem.
 
@@ -71,7 +56,7 @@ In most cases (say, 90% of the time) any code breakage will be due to naming cha
 
 2\. Post a message to the chromium-dev mailing list explaining why the change broke CEF and either seeking additional information or suggesting a fix that works for both CEF and Chromium.
 
-3\. After feedback from the Chromium developers create a code review issue with the fix and publish it with the appropriate (responsible) developer(s) as reviewers.
+3\. After feedback from the Chromium developers create an issue in the [Chromium issue tracker](http://crbug.com) and a [code review](http://www.chromium.org/developers/contributing-code) with the fix and publish it with the appropriate (responsible) developer(s) as reviewers.
 
 4\. Follow through with the Chromium developer(s) to get the code review committed.
 
