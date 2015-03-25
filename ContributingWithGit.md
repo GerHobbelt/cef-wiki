@@ -55,6 +55,23 @@ git config user.name "User Name"
 git config user.email user@example.com
 ```
 
+7\. Configure the correct handling of line endings in the repository.
+
+```
+# Use this value on Windows. Files will be converted to CRLF line endings
+# in the working directory and LF line endings in the object database.
+git config core.autocrlf true
+
+# Use this value on other platforms. Files will be unchanged in the working
+# directory and converted to LF line endings in the object database.
+git config core.autocrlf input
+
+# Cause Git to abort actions on files with mixed line endings if the change is
+# not reversible (e.g. changes to binary files that are accidentally classified
+# as text).
+git config core.safecrlf true
+```
+
 # Working With Private Changes
 
 You can now commit changes to your personal repository and merge upstream changes from the main CEF repository. To facilitate creation of a pull request or the sharing of your code changes with other developers you should make your changes in a branch.
