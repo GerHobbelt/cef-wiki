@@ -36,26 +36,26 @@ Current CEF release branches and associated platform build requirements are as f
 
 | Branch Date | Release Branch | Chromium Version | CEF1 | CEF3 | Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:-----|:-----|:---------------------------|:----------------------------|:-------------------------|
-| Dec 2011    | [963](https://bitbucket.org/chromiumembedded/cef/src/?at=963) | 17               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6 | Ubuntu 10.04+, Debian Squeeze+ |
-| Feb 2012    | [1025](https://bitbucket.org/chromiumembedded/cef/src/?at=1025) | 18               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 10.04+, Debian Squeeze+ |
-| Apr 2012    | [1084](https://bitbucket.org/chromiumembedded/cef/src/?at=1084) | 19               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 10.04+, Debian Squeeze+ |
-| Aug 2012    | [1180](https://bitbucket.org/chromiumembedded/cef/src/?at=1180) | 21               | Yes  | Yes  | WinXP+, VS2010, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 12.04+, Debian Squeeze+ |
-| Oct 2012    | [1271](https://bitbucket.org/chromiumembedded/cef/src/?at=1271) | 23               | Yes  | Yes  | WinXP+, VS2010, Win7 SDK   | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x | Ubuntu 12.04+, Debian Squeeze+ |
-| Jan 2013    | [1364](https://bitbucket.org/chromiumembedded/cef/src/?at=1364) | 25               | Yes  | Yes  | WinXP+, VS2010, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja (optional) |
-| Apr 2013    | [1453](https://bitbucket.org/chromiumembedded/cef/src/?at=1453) | 27               | Yes  | Yes  | WinXP+, VS2010, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja (optional) |
-| Jul 2013    | [1547](https://bitbucket.org/chromiumembedded/cef/src/?at=1547) | 29               | No   | Yes  | WinXP+, VS2010-2012, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja |
-| Oct 2013    | [1650](https://bitbucket.org/chromiumembedded/cef/src/?at=1650) | 31               | No   | Yes  | WinXP+, VS2010-2012, Win8 SDK, Ninja (optional) | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Jan 2014    | [1750](https://bitbucket.org/chromiumembedded/cef/src/?at=1750) | 33               | No   | Yes  | WinXP+, VS2010-2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Apr 2014    | [1916](https://bitbucket.org/chromiumembedded/cef/src/?at=1916) | 35               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Aug 2014    | [2062](https://bitbucket.org/chromiumembedded/cef/src/?at=2062) | 37               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Oct 2014    | [2171](https://bitbucket.org/chromiumembedded/cef/src/?at=2171) | 39               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Dec 2011    | [963](https://bitbucket.org/chromiumembedded/cef/src/963?at=963) | 17               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6 | Ubuntu 10.04+, Debian Squeeze+ |
+| Feb 2012    | [1025](https://bitbucket.org/chromiumembedded/cef/src/1025?at=1025) | 18               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 10.04+, Debian Squeeze+ |
+| Apr 2012    | [1084](https://bitbucket.org/chromiumembedded/cef/src/1084?at=1084) | 19               | Yes  | No   | WinXP+, VS2008, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 10.04+, Debian Squeeze+ |
+| Aug 2012    | [1180](https://bitbucket.org/chromiumembedded/cef/src/1180?at=1180) | 21               | Yes  | Yes  | WinXP+, VS2010, Win7 SDK   | OS X 10.6-10.7, 10.5+ SDK, Xcode 3.2.6-4.x | Ubuntu 12.04+, Debian Squeeze+ |
+| Oct 2012    | [1271](https://bitbucket.org/chromiumembedded/cef/src/1271?at=1271) | 23               | Yes  | Yes  | WinXP+, VS2010, Win7 SDK   | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x | Ubuntu 12.04+, Debian Squeeze+ |
+| Jan 2013    | [1364](https://bitbucket.org/chromiumembedded/cef/src/1364?at=1364) | 25               | Yes  | Yes  | WinXP+, VS2010, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja (optional) |
+| Apr 2013    | [1453](https://bitbucket.org/chromiumembedded/cef/src/1453?at=1453) | 27               | Yes  | Yes  | WinXP+, VS2010, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja (optional) |
+| Jul 2013    | [1547](https://bitbucket.org/chromiumembedded/cef/src/1547?at=1547) | 29               | No   | Yes  | WinXP+, VS2010-2012, Win8 SDK, Ninja (optional) | OS X 10.6-10.8, 10.6+ SDK, Xcode 3.2.6-4.x, Ninja (optional) | Ubuntu 12.04+, Debian Squeeze+, Ninja |
+| Oct 2013    | [1650](https://bitbucket.org/chromiumembedded/cef/src/1650?at=1650) | 31               | No   | Yes  | WinXP+, VS2010-2012, Win8 SDK, Ninja (optional) | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Jan 2014    | [1750](https://bitbucket.org/chromiumembedded/cef/src/1750?at=1750) | 33               | No   | Yes  | WinXP+, VS2010-2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Apr 2014    | [1916](https://bitbucket.org/chromiumembedded/cef/src/1916?at=1916) | 35               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Aug 2014    | [2062](https://bitbucket.org/chromiumembedded/cef/src/2062?at=2062) | 37               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Oct 2014    | [2171](https://bitbucket.org/chromiumembedded/cef/src/2171?at=2171) | 39               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/2272?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/2357?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 
 
 The following URL should be used for downloading release versions of CEF where YYYY is the release branch number.
 
-  * https://bitbucket.org/chromiumembedded/cef/src/?at=YYYY
+  * https://bitbucket.org/chromiumembedded/cef/src/YYYY?at=YYYY
 
 Note that 1025 and older branches contain only CEF1 source code and that 1547 and newer branches contain only CEF3 source code.
 
@@ -370,3 +370,5 @@ cd /path/to/chromium/src/cef/tools
 If the process succeeds a binary distribution package will be created in the /path/to/chromium/src/cef/binary\_distrib directory.
 
 See the [make\_distrib.py](https://bitbucket.org/chromiumembedded/cef/src/master/tools/make_distrib.py#cl-192) script for additional usage options.
+
+
