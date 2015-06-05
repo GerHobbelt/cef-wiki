@@ -4,7 +4,7 @@ This Wiki page describes how to update CEF to use the newest Chromium revision.
 
 ***
 
-The Chromium developers work very hard to introduce new features and capabilities as quickly as possible. Consiquently, projects like CEF that depend on Chromium must also be updated regularly. The update process can be complicated and must be done carefully to avoid introducing new bugs and breakage. Below are the steps to follow when updating CEF to work with a new Chromium revision.
+The Chromium developers work very hard to introduce new features and capabilities as quickly as possible. Consequently, projects like CEF that depend on Chromium must also be updated regularly. The update process can be complicated and must be done carefully to avoid introducing new bugs and breakage. Below are the steps to follow when updating CEF to work with a new Chromium revision.
 
 1\. Identify the commit hash for the last known compiling revision of Chromium (origin/lkcr):
 
@@ -46,9 +46,21 @@ diff.bat OLDHASH NEWHASH
 
 This will be your guide to identifying what has changed. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files.
 
-3\. Make the necessary changes to CEF, build (clean if necessary) and fix whatever is broken.
+3\. Use CEF's `patch_updater.py` tool to update the Chromium patch files in the `patch/patches` directory. Use of this tool requires the `patch` binary which is distributed with Posix systems (Linux, OS X, Cygwin on Windows).
 
-4\. Run cef\_unittests and the various tests available via the Tests menu in cefclient to verify that everything still works.
+```
+cd /path/to/chromium/src/cef/tools
+
+# Attempt to update patch files. Any merge conflicts will be highlighted in the output.
+python patch_updater.py
+
+# After manually resolving merge conflicts re-save the patch files.
+python patch_updater.py --resave
+```
+
+4\. Make the necessary changes to CEF, build (clean if necessary) and fix whatever is broken.
+
+5\. Run cef\_unittests and the various tests available via the Tests menu in cefclient to verify that everything still works.
 
 In most cases (say, 90% of the time) any code breakage will be due to naming changes, minor code reorganization and/or project name/location changes. The remaining 10% can require pretty significant changes to CEF, usually due to the ongoing refactoring in Chromium code. If you identify a change to Chromium that has broken a required feature for CEF, and you can't work around the breakage by making reasonable changes to CEF, then you should work with the Chromium team to resolve the problem.
 
