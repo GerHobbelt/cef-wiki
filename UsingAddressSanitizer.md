@@ -12,7 +12,7 @@ This Wiki page explains how to use AddressSanitizer with CEF-based applications.
 
 # System Setup
 
-The below instructions are based on the CEF 2171 branch built on an Ubuntu 14 LTS 64-bit Linux system. To set up this system:
+The below instructions are based on the CEF 2357 branch built on an Ubuntu 14 LTS 64-bit Linux system. To set up this system:
 
 1\. Install [Ubuntu 14 LTS 64-bit](http://www.ubuntu.com/download/desktop). This can be done using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine. At least 6GB of RAM and 30GB of disk space are required to successfully build Chromium/CEF.
 
@@ -36,7 +36,7 @@ sudo apt-get install libgtkglext1-dev
 3\. Download Chromium and CEF source code at the correct branch and without building (see [BranchesAndBuilding](BranchesAndBuilding.md) for complete CEF build instructions).
 
 ```
-python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-distrib --no-build --force-clean --branch=2171
+python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-distrib --no-build --force-clean --branch=2357
 ```
 
 4\. Add depot\_tools to the PATH.
@@ -94,10 +94,10 @@ A. Edit the “tools/clang/scripts/update.sh” script and add "-DCOMPILER\_RT\_
 
 ```
 diff --git tools/clang/scripts/update.sh tools/clang/scripts/update.sh
-index eabed4b..d020bbe 100755
+index 10a4645..bd7c5ab 100755
 --- tools/clang/scripts/update.sh
 +++ tools/clang/scripts/update.sh
-@@ -357,6 +357,7 @@ if [[ -n "${bootstrap}" ]]; then
+@@ -472,6 +472,7 @@ if [[ -n "${bootstrap}" ]]; then
    pushd "${LLVM_BOOTSTRAP_DIR}"
  
    cmake -GNinja \
@@ -105,7 +105,15 @@ index eabed4b..d020bbe 100755
        -DCMAKE_BUILD_TYPE=Release \
        -DLLVM_ENABLE_ASSERTIONS=ON \
        -DLLVM_TARGETS_TO_BUILD=host \
-@@ -432,6 +433,7 @@ fi
+@@ -567,6 +568,7 @@ add_subdirectory(\${CHROMIUM_TOOLS_SRC} \${CMAKE_CURRENT_BINARY_DIR}/a)
+ EOF
+ rm -fv CMakeCache.txt
+ MACOSX_DEPLOYMENT_TARGET=${deployment_target} cmake -GNinja \
++    -DCOMPILER_RT_BUILD_SHARED_ASAN=ON \
+     -DCMAKE_BUILD_TYPE=Release \
+     -DLLVM_ENABLE_ASSERTIONS=ON \
+     -DLLVM_ENABLE_THREADS=OFF \
+@@ -612,6 +614,7 @@ pushd "${COMPILER_RT_BUILD_DIR}"
  
  rm -fv CMakeCache.txt
  MACOSX_DEPLOYMENT_TARGET=${deployment_target} cmake -GNinja \
@@ -113,15 +121,7 @@ index eabed4b..d020bbe 100755
      -DCMAKE_BUILD_TYPE=Release \
      -DLLVM_ENABLE_ASSERTIONS=ON \
      -DLLVM_ENABLE_THREADS=OFF \
-@@ -469,6 +471,7 @@ pushd "${COMPILER_RT_BUILD_DIR}"
- 
- rm -fv CMakeCache.txt
- MACOSX_DEPLOYMENT_TARGET=${deployment_target} cmake -GNinja \
-+    -DCOMPILER_RT_BUILD_SHARED_ASAN=ON \
-     -DCMAKE_BUILD_TYPE=Release \
-     -DLLVM_ENABLE_ASSERTIONS=ON \
-     -DLLVM_ENABLE_THREADS=OFF \
-@@ -511,6 +514,7 @@ if [[ -n "${with_android}" ]]; then
+@@ -655,6 +658,7 @@ if [[ -n "${with_android}" ]]; then
    pushd ${LLVM_BUILD_DIR}/android
    rm -fv CMakeCache.txt
    MACOSX_DEPLOYMENT_TARGET=${deployment_target} cmake -GNinja \
@@ -129,14 +129,6 @@ index eabed4b..d020bbe 100755
        -DCMAKE_BUILD_TYPE=Release \
        -DLLVM_ENABLE_ASSERTIONS=ON \
        -DLLVM_ENABLE_THREADS=OFF \
-@@ -538,6 +542,7 @@ mkdir -p "${TOOL_BUILD_DIR}"
- pushd "${TOOL_BUILD_DIR}"
- rm -fv CMakeCache.txt
- MACOSX_DEPLOYMENT_TARGET=${deployment_target} cmake -GNinja  \
-+    -DCOMPILER_RT_BUILD_SHARED_ASAN=ON \
-     -DLLVM_BUILD_DIR="${ABS_LLVM_BUILD_DIR}" \
-     -DLLVM_SRC_DIR="${ABS_LLVM_DIR}" \
-     -DCMAKE_C_COMPILER="${CC}" \
 ```
 
 B. Run the “tools/clang/scripts/update.sh” script to create a local build of Clang.
@@ -146,7 +138,7 @@ cd /path/to/chromium_git/chromium/src
 ./tools/clang/scripts/update.sh --force-local-build --without-android
 ```
 
-This will create “libclang\_rt.asan-x86\_64.so” (assuming 64-bit Linux) in the “third\_party/llvm-build/Release+Asserts/lib/clang/3.6.0/lib/linux” directory.
+This will create “libclang\_rt.asan-x86\_64.so” (assuming 64-bit Linux) in the “third\_party/llvm-build/Release+Asserts/lib/clang/3.7.0/lib/linux” directory.
 
 2\. Copy “libclang\_rt.asan-x86\_64.so” to the “out/Release/lib” directory so that binaries built as part of the Chromium build can find it.
 
@@ -154,14 +146,16 @@ This will create “libclang\_rt.asan-x86\_64.so” (assuming 64-bit Linux) in t
 
 ```
 diff --git build/common.gypi build/common.gypi
-index f3f28c7..a0b2623 100644
+index 066b0b4..6756a25 100644
 --- build/common.gypi
 +++ build/common.gypi
-@@ -4119,14 +4122,16 @@
+@@ -4292,16 +4292,18 @@
                ['_toolset=="target"', {
                  'cflags': [
                    '-fsanitize=address',
 +                  '-shared-libasan',
+                   # TODO(earthdok): Re-enable. http://crbug.com/427202
+                   #'-fsanitize-blacklist=<(asan_blacklist)',
                  ],
                  'ldflags': [
                    '-fsanitize=address',
@@ -175,7 +169,7 @@ index f3f28c7..a0b2623 100644
                  'cflags': [
                    '-mllvm -asan-globals=0',  # http://crbug.com/352073
                  ],
-@@ -4718,9 +4723,11 @@
+@@ -4865,9 +4867,11 @@
                # binaries on x86_64 host is problematic.
                # TODO(eugenis): re-enable.
                '-fsanitize=address',
@@ -188,10 +182,10 @@ index f3f28c7..a0b2623 100644
                '-Wl,--gc-sections',
                '-Wl,-O1',
 diff --git build/sanitizers/sanitizers.gyp build/sanitizers/sanitizers.gyp
-index d971d6d..065ed66 100644
+index 4126d22..1e3ef49 100644
 --- build/sanitizers/sanitizers.gyp
 +++ build/sanitizers/sanitizers.gyp
-@@ -40,6 +40,7 @@
+@@ -45,6 +45,7 @@
        'cflags/': [
          ['exclude', '-fsanitize='],
          ['exclude', '-fsanitize-'],
@@ -200,10 +194,10 @@ index d971d6d..065ed66 100644
        'direct_dependent_settings': {
          'ldflags': [
 diff --git sandbox/linux/sandbox_linux.gypi sandbox/linux/sandbox_linux.gypi
-index adcfd3f..699b70f 100644
+index 4305b41..9ca48de 100644
 --- sandbox/linux/sandbox_linux.gypi
 +++ sandbox/linux/sandbox_linux.gypi
-@@ -200,9 +200,11 @@
+@@ -213,9 +213,11 @@
        # Do not use any sanitizer tools with this binary. http://crbug.com/382766
        'cflags/': [
          ['exclude', '-fsanitize'],
@@ -215,22 +209,6 @@ index adcfd3f..699b70f 100644
        ],
      },
      { 'target_name': 'sandbox_services',
-diff --git libvpx.gyp libvpx.gyp
-index 4f8cb2b..19a179c 100644
---- third_party/libvpx/libvpx.gyp
-+++ third_party/libvpx/libvpx.gyp
-@@ -386,9 +386,9 @@
-       ],
-       'conditions': [
-         ['asan==1', {
--          'cflags!': [ '-fsanitize=address' ],
-+          'cflags!': [ '-fsanitize=address', '-shared-libasan' ],
-           'xcode_settings': { 'OTHER_CFLAGS!': [ '-fsanitize=address' ] },
--          'ldflags!': [ '-fsanitize=address' ],
-+          'ldflags!': [ '-fsanitize=address', '-shared-libasan' ],
-         }],
-         ['OS=="win"', {
-           'msvs_settings': {
 ```
 
 4\. Configure Chromium to build using ASan (see [Testing/AddressSanitizer](http://www.chromium.org/developers/testing/addresssanitizer) for complete Chromium-related ASan instructions).
@@ -250,7 +228,7 @@ cd /path/to/chromium_git/chromium/src/cef
 
 ```
 cd /path/to/chromium_git/chromium/src
-ninja -C out/Release cefclient cefsimple cef_unittests chrome_sandbox.
+ninja -C out/Release cefclient cefsimple cef_unittests chrome_sandbox
 ```
 
 7\. Copy “libcef.so”, “libc++.so” and “libclang\_rt.asan-x86\_64.so” from the “out/Release/lib” directory to the third-party project’s binary directory (e.g. “out/Debug” for JCEF).
