@@ -27,15 +27,32 @@ With CEF3 the following files should be evaluated for changes:
 ```
 content/shell/*
 content/content_shell.gypi
+chrome/browser/extensions/api/streams_private/*
+chrome/browser/extensions/chrome_component_extension_resource_manager.[cc|h]
+chrome/browser/extensions/chrome_url_request_util.[cc|h]
+chrome/browser/extensions/component_loader.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
+chrome/browser/extensions/event_router_forwarder.[cc|h]
+chrome/browser/extensions/extension_service.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
+chrome/browser/guest_view/mime_handler_view/*
+chrome/browser/pdf/*
+chrome/browser/plugins/plugin_info_message_filter.[cc|h]
 chrome/browser/printing/*
+chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.[cc|h]
+chrome/browser/renderer_host/pepper/*
+chrome/common/extensions/api/streams_private.idl
+chrome/renderer/pepper/*
+chrome/renderer/printing/chrome_print_web_view_helper_delegate.[cc|h]
+content/browser/webui/shared_resources_data_source.cc   (for libcef/browser/chrome_scheme_handler.cc)
+content/browser/web_contents/web_contents_view_guest.cc   (for libcef/browser/web_contents_view_osr.cc)
+extensions/shell/*
 ```
 
-On Windows you can create a batch script called `diff.bat` in the directory that contains the `src` folder.
+On Windows you can create a batch script called `diff.bat` in the directory that contains the `src` folder where `[list of paths]` is the above list of file paths excluding wildcards.
 
 ```
 @echo off
 cd src
-call git diff --relative --no-prefix %1..%2 -- content/shell content/content_shell.gypi chrome/browser/printing > ../diff_%1-%2.diff
+call git diff --relative --no-prefix %1..%2 -- [list of paths] > ../diff_%1-%2.diff
 cd ..
 ```
 
@@ -73,3 +90,5 @@ In most cases (say, 90% of the time) any code breakage will be due to naming cha
 4\. Follow through with the Chromium developer(s) to get the code review committed.
 
 The CEF build currently contains a patch capability that should be used only as a last resort or as a stop-gap measure if you expect the code review to take a while. The best course of action is always to get your Chromium changes accepted into the Chromium trunk if possible.
+
+
