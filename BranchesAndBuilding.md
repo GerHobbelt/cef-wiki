@@ -51,7 +51,7 @@ Current CEF release branches and associated platform build requirements are as f
 | Oct 2014    | [2171](https://bitbucket.org/chromiumembedded/cef/src/2171?at=2171) | 39               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/2272?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/2357?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-
+| Jul 2015    | [2454](https://bitbucket.org/chromiumembedded/cef/src/2454?at=2454) | 45               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 
 The following URL should be used for downloading release versions of CEF where YYYY is the release branch number.
 
@@ -370,5 +370,3 @@ cd /path/to/chromium/src/cef/tools
 If the process succeeds a binary distribution package will be created in the /path/to/chromium/src/cef/binary\_distrib directory.
 
 See the [make\_distrib.py](https://bitbucket.org/chromiumembedded/cef/src/master/tools/make_distrib.py#cl-192) script for additional usage options.
-
-
