@@ -291,7 +291,9 @@ gclient sync --jobs 16
 cd /path/to/chromium/src
 git clone https://bitbucket.org/chromiumembedded/cef.git
 cd cef
-git checkout 1916
+
+# Create a local branch tracking the remote branch.
+git checkout -t origin/1916
 ```
 
 #### DEPRECATED Release SVN workflow (CEF1 and older CEF3 branches only)
