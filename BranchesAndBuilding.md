@@ -14,6 +14,12 @@ The CEF project is an extension of the Chromium project hosted at http://www.chr
 
 Ongoing development of CEF occurs in the [CEF master branch](https://bitbucket.org/chromiumembedded/cef/src?at=master). This location tracks the current [Chromium master branch](https://chromium.googlesource.com/chromium/src.git) and is not recommended for production use.
 
+Current CEF master branch build requirements are as follows.
+
+Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
+|:---------------------------|:----------------------------|:-------------------------|
+WinXP+, VS2013u4 or VS2015, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.10 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+
 The following URLs should be used for downloading development versions of CEF.
 
   * CEF3 - https://bitbucket.org/chromiumembedded/cef/src?at=master
@@ -49,9 +55,9 @@ Current CEF release branches and associated platform build requirements are as f
 | Apr 2014    | [1916](https://bitbucket.org/chromiumembedded/cef/src/1916?at=1916) | 35               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Aug 2014    | [2062](https://bitbucket.org/chromiumembedded/cef/src/2062?at=2062) | 37               | No   | Yes  | WinXP+, VS2013, Win8 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Oct 2014    | [2171](https://bitbucket.org/chromiumembedded/cef/src/2171?at=2171) | 39               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.9, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/2272?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/2357?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
-| Jul 2015    | [2454](https://bitbucket.org/chromiumembedded/cef/src/2454?at=2454) | 45               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ SDK, Xcode 3.2.6-5.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/2272?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/2357?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
+| Jul 2015    | [2454](https://bitbucket.org/chromiumembedded/cef/src/2454?at=2454) | 45               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 
 The following URL should be used for downloading release versions of CEF where YYYY is the release branch number.
 
