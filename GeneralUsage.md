@@ -1449,7 +1449,9 @@ request->SetFlags(UR_FLAG_SKIP_CACHE | UR_FLAG_NO_DOWNLOAD_DATA);
 
 CEF3 supports two approaches for handling network requests inside of an application. The scheme handler approach allows registration of a handler for requests targeting a particular origin (scheme + domain). The request interception approach allows handling of arbitrary requests at the application’s discretion.
 
-It’s important to register custom schemes (anything other than “HTTP”, “HTTPS”, etc) with CEF so that they’ll behave as expected. For example, if you wish your scheme to behave the same as HTTP (support POST requests and enforce [HTTP access control (CORS)](https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS) restrictions) it should be registered as a “standard” scheme. If your custom scheme will be performing cross-origin requests to other schemes consider using the HTTP scheme instead of a custom scheme to avoid [potential issues](https://bitbucket.org/chromiumembedded/cef/issue/950). If you wish to use custom schemes the attributes are registered via the CefApp::OnRegisterCustomSchemes() callback.
+**Use the HTTP scheme instead of a custom scheme to avoid a range of potential issues.**
+
+If you choose to use a custom scheme (anything other than “HTTP”, “HTTPS”, etc) you must register it with CEF so that it will behave as expected. If you would like your custom scheme to behave similar to HTTP (support POST requests and enforce [HTTP access control (CORS)](https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS) restrictions) then it should be registered as a “standard” scheme. If you are planning to perform cross-origin requests to other schemes or send POST requests via XMLHttpRequest to your scheme handler then you should use the HTTP scheme instead of a custom scheme to avoid [potential issues](https://bitbucket.org/chromiumembedded/cef/issue/950). If you wish to use custom schemes the attributes are registered via the CefApp::OnRegisterCustomSchemes() callback which must be implemented in all processes.
 
 ```
 void MyApp::OnRegisterCustomSchemes(CefRefPtr<CefSchemeRegistrar> registrar) {
@@ -1466,7 +1468,7 @@ A scheme handler is registered via the CefRegisterSchemeHandlerFactory() functio
 CefRegisterSchemeHandlerFactory("client", “myapp”, new MySchemeHandlerFactory());
 ```
 
-Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. See the “Scheme Handler” test in cefclient (implemented in scheme\_test.[cpp|h]) for a working example.
+Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See the “Scheme Handler” test in cefclient (implemented in scheme\_test.[cpp|h]) for a working example.
 
 ```
 // Implementation of the factory for creating client request handlers.
@@ -1551,7 +1553,7 @@ return new CefStreamResourceHandler("text/html", stream);
 
 ### Request Interception
 
-The CefRequestHandler::GetResourceHandler() method supports the interception of arbitrary requests. It uses the same CefResourceHandler class as the scheme handler approach. See ClientHandler::GetResourceHandler (implemented in client\_handler.cpp) for a working example.
+The CefRequestHandler::GetResourceHandler() method supports the interception of arbitrary requests. It uses the same CefResourceHandler class as the scheme handler approach. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See ClientHandler::GetResourceHandler (implemented in client\_handler.cpp) for a working example.
 
 ```
 CefRefPtr<CefResourceHandler> MyHandler::GetResourceHandler(
