@@ -23,7 +23,7 @@ This tutorial demonstrates how to control the cefclient sample application using
 
 4\. Download `selenium-server-standalone-x.y.z.jar` from http://selenium-release.storage.googleapis.com/index.html. This tutorial was tested with version 2.44.0.
 
-5\. Download a CEF binary distribution client from [Downloads](Downloads.md) and extract (e.g. `cef_binary_3.2171.1979_windows32_client.7z`).
+5\. Download a CEF binary distribution client from [Downloads](http://magpcss.net/cef_downloads/) and extract (e.g. `cef_binary_3.2171.1979_windows32_client.7z`).
 
 6\. Create `Example.java`:
 
