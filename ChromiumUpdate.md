@@ -27,6 +27,7 @@ With CEF3 the following files should be evaluated for changes:
 ```
 content/shell/*
 content/content_shell.gypi
+chrome/browser/component_updater/chrome_component_updater_configurator.[cc|h]
 chrome/browser/extensions/api/streams_private/*
 chrome/browser/extensions/chrome_component_extension_resource_manager.[cc|h]
 chrome/browser/extensions/chrome_url_request_util.[cc|h]
@@ -40,7 +41,9 @@ chrome/browser/printing/*
 chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.[cc|h]
 chrome/browser/renderer_host/pepper/*
 chrome/common/extensions/api/streams_private.idl
+chrome/renderer/media/chrome_key_systems.[cc|h]
 chrome/renderer/pepper/*
+chrome/renderer/plugins/*
 chrome/renderer/printing/*
 content/browser/webui/shared_resources_data_source.cc   (for libcef/browser/chrome_scheme_handler.cc)
 content/browser/web_contents/web_contents_view_guest.cc   (for libcef/browser/web_contents_view_osr.cc)
