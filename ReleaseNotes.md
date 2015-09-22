@@ -4,7 +4,7 @@ This Wiki page lists notes for CEF releases.
 
 ***
 
-**For more frequent updates download nightly builds from [http://cefbuilds.com](http://cefbuilds.com)**
+**This page is deprecated and will no longer be updated. View the [Commits list](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) to see the complete list of revisions included in automated branch builds available from [http://cefbuilds.com](http://cefbuilds.com).**
 
 Not all revisions are listed here. View the [Commits list](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) to see the complete list of revisions.
 
