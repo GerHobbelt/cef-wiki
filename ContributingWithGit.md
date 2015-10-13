@@ -265,3 +265,13 @@ You can create a pull request via the "Create pull request" option in Bitbucket'
 Your pull request will be reviewed by one or more CEF developers.  Please address any comments and update your pull request. The easiest way to update a pull request is by pushing new commits to the same branch -- those new commits will be [automatically reflected](https://blog.bitbucket.org/2014/04/22/bitbucket-now-auto-updates-pull-requests/) in the pull request. Once your changes are deemed acceptable they will be squashed and merged into the main CEF repository.
 
 Detailed instructions for locally testing a pull request created by someone else are available [here](http://www.electricmonk.nl/log/2014/03/31/test-a-pull-merge-request-before-accepting-on-bitbucket/).
+
+The contents of a pull request can also be downloaded as a patch file and applied to your local Git checkout:
+
+```
+# Download the patch file.
+curl -u user:password https://bitbucket.org/api/2.0/repositories/{user}/{repo}/pullrequests/{pull_no}/patch -L -o name.patch
+
+# Apply the patch file to your local Git checkout.
+git apply name.patch
+```
