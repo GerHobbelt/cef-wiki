@@ -42,6 +42,7 @@ Current CEF release branches and associated platform build requirements are as f
 
 | Branch Date | Release Branch | Chromium Version | CEF1 | CEF3 | Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:-----|:-----|:---------------------------|:----------------------------|:-------------------------|
+| Oct 2015    | [2526](https://bitbucket.org/chromiumembedded/cef/src/2526?at=2526) | 47               | No   | Yes  | WinXP+, VS2013u4 or VS2015, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.10 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Jul 2015    | [2454](https://bitbucket.org/chromiumembedded/cef/src/2454?at=2454) | 45               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Apr 2015    | [2357](https://bitbucket.org/chromiumembedded/cef/src/2357?at=2357) | 43               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
 | Jan 2015    | [2272](https://bitbucket.org/chromiumembedded/cef/src/2272?at=2272) | 41               | No   | Yes  | WinXP+, VS2013u4, Win8.1 SDK, Ninja | OS X 10.6-10.10, 10.6+ deployment target, 10.9 base SDK, Xcode 3.2.6-6.x, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
