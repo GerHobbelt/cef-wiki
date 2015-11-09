@@ -342,7 +342,7 @@ cd /path/to/chromium/src/cef
 Ninja is now the recommended and supported method for building CEF3/Chromium on all platforms when using newer release branches (1453+) and trunk.
 
 ```
-export GYP_GENERATORS='ninja'
+export GYP_GENERATORS=ninja
 cd /path/to/chromium/src/cef
 ./cef_create_projects.sh
 cd /path/to/chromium/src
