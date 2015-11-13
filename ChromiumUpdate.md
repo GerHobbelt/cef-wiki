@@ -42,6 +42,7 @@ chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.[cc|h]
 chrome/browser/renderer_host/pepper/*
 chrome/common/extensions/api/streams_private.idl
 chrome/renderer/chrome_content_renderer_client.[cc|h]
+chrome/renderer/extensions/chrome_extensions_renderer_client.[cc|h]
 chrome/renderer/pepper/*
 chrome/renderer/printing/*
 content/browser/webui/shared_resources_data_source.cc   (for libcef/browser/chrome_scheme_handler.cc)
