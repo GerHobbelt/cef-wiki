@@ -8,15 +8,18 @@ This Wiki page provides a quick-start guide for creating a Debug build of CEF/Ch
 
 # Overview
 
-This page provides a quick-start guide for setting up a minimal development environment and building the master branch of Chromium/CEF for development and/or debugging purposes. This page is not intended for CEF end users seeking a pre-built binary distribution for use in third-party applications (those people should go [here](http://magpcss.net/cef_downloads/)).
+This page provides a quick-start guide for setting up a minimal development environment and building the master branch of Chromium/CEF for development purposes. For a comprehensive discussion of the available tools and configurations visit the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page.
 
-Systems can be configured using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine. For a comprehensive overview of the available tools and configurations visit the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page.
+This guide is NOT intended for:
 
-When you’re ready to contribute your changes back to the CEF project see the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page for instructions on creating a pull request.
+- Those seeking a prebuilt binary distribution for use in third-party apps. Go [here](http://magpcss.net/cef_downloads/) instead.
+- Those seeking to build the binary distribution in a completely automated manner. Go [here](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-automated-method) instead.
+
+Development systems can be configured using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine.
 
 # File Structure
 
-The same file structure will be used on all platforms. `~` can be any path that does not include spaces or special characters. We'll be building this directory structure for each platform in the following next sections.
+The same file structure will be used on all platforms. "~" can be any path that does not include spaces or special characters. We'll be building this directory structure for each platform in the following sections.
 
 ```
 ~/code/
@@ -30,110 +33,134 @@ The same file structure will be used on all platforms. `~` can be any path that 
   depot_tools/        <-- Chromium build tools
 ```
 
-# Windows
+# Windows Setup
 
-In this example `~` is `c:\`. All of the below commands should be run using the system `cmd.exe` and not a Cygwin shell.
+**What's Required**
 
-1\. Install Windows 7 64-bit or newer and Visual Studio 2013 Professional Update 4. Visual Studio 2015 Professional is also supported but the [bugs](https://bitbucket.org/chromiumembedded/cef/issues/1691/windows-reduce-debug-build-link-time#comment-21297285) can be rather annoying. At least 8GB of RAM and 40GB of disk space are required to successfully build Chromium/CEF.
+- Windows 7 or newer, 64-bit OS.
+- Visual Studio 2013 Professional Update 4 or Visual Studio 2015 Professional installed in the default location.
+- [Windows 10 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location.
+- At least 8GB of RAM and 40GB of free disk space.
+- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
-2\. Install the [Windows 10 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) to the default install location.
+**Step-by-step Guide**
 
-3\. Create the following directories.
+All of the below commands should be run using the system "cmd.exe" and not a Cygwin shell.
+
+1\. Create the following directories.
 
 ```
 c:\code\automate
 c:\code\chromium_git
 ```
 
-4\. Download [depot_tools.zip](https://src.chromium.org/svn/trunk/tools/depot_tools.zip) and extract to `c:\code\depot_tools`. Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
+2\. Download [depot_tools.zip](https://src.chromium.org/svn/trunk/tools/depot_tools.zip) and extract to "c:\code\depot_tools". Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
 
-5\. Run `update_depot_tools.bat` to install Python, Git and SVN.
+3\. Run "update_depot_tools.bat" to install Python, Git and SVN.
 
 ```
 cd c:\code\depot_tools
 update_depot_tools.bat
 ```
 
-6\. Add the `c:\code\depot_tools` folder to your system PATH. For example, on Windows 10:
+4\. Add the "c:\code\depot_tools" folder to your system PATH. For example, on Windows 10:
 
-A\. Run the `SystemPropertiesAdvanced` command
+- Run the "SystemPropertiesAdvanced" command.
+- Click the "Environment Variables..." button.
+- Double-click on "Path" under "System variables" to edit the value.
 
-B\. Click the `Environment Variables...` button.
+5\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to "c:\code\automate\automate-git.py".
 
-C\. Double-click on `Path` under `System variables` to edit the value.
-
-7\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to `c:\code\automate\automate-git.py`.
-
-8\. Create the `c:\code\chromium_git\update.bat` script with the following contents.
+6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
+# Change to 2015 if using VS2015
 set GYP_MSVS_VERSION=2013
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
-9\. Run the `c:\code\chromium_git\update.bat` script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to `c:\code\chromium_git\cef` and Chromium source code will be downloaded to ``c:\code\chromium_git\chromium\src`.
+Run the "update.bat" script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to "c:\code\chromium_git\cef" and Chromium source code will be downloaded to "c:\code\chromium_git\chromium\src". After download completion the CEF source code will be copied to "c:\code\chromium_git\chromium\src\cef".
 
 ```
 cd c:\code\chromium_git
 update.bat
 ```
 
-10\. Run the `c:\code\chromium_git\chromium\src\cef\cef_create_projects.bat` script to generate Ninja and Visual Studio project files. For convenience you can place these commands in a new `c:\code\chromium_git\chromium\src\cef\create.bat` file. This will generate a `c:\code\chromium_git\chromium\src\cef\cef.sln` file that can be loaded in Visual Studio for debugging and compiling individual files. Alway use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
-set GYP_GENERATORS=ninja,msvs-ninja
+# Change to 2015 if using VS2015
 set GYP_MSVS_VERSION=2013
+set GYP_GENERATORS=ninja,msvs-ninja
 call cef_create_projects.bat
 ```
 
-11\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `c:\code\chromium_git\chromium\src\cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+Run the "create.bat" script to generate Ninja and Visual Studio project files.
+
+```
+cd c:\code\chromium_git\chromium\src\cef
+create.bat
+```
+
+This will generate a "c:\code\chromium_git\chromium\src\cef\cef.sln" file that can be loaded in Visual Studio for debugging and compiling individual files. Always use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+
+8\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "c:\code\chromium_git\chromium\src\cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
 cd c:\code\chromium_git\chromium\src
 ninja -C out\Debug cefclient cefsimple cef_unittests
 ```
 
-12\. Run the resulting cefclient sample application.
+9\. Run the resulting cefclient sample application.
 
 ```
 cd c:\code\chromium_git\chromium\src
 out\Debug\cefclient.exe
 ```
 
-# Mac OS X
+See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-windows) for detailed debugging instructions.
 
-In this example `~` is `/users/marshall`.
+# Mac OS X Setup
 
-1\. Install OS X 10.10 or newer and Xcode 6.4 (available for download from https://developer.apple.com/downloads/ with an Apple ID). If you have multiple versions of Xcode installed use the [xcode-select](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/xcode-select.1.html) tool to select the 6.4 version. At least 8GB of RAM and 40GB of disk space are required to successfully build Chromium/CEF.
+**What's Required**
 
-2\. Create the following directories.
+- OS X 10.10 or newer.
+- Xcode 6.4 (available for download from https://developer.apple.com/downloads/ with an Apple ID). If you have multiple versions of Xcode installed use the [xcode-select](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/xcode-select.1.html) tool to select the 6.4 version. Xcode 7 is [not currently supported](https://bitbucket.org/chromiumembedded/cef/issues/1732).
+- At least 8GB of RAM and 40GB of free disk space.
+- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
+
+**Step-by-step Guide**
+
+In this example "~" is "/users/marshall". Note that in some cases the absolute path must be used. Environment variables described in this section can be added to your "~/.bash_profile" file to persist them across sessions.
+
+1\. Create the following directories.
 
 ```
 mkdir ~/code/automate
 mkdir ~/code/chromium_git
 ```
 
-3\. Download `~/code/depot_tools` using Git.
+2\. Download "~/code/depot_tools" using Git.
 
 ```
 cd ~/code
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ```
 
-4\. Add the `~/code/depot_tools` directory to your PATH. Note the use of an absolute path here.
+3\. Add the "~/code/depot_tools" directory to your PATH. Note the use of an absolute path here.
 
 ```
 export PATH=/users/marshall/code/depot_tools:$PATH
 ```
 
-5\. Download the `~/automate/automate-git.py` script.
+4\. Download the "~/automate/automate-git.py" script.
 
 ```
 cd ~/code/automate
 wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py
 ```
 
-6\. Create the `~/code/chromium_git/update.sh` script with the following contents.
+5\. Create the "~/code/chromium_git/update.sh" script with the following contents.
 
 ```
 #!/bin/bash
@@ -147,48 +174,56 @@ cd ~/code/chromium_git
 chmod 755 update.sh
 ```
 
-7\. Run the `~/code/chromium_git/update.sh` script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to `~/code/chromium_git/cef` and Chromium source code will be downloaded to ``~/code/chromium_git/chromium/src`.
+Run the "update.sh" script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to "~/code/chromium_git/cef" and Chromium source code will be downloaded to "~/code/chromium_git/chromium/src". After download completion the CEF source code will be copied to "~/code/chromium_git/chromium/src/cef".
 
 ```
 cd ~/code/chromium_git
 ./update.sh
 ```
 
-8\. Run the `~/code/chromium_git/chromium/src/cef/cef_create_projects.sh` script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+6\. Run the "cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
 
 ```
 cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
 ```
 
-9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+7\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug cefclient cefsimple cef_unittests
 ```
 
-10\. Run the resulting cefclient sample application.
+8\. Run the resulting cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
 open out/Debug/cefclient.app
 ```
 
-# Linux
+See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-os-x) for detailed debugging instructions.
 
-In this example `~` is `/home/marshall`.
+# Linux Setup
 
-1\. Install [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop). At least 6GB of RAM and 40GB of disk space are required to successfully build Chromium/CEF. To build on Debian 7 see the [BuildingOnDebian7](https://bitbucket.org/chromiumembedded/cef/wiki/BuildingOnDebian7.md) Wiki page for additional instructions.
+**What's Required**
 
-2\. Create the following directories.
+- [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop) is recommended. To build on Debian 7 64-bit see the [BuildingOnDebian7](https://bitbucket.org/chromiumembedded/cef/wiki/BuildingOnDebian7.md) Wiki page for additional instructions. Building with other versions or distros has not been tested and may experience issues.
+- At least 6GB of RAM and 40GB of free disk space.
+- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
+
+**Step-by-step Guide**
+
+In this example "~" is "/home/marshall". Note that in some cases the absolute path must be used. Environment variables described in this section can be added to your "~/.profile" or "~/.bashrc" file to persist them across sessions.
+
+1\. Create the following directories.
 
 ```
 mkdir ~/code/automate
 mkdir ~/code/chromium_git
 ```
 
-3\. Download and run `~/code/install-build-deps.sh` to install build dependencies. Answer Y (yes) to all of the questions.
+2\. Download and run "~/code/install-build-deps.sh" to install build dependencies. Answer Y (yes) to all of the questions.
 
 ```
 cd ~/code
@@ -197,33 +232,33 @@ chmod 755 install-build-deps.sh
 sudo ./install-build-deps.sh
 ```
 
-4\. Install the `libgtkglext1-dev` package required by the cefclient sample application.
+3\. Install the "libgtkglext1-dev" package required by the cefclient sample application.
 
 ```
 sudo apt-get install libgtkglext1-dev
 ```
 
-5\. Download `~/code/depot_tools` using Git.
+4\. Download "~/code/depot_tools" using Git.
 
 ```
 cd ~/code
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ```
 
-6\. Add the `~/code/depot_tools` directory to your PATH. Note the use of an absolute path here.
+5\. Add the "~/code/depot_tools" directory to your PATH. Note the use of an absolute path here.
 
 ```
 export PATH=/home/marshall/code/depot_tools:$PATH
 ```
 
-7\. Download the `~/automate/automate-git.py` script.
+6\. Download the "~/automate/automate-git.py" script.
 
 ```
 cd ~/code/automate
 wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py
 ```
 
-8\. Create the `~/code/chromium_git/update.sh` script with the following contents.
+7\. Create the "~/code/chromium_git/update.sh" script with the following contents.
 
 ```
 #!/bin/bash
@@ -237,38 +272,50 @@ cd ~/code/chromium_git
 chmod 755 update.sh
 ```
 
-9\. Run the `~/code/chromium_git/update.sh` script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to `~/code/chromium_git/cef` and Chromium source code will be downloaded to ``~/code/chromium_git/chromium/src`.
+Run the "update.sh" script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to "~/code/chromium_git/cef" and Chromium source code will be downloaded to "~/code/chromium_git/chromium/src".  After download completion the CEF source code will be copied to "~/code/chromium_git/chromium/src/cef".
 
 ```
 cd ~/code/chromium_git
 ./update.sh
 ```
 
-10\. Run the `~/code/chromium_git/chromium/src/cef/cef_create_projects.sh` script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+8\. Run the "cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
 
 ```
 cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
 ```
 
-11\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target required by step 10.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug cefclient cefsimple cef_unittests chrome_sandbox
 ```
 
-12\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md). This only needs to be done a single time.
+10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md).
 
 ```
+# This environment variable should be set at all times.
 export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
+
+# This command only needs to be run a single time.
 cd ~/code/chromium_git/chromium/src
 sudo ./build/update-linux-sandbox.sh
 ```
 
-13\. Run the cefclient sample application.
+11\. Run the cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ./out/Debug/cefclient
 ```
+
+See the [Linux debugging guide](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md) for detailed debugging instructions.
+
+# Next Steps
+
+- If you're seeking a good code editor on Linux check out the [Eclipse](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_eclipse_dev.md) and [Emacs](https://chromium.googlesource.com/chromium/src/+/master/docs/emacs.md) tutorials.
+- Review the [Tutorial](https://bitbucket.org/chromiumembedded/cef/wiki/Tutorial.md) and [GeneralUsage](https://bitbucket.org/chromiumembedded/cef/wiki/GeneralUsage.md) Wiki pages for details on CEF implementation and usage.
+- Review the Chromium debugging guide for [Windows](https://www.chromium.org/developers/how-tos/debugging-on-windows), [Mac OS X](https://www.chromium.org/developers/how-tos/debugging-on-os-x) or [Linux](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md).
+- When you’re ready to contribute your changes back to the CEF project see the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page for instructions on creating a pull request.
