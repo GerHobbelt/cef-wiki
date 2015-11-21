@@ -14,7 +14,7 @@ The CEF project is an extension of the Chromium project hosted at http://www.chr
 
 Ongoing development of CEF occurs in the [CEF master branch](https://bitbucket.org/chromiumembedded/cef/src?at=master). This location tracks the current [Chromium master branch](https://chromium.googlesource.com/chromium/src.git) and is not recommended for production use.
 
-Current CEF master branch build requirements are as follows.
+Current CEF master branch build requirements are as follows. See the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for a development build quick-start guide.
 
 Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
 |:---------------------------|:----------------------------|:-------------------------|
