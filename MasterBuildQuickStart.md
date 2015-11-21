@@ -131,7 +131,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 
 **Step-by-step Guide**
 
-In this example "~" is "/users/marshall". Note that in some cases the absolute path must be used. Environment variables described in this section can be added to your "~/.bash_profile" file to persist them across sessions.
+In this example "~" is "/Users/marshall". Note that in some cases the absolute path must be used. Environment variables described in this section can be added to your "~/.bash_profile" file to persist them across sessions.
 
 1\. Create the following directories.
 
@@ -150,21 +150,16 @@ git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 3\. Add the "~/code/depot_tools" directory to your PATH. Note the use of an absolute path here.
 
 ```
-export PATH=/users/marshall/code/depot_tools:$PATH
+export PATH=/Users/marshall/code/depot_tools:$PATH
 ```
 
-4\. Download the "~/automate/automate-git.py" script.
-
-```
-cd ~/code/automate
-wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py
-```
+4\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to "~/code/automate/automate-git.py".
 
 5\. Create the "~/code/chromium_git/update.sh" script with the following contents.
 
 ```
 #!/bin/bash
-python ../automate/automate-git.py --download-dir=/users/marshall/code/chromium_git --depot-tools-dir=/users/marshall/code/depot_tools --no-distrib --no-build
+python ../automate/automate-git.py --download-dir=/Users/marshall/code/chromium_git --depot-tools-dir=/Users/marshall/code/depot_tools --no-distrib --no-build --x64-build
 ```
 
 Give it executable permissions.
