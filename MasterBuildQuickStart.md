@@ -12,6 +12,8 @@ This page provides a quick-start guide for setting up a minimal development envi
 
 Systems can be configured using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine. For a comprehensive overview of the available tools and configurations visit the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page.
 
+When you’re ready to contribute your changes back to the CEF project see the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page for instructions on creating a pull request.
+
 # File Structure
 
 The same file structure will be used on all platforms. `~` can be any path that does not include spaces or special characters. We'll be building this directory structure for each platform in the following next sections.
@@ -34,23 +36,25 @@ In this example `~` is `c:\`. All of the below commands should be run using the 
 
 1\. Install Windows 7 64-bit or newer and Visual Studio 2013 Professional Update 4. Visual Studio 2015 Professional is also supported but the [bugs](https://bitbucket.org/chromiumembedded/cef/issues/1691/windows-reduce-debug-build-link-time#comment-21297285) can be rather annoying. At least 8GB of RAM and 40GB of disk space are required to successfully build Chromium/CEF.
 
-2\. Create the following directories.
+2\. Install the [Windows 10 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) to the default install location.
+
+3\. Create the following directories.
 
 ```
 c:\code\automate
 c:\code\chromium_git
 ```
 
-3\. Download [depot_tools.zip](https://src.chromium.org/svn/trunk/tools/depot_tools.zip) and extract to `c:\code\depot_tools`. Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
+4\. Download [depot_tools.zip](https://src.chromium.org/svn/trunk/tools/depot_tools.zip) and extract to `c:\code\depot_tools`. Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
 
-4\. Run `update_depot_tools.bat` to install Python, Git and SVN.
+5\. Run `update_depot_tools.bat` to install Python, Git and SVN.
 
 ```
 cd c:\code\depot_tools
 update_depot_tools.bat
 ```
 
-5\. Add the `c:\code\depot_tools` folder to your system PATH. For example, on Windows 10:
+6\. Add the `c:\code\depot_tools` folder to your system PATH. For example, on Windows 10:
 
 A\. Run the `SystemPropertiesAdvanced` command
 
@@ -58,30 +62,38 @@ B\. Click the `Environment Variables...` button.
 
 C\. Double-click on `Path` under `System variables` to edit the value.
 
-6\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to `c:\code\automate\automate-git.py`.
+7\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to `c:\code\automate\automate-git.py`.
 
-7\. Create the `c:\code\chromium_git\update.bat` script with the following contents.
+8\. Create the `c:\code\chromium_git\update.bat` script with the following contents.
 
 ```
 set GYP_MSVS_VERSION=2013
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
-8\. Run the `c:\code\chromium_git\update.bat` script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to `c:\code\chromium_git\cef` and Chromium source code will be downloaded to ``c:\code\chromium_git\chromium\src`.
+9\. Run the `c:\code\chromium_git\update.bat` script and wait for CEF and Chromium source code to download. CEF source code will be downloaded to `c:\code\chromium_git\cef` and Chromium source code will be downloaded to ``c:\code\chromium_git\chromium\src`.
 
 ```
 cd c:\code\chromium_git
 update.bat
 ```
 
-9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `c:\code\chromium_git\chromium\src\cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+10\. Run the `c:\code\chromium_git\chromium\src\cef\cef_create_projects.bat` script to generate Ninja and Visual Studio project files. For convenience you can place these commands in a new `c:\code\chromium_git\chromium\src\cef\create.bat` file. This will generate a `c:\code\chromium_git\chromium\src\cef\cef.sln` file that can be loaded in Visual Studio for debugging and compiling individual files. Alway use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+
+```
+set GYP_GENERATORS=ninja,msvs-ninja
+set GYP_MSVS_VERSION=2013
+call cef_create_projects.bat
+```
+
+11\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `c:\code\chromium_git\chromium\src\cef` and repeat this step multiple times to create incremental builds while developing/debugging.
 
 ```
 cd c:\code\chromium_git\chromium\src
 ninja -C out\Debug cefclient cefsimple cef_unittests
 ```
 
-10\. Run the resulting cefclient sample application.
+12\. Run the resulting cefclient sample application.
 
 ```
 cd c:\code\chromium_git\chromium\src
@@ -142,14 +154,21 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-8\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+8\. Run the `~/code/chromium_git/chromium/src/cef/cef_create_projects.sh` script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+
+```
+cd ~/code/chromium_git/chromium/src/cef
+./cef_create_projects.sh
+```
+
+9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug cefclient cefsimple cef_unittests
 ```
 
-9\. Run the resulting cefclient sample application.
+10\. Run the resulting cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
@@ -225,14 +244,21 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-10\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
+10\. Run the `~/code/chromium_git/chromium/src/cef/cef_create_projects.sh` script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+
+```
+cd ~/code/chromium_git/chromium/src/cef
+./cef_create_projects.sh
+```
+
+11\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at `~/code/chromium_git/chromium/src/cef` and repeat this step multiple times to create incremental builds while developing/debugging.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug cefclient cefsimple cef_unittests chrome_sandbox
 ```
 
-11\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md). This only needs to be done a single time.
+12\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md). This only needs to be done a single time.
 
 ```
 export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
@@ -240,11 +266,9 @@ cd ~/code/chromium_git/chromium/src
 sudo ./build/update-linux-sandbox.sh
 ```
 
-12\. Run the cefclient sample application.
+13\. Run the cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
 ./out/Debug/cefclient
 ```
-
-
