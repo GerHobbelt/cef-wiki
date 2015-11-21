@@ -16,7 +16,7 @@ Git can maintain your changes both locally and on a remote server. To work with 
 
 1\. Log into Bitbucket and create a forked version of the cef.git repository: https://bitbucket.org/chromiumembedded/cef/fork.
 
-2\. Check out CEF/Chromium source code as described on the [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page. Note that if you use the automate-git.py tool you will want to back up your customized CEF checkout before changing branches or performing a clean build.
+2\. Check out CEF/Chromium source code as described on the [MasterBuildQuickStart](MasterBuildQuickStart.md) or [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page. Note that if you use the automate-git.py tool you will want to back up your customized CEF checkout before changing branches or performing a clean build.
 
 3\. Change the remote origin of the CEF checkout so that it points to your personal forked repository. This is the remote server location that the `git push` and `git pull` commands will operate on by default.
 
