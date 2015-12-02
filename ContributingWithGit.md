@@ -209,7 +209,7 @@ Before creating a pull request you should squash, or combine, all of the commits
 git checkout <ExistingBranchName>
 
 # Create a new personal branch that will be squashed.
-git branch -b <BranchName>
+git checkout -b <BranchName>
 ```
 
 2\. Identify the first commit where your personal branch diverged from an existing CEF branch.
