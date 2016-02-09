@@ -94,14 +94,32 @@ python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/p
 export PATH=/path/to/depot_tools:$PATH
 ```
 
-7\. Build llvm and clang locally. Debian 7 ships with an [older version of GLIBC](https://code.google.com/p/chromiumembedded/issues/detail?id=1575) than Ubuntu 14 so the binaries distributed with the Chromium checkout cannot be used. See comments in the update.sh script for additional llvm/clang build information.
+7\. Build cmake version 2.8.12.2 or newer (required by newer llvm/clang builds).
+
+```
+# Download/build in whichever directory you prefer.
+cd ~
+
+wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz
+tar xzf cmake-2.8.12.2.tar.gz
+cd cmake-2.8.12.2
+./configure
+./make
+
+# Run the following command as root.
+./make install
+```
+
+Verify that the cmake version is now correct by running `cmake --version`.
+
+8\. Build llvm and clang locally. Debian 7 ships with an [older version of GLIBC](https://code.google.com/p/chromiumembedded/issues/detail?id=1575) than Ubuntu 14 so the binaries distributed with the Chromium checkout cannot be used. See comments in the update.sh script for additional llvm/clang build information.
 
 ```
 cd /path/to/chromium_git/chromium/src
 ./tools/clang/scripts/update.sh --force-local-build --without-android --gcc-toolchain '/usr'
 ```
 
-8\. Build Chromium/CEF and create the CEF binary distribution.
+9\. Build Chromium/CEF and create the CEF binary distribution.
 
 ```
 python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-update --force-build --force-distrib --branch=2272
