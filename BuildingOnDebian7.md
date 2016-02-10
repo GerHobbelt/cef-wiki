@@ -8,7 +8,7 @@ This Wiki page describes how to build CEF on Debian 7 systems.
 
 CEF/Chromium is primarily developed on Ubuntu 14 LTS systems as described on the [BranchesAndBuilding](https://code.google.com/p/chromiumembedded/wiki/BranchesAndBuilding) Wiki page. To build CEF/Chromium on a Debian 7 system additional manual steps are required.
 
-The below instructions are based on the CEF 2272 branch built on a Debian 7.8.0 64-bit Linux system. To build using this system:
+The below instructions are based on the CEF 2526 branch built on a Debian 7.8.0 64-bit Linux system. To build using this system:
 
 1\. Install [Debian 7 64-bit](https://www.debian.org/distrib/). This can be done using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine. At least 6GB of RAM and 40GB of disk space are required to successfully build Chromium/CEF and create a CEF binary distribution.
 
@@ -85,7 +85,7 @@ apt-get install cmake libgtkglext1-dev
 5\. Download Chromium and CEF source code at the correct branch and without building (see the [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page for complete CEF build instructions).
 
 ```
-python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-distrib --no-build --branch=2272
+python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-distrib --no-build --branch=2526
 ```
 
 6\. Add depot\_tools to the PATH.
@@ -119,8 +119,43 @@ cd /path/to/chromium_git/chromium/src
 ./tools/clang/scripts/update.sh --force-local-build --without-android --gcc-toolchain '/usr'
 ```
 
-9\. Build Chromium/CEF and create the CEF binary distribution.
+If you get build errors while compiling llvm/clang for 2526 branch or newer see [this thread](http://www.magpcss.org/ceforum/viewtopic.php?f=6&t=13330) for possible solutions.
+
+9\. Build binutils locally for 2526 branch or newer. The binutils binaries included with these newer branches have the same GLIBC issue as llvm/clang.
+
+A\. Edit the “src/third_party/binutils/build-one.sh” script and change all instances of “/build/output” to “$PWD/build/output”. This script is intended to build inside a chroot environment but we want to build directly on the Debian system instead.
+
+B\. Download and build binutils (based on the contents of “src/third_party/binutils/build-all.sh”):
 
 ```
-python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-update --force-build --force-distrib --branch=2272
+cd /path/to/chromium_git/chromium/src/third_party/binutils
+
+# Download binutils at the version specified in build-all.sh.
+wget http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.bz2
+tar xjf binutils-2.25.tar.bz2
+
+cd binutils-2.25
+
+# Apply the Chromium patches specified in build-all.sh.
+patch -p1 < ../unlock-thin.patch
+patch -p1 < ../plugin-dso-fix.patch
+
+cd ..
+
+# Build binutils (don’t forget to apply the build-one.sh changes from A first!).
+./build-one.sh binutils-2.25
+
+# Copy the resulting files to the expected location (backing up the old files first).
+mv Linux_x64/Release Linux_x64/Release_old
+cp -a binutils-2.25/build/output/x86_64-unknown-linux-gnu Linux_x64/Release
+mkdir Linux_x64/Release/include/
+cp -a binutils-2.25/build/output/include/plugin-api.h Linux_x64/Release/include/
+```
+
+Verify that the resulting executables are correct by running `Linux_x64/Release/bin/objcopy`.
+
+10\. Build Chromium/CEF and create the CEF binary distribution.
+
+```
+python automate-git.py --download-dir=/path/to/chromium_git --depot-tools-dir=/path/to/depot_tools --no-update --force-build --force-distrib --branch=2526
 ```
