@@ -42,8 +42,8 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 **What's Required**
 
 - Windows 7 or newer, 64-bit OS.
-- Visual Studio 2013 Professional Update 4 or Visual Studio 2015 Professional installed in the default location.
-- [Windows 8.1 SDK](https://msdn.microsoft.com/en-us/windows/desktop/bg162891.aspx) installed in the default location. This SDK version is included with VS2015 so no need to install it separately if you installed that product.
+- Visual Studio 2013 Professional Update 4 or Visual Studio 2015 Update 2 installed in the default location.
+- [Windows 10.0.10586 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location. This SDK version is included with VS2015 so no need to install it separately if you installed that product.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -129,7 +129,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 **What's Required**
 
 - OS X 10.10 or newer.
-- Xcode 6.4 (available for download from https://developer.apple.com/downloads/ with an Apple ID). If you have multiple versions of Xcode installed use the [xcode-select](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/xcode-select.1.html) tool to select the 6.4 version. Xcode 7 is [not currently supported](https://bitbucket.org/chromiumembedded/cef/issues/1732).
+- Xcode 7.2.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
