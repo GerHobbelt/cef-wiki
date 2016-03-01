@@ -33,12 +33,12 @@ This document introduces the general concepts involved when developing an applic
 Binary distributions of CEF3 are available from the [project Downloads page](http://www.magpcss.net/cef_downloads/). They contain all files necessary to build a particular version of CEF3 on a particular platform (Windows, Mac OS X or Linux). No matter the platform they all share the same general structure:
 
   * **cefclient** contains the cefclient sample application configured to build using the files in the binary distribution. This application demonstrates a wide range of CEF functionalities.
+  * **cefsimple** contains the cefsimple sample application configured to build using the files in the binary distribution. This application demonstrates the minimal functionality required to create a browser window.
   * **Debug** contains a debug build the CEF shared library (libcef) and any other libraries required to run on the platform. This application demonstrates the minimal functionality required to create a browser window.
   * **include** contains all required CEF header files.
   * **libcef\_dll** contains the source code for the libcef\_dll\_wrapper static library that all applications using the CEF C++ API must link against. See the “C++ Wrapper” section for more information.
   * **Release** contains a release build the CEF shared library (libcef) and any other libraries required to run on the platform.
-  * **Resources** contains resources required by applications using CEF. This includes .pak files (binary files with globbed resources) and potentially other files such as images and cursors depending on the platform.
-  * **tools** contains scripts for post-processing the build depending on the platform.
+  * **Resources** contains resources required by applications using CEF (Windows and Linux only). This includes .pak files (binary files with globbed resources) and potentially other files such depending on the platform.
 
 Each binary distribution also contains a README.txt file that describes the platform-specific distribution in greater detail and a LICENSE.txt file that contains CEF’s BSD license. When distributing an application based on CEF you should include the license text somewhere in your application’s distribution. For example, you can list it on an “About” or “Credits” page in your application’s UI, or in the documentation bundled with your application. License and credit information is also available inside of a CEF3 browser window by loading “about:license” and “about:credits” respectively.
 
@@ -48,7 +48,7 @@ See the [Tutorial](Tutorial.md) Wiki page for detailed instructions on how to cr
 
 ## Building from Source Code
 
-CEF can be built from source code either locally or using automated build systems like [TeamCity](http://www.jetbrains.com/teamcity/). This requires the download of Chromium and CEF source code via either Subversion (SVN) or Git. The Chromium code base is quite large and building Chromium from source code is only recommended on moderately powerful machines with more than 4GB of RAM. Detailed instructions for building Chromium and CEF from source code are available on the BranchesAndBuilding page.
+CEF can be built from source code either locally or using automated build systems like [TeamCity](http://www.jetbrains.com/teamcity/). This requires the download of Chromium and CEF source code via Git. The Chromium code base is quite large and building Chromium from source code is only recommended on moderately powerful machines with more than 6GB of RAM. Detailed instructions for building Chromium and CEF from source code are available on the [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page.
 
 # Sample Application
 
@@ -68,9 +68,9 @@ CEF3 runs using multiple processes. The main process which handles window creati
 
 By default the main application executable will be spawned multiple times to represent separate processes. This is handled via command-line flags that are passed into the CefExecuteProcess function. If the main application executable is large, takes a long time to load, or is otherwise unsuitable for non-browser processes the host can use a separate executable for those other processes. This can be configured via the CefSettings.browser\_subprocess\_path variable. See the “Application Structure” section for more information.
 
-The separate processes spawned by CEF3 communicate using Inter-Process Communication (IPC). Application logic implemented in the browser and render processes can communicate by sending asynchronous messages back and forth. JavaScriptIntegration in the render process can expose asynchronous APIs that are handled in the browser process. See the “Inter-Process Communication” section for more information.
+The separate processes spawned by CEF3 communicate using Inter-Process Communication (IPC). Application logic implemented in the browser and render processes can communicate by sending asynchronous messages back and forth. [JavaScriptIntegration](https://bitbucket.org/chromiumembedded/cef/wiki/JavaScriptIntegration.md) in the render process can expose asynchronous APIs that are handled in the browser process. See the “Inter-Process Communication” section for more information.
 
-Platform-specific debugging tips are also available for [Windows](http://www.chromium.org/developers/how-tos/debugging), [Mac OS X](http://www.chromium.org/developers/debugging-on-os-x) and [Linux](https://code.google.com/p/chromium/wiki/LinuxDebugging).
+Platform-specific debugging tips are also available for [Windows](https://www.chromium.org/developers/how-tos/debugging-on-windows), [Mac OS X](http://www.chromium.org/developers/how-tos/debugging-on-os-x) and [Linux](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md).
 
 ## Threads
 
@@ -81,9 +81,9 @@ Each process in CEF3 runs multiple threads. For a complete list of threads see t
   * **TID\_FILE** thread is used in the browser process to interact with the file system.
   * **TID\_RENDERER** thread is the main thread in the renderer process.
 
-Due to the multi-threaded nature of CEF it’s important to use locking or message passing to protect data members from access on multiple threads. The IMPLEMENT\_LOCKING macro (deprecated -- see below) provides Lock() and Unlock() methods and an AutoLock scoped object for synchronizing access to blocks of code. The CefPostTask family of functions support easy asynchronous message passing between threads. See the “Posting Tasks” section for more information.
+Due to the multi-threaded nature of CEF it’s important to use message passing or locking to protect data members from access on multiple threads. The CefPostTask family of functions support easy asynchronous message passing between threads. See the “Posting Tasks” section for more information.
 
-The current thread can be verified using the CefCurrentlyOn() function. The cefclient application uses the following defines to verify that methods are executed on the expected thread. With trunk revision 1769 (on Google Code) and newer these defines are included in the [include/wrapper/cef\_helpers.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_helpers.h?at=master) header file.
+The current thread can be verified using the CefCurrentlyOn() function. The CEF sample applications use the following defines to verify that methods are executed on the expected thread. These defines are included in the [include/wrapper/cef\_helpers.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_helpers.h?at=master) header file.
 
 ```
 #define CEF_REQUIRE_UI_THREAD()       DCHECK(CefCurrentlyOn(TID_UI));
@@ -92,7 +92,7 @@ The current thread can be verified using the CefCurrentlyOn() function. The cefc
 #define CEF_REQUIRE_RENDERER_THREAD() DCHECK(CefCurrentlyOn(TID_RENDERER));
 ```
 
-Starting with trunk revision 1769 (on Google Code) the IMPLEMENT\_LOCKING macro has been deprecated in favor of Chromium’s base::Lock and base::AutoLock types. These types are now exposed in CEF via the include/base folder. For example:
+To support synchronized access to blocks of code CEF provides base::Lock and base::AutoLock types via the [include/base/cef\_lock.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/base/cef_lock.h?at=master) header file. For example:
 
 ```
 // Include the necessary header.
@@ -231,94 +231,82 @@ Many features in CEF3 and Chromium can be configured using command line argument
   * To specify CEF/Chromium command line arguments inside the host application implement the CefApp::OnBeforeCommandLineProcessing() method.
   * To pass application-specific (non-CEF/Chromium) command line arguments to sub-processes implement the CefBrowserProcessHandler::OnBeforeChildProcessLaunch() method.
 
-See comments in [client\_switches.cpp](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/common/client_switches.cc?at=master) for more information on how to discover supported CEF/Chromium command line switches.
+See comments in [cefclient/common/client\_switches.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/common/client_switches.cc?at=master) for more information on how to discover supported CEF/Chromium command line switches.
 
 # Application Layout
 
-Application layout can differ significantly depending on the platform. For example, on Mac OS X your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a [client archive](http://www.magpcss.net/cef_downloads/index.php?query=label%3A~Deprecated+label%3Aclient+sort%3Aname#list) from the project Downloads page. Some files are optional and some are required as detailed in the README.txt file for each platform.
+Application layout can differ significantly depending on the platform. For example, on Mac OS X your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a “Test App” from https://cefbuilds.com. Some distributed files are required and some are optional. Requirements and additional information for each file can be found in the binary distribution README.txt file.
 
 ## Windows
 
-On Windows the default layout places the libcef library and related resources next to the application executable. The directory structure looks like this:
+On Windows the default layout places the libcef library and related resources next to the application executable. The directory structure looks like this for 2623 branch:
 
 ```
 Application/
     cefclient.exe  <= cefclient application executable
     libcef.dll <= main CEF library
-    icudt.dll <= ICU unicode support library
-    ffmpegsumo.dll <= HTML5 audio/video support library
-    libEGL.dll, libGLESv2.dll, … <= accelerated compositing support libraries
-    cef.pak, devtools_resources.pak <= non-localized resources and strings
+    icudtl.dat <= unicode support data
+    libEGL.dll, libGLESv2.dll, ... <= accelerated compositing support libraries
+    cef.pak, devtools_resources.pak, ... <= non-localized resources and strings
+    natives_blob.bin, snapshot_blob.bin <= V8 initial snapshot
     locales/
-        en-US.pak, … <= locale-specific resources and strings
+        en-US.pak, ... <= locale-specific resources and strings
 ```
 
-The location of the CEF libraries and resource files can be customized using the CefSettings structure (see the README.txt file or “CefSettings” section for details). The cefclient application on Windows compiles in resources via the BINARY resource type in [cefclient.rc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/resources/win/cefclient.rc?at=master) but an application could just as easily load resources from the local file system.
+The location of the CEF libraries and resource files can be customized using the CefSettings structure (see the README.txt file or “CefSettings” section for details). The cefclient application on Windows compiles in resources via the BINARY resource type in [cefclient/resources/win/cefclient.rc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/resources/win/cefclient.rc?at=master) but an application could just as easily load resources from the local file system.
 
 ## Linux
 
-On Linux the default layout places the libcef library and related resources next to the application executable. Note however that there’s a discrepancy between where libcef.so is located in the client distribution and where it’s located in the binary distribution that you build yourself. The location depends on how the linker rpath value is set when building the application executable. For example, a value of “-Wl,-rpath,.” (“.” meaning the current directory) will allow you to place libcef.so next to the application executable. The path to libcef.so can also be specified using the LD\_LIBRARY\_PATH environment variable.
+On Linux the default layout places the libcef library and related resources next to the application executable. Note however that there’s a discrepancy between where libcef.so is located in the client distribution and where it’s located in the binary distribution that you build yourself. The location depends on how the linker rpath value is set when building the application executable. For example, a value of “-Wl,-rpath,.” (“.” meaning the current directory) will allow you to place libcef.so next to the application executable. The path to libcef.so can also be specified using the LD\_LIBRARY\_PATH environment variable. The directory structure looks like this for 2623 branch:
 
 ```
 Application/
     cefclient  <= cefclient application executable
+    chrome-sandbox <= sandbox support binary
     libcef.so <= main CEF library
-    ffmpegsumo.so <-- HTML5 audio/video support library
-    cef.pak, devtools_resources.pak <= non-localized resources and strings
+    icudtl.dat <= unicode support data
+    cef.pak, devtools_resources.pak, ... <= non-localized resources and strings
+    natives_blob.bin, snapshot_blob.bin <= V8 initial snapshot
     locales/
-        en-US.pak, … <= locale-specific resources and strings
+        en-US.pak, ... <= locale-specific resources and strings
     files/
-        binding.html, … <= cefclient application resources
+        binding.html, ... <= cefclient application resources
 ```
 
 The location of the CEF libraries and resource files can be customized using the CefSettings structure (see the README.txt file of “CefSettings” section for details).
 
 ## Mac OS X
 
-The application (app bundle) layout on Mac OS X is mandated by the Chromium implementation and consequently is not very flexible. The directory structure looks like this:
+The application (app bundle) layout on Mac OS X is mandated by the Chromium implementation and consequently is not very flexible. The directory structure looks like this for 2623 branch:
 
 ```
 cefclient.app/
     Contents/
         Frameworks/
             Chromium Embedded Framework.framework/
-                Libraries/
-                    ffmpegsumo.so <= HTML5 audio/video support library
-                    libcef.dylib <= main CEF library
+                Chromium Embedded Framework <= main application library
                 Resources/
-                    cef.pak, devtools_resources.pak <= non-localized resources and strings
-                    *.png, *.tiff <= Blink image and cursor resources
-                    en.lproj/, … <= locale-specific resources and strings
-            libplugin_carbon_interpose.dylib <= plugin support library
+                    cef.pak, devtools_resources.pak, ... <= non-localized resources and strings
+                    icudtl.dat <= unicode support data
+                    natives_blob.bin, snapshot_blob.bin <= V8 initial snapshot
+                    en.lproj/, ... <= locale-specific resources and strings
             cefclient Helper.app/
                 Contents/
                     Info.plist
                     MacOS/
                         cefclient Helper <= helper executable
                     Pkginfo
-            cefclient Helper EH.app/
-                Contents/
-                    Info.plist
-                    MacOS/
-                        cefclient Helper EH <= helper executable
-                    Pkginfo
-            cefclient Helper NP.app/
-                Contents/
-                    Info.plist
-                    MacOS/
-                        cefclient Helper NP <= helper executable
-                    Pkginfo
         Info.plist
         MacOS/
             cefclient <= cefclient application executable
         Pkginfo
         Resources/
-            binding.html, … <= cefclient application resources
+            binding.html, ... <= cefclient application resources
 ```
 
 The "Chromium Embedded Framework.framework" is an [unversioned framework](http://src.chromium.org/viewvc/chrome/trunk/src/build/mac/copy_framework_unversioned.sh?view=markup) that contains all CEF binaries and resources. Executables (cefclient, cefclient Helper, etc) are linked to libcef.dylib using [install\_name\_tool](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/install_name_tool.1.html) and a path relative to @executable\_path.
 
-The "cefclient Helper" apps are used for executing separate processes (renderer, plugin, etc) with [different characteristics](http://src.chromium.org/viewvc/chrome/trunk/src/build/mac/make_more_helpers.sh?view=markup). They need to have separate app bundles and Info.plist files so that, among other things, they don't show dock icons. The "EH" helper, which is used when launching plugin processes, has the MH\_NO\_HEAP\_EXECUTION bit cleared to allow an executable heap. The "NP" helper, which is used when launching NaCl plugin processes only, has the MH\_PIE bit cleared to disable ASLR. This is set up as part of the build process using scripts from the tools/ directory. Examine the Xcode project included with the binary distribution or the originating cefclient.gyp file for a better idea of the script dependencies.
+The "cefclient Helper" app is used for executing separate processes (renderer, plugin, etc) with different characteristics. It needs to have a separate app bundle and Info.plist file so that, among other things, it doesn’t show dock icons.
 
 # Application Structure
 
@@ -331,7 +319,7 @@ Every CEF3 application has the same general structure.
 
 ## Entry-Point Function
 
-As described in the “Processes” section a CEF3 application will run multiple processes. The processes can all use the same executable or a separate executable can be specified for the sub-processes. Execution of the process begins in the entry-point function. Complete platform-specific examples for Windows, Linux and Mac OS-X are available in [cefclient\_win.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_win.cc?at=master), [cefclient\_gtk.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_gtk.cc?at=master) and [cefclient\_mac.mm](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_mac.mm?at=master) respectively.
+As described in the “Processes” section a CEF3 application will run multiple processes. The processes can all use the same executable or a separate executable can be specified for the sub-processes. Execution of the process begins in the entry-point function. Complete platform-specific examples for Windows, Linux and Mac OS-X are available in [cefclient/cefclient\_win.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_win.cc?at=master), [cefclient/cefclient\_gtk.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_gtk.cc?at=master) and [cefclient/cefclient\_mac.mm](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_mac.mm?at=master) respectively.
 
 When launching sub-processes CEF will specify configuration information using the command-line that must be passed into the CefExecuteProcess function via the CefMainArgs structure. The definition of CefMainArgs is platform-specific. On Linux and Mac OS X it accepts the argc and argv values which are passed into the [main() function](https://en.wikipedia.org/wiki/Main_function).
 
@@ -509,84 +497,9 @@ The [CefApp](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefApp.html)
   * **OnBeforeCommandLineProcessing** which provides the opportunity to programmatically set command-line arguments. See the “Command Line Arguments” section for more information.
   * **OnRegisterCustomSchemes** which provides an opportunity to register custom schemes. See the “”Request Handling” section for more information.
   * **GetBrowserProcessHandler** which returns the handler for functionality specific to the browser process including the OnContextInitialized() method.
-  * **GetRenderProcessHandler** which returns the handler for functionality specific to the render process. This includes JavaScript-related callbacks and process messages. See JavaScriptIntegration and the “Inter-Process Communication” section for more information.
+  * **GetRenderProcessHandler** which returns the handler for functionality specific to the render process. This includes JavaScript-related callbacks and process messages. See the [JavaScriptIntegration](https://bitbucket.org/chromiumembedded/cef/wiki/JavaScriptIntegration.md) Wiki page and the “Inter-Process Communication” section for more information.
 
-Example CefApp implementation:
-
-```
-// MyApp implements CefApp and the process-specific interfaces.
-class MyApp : public CefApp,
-              public CefBrowserProcessHandler,
-              public CefRenderProcessHandler {
- public:
-  MyApp() {}
-
-  // CefApp methods. Important to return |this| for the handler callbacks.
-  virtual void OnBeforeCommandLineProcessing(
-      const CefString& process_type,
-      CefRefPtr<CefCommandLine> command_line) {
-    // Programmatically configure command-line arguments...
-  }
-  virtual void OnRegisterCustomSchemes(
-      CefRefPtr<CefSchemeRegistrar> registrar) OVERRIDE {
-    // Register custom schemes...
-  }
-  virtual CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler()
-      OVERRIDE { return this; }
-  virtual CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler()
-      OVERRIDE { return this; }
-
-  // CefBrowserProcessHandler methods.
-  virtual void OnContextInitialized() OVERRIDE {
-    // The browser process UI thread has been initialized...
-  }
-  virtual void OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
-                                            OVERRIDE {
-    // Send startup information to a new render process...
-  }
-
-  // CefRenderProcessHandler methods.
-  virtual void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
-                                     OVERRIDE {
-    // The render process main thread has been initialized...
-    // Receive startup information in the new render process...
-  }
-  virtual void OnWebKitInitialized(CefRefPtr<ClientApp> app) OVERRIDE {
-    // WebKit has been initialized, register V8 extensions...
-  }
-  virtual void OnBrowserCreated(CefRefPtr<CefBrowser> browser) OVERRIDE {
-    // Browser created in this render process...
-  }
-  virtual void OnBrowserDestroyed(CefRefPtr<CefBrowser> browser) OVERRIDE {
-    // Browser destroyed in this render process...
-  }
-  virtual bool OnBeforeNavigation(CefRefPtr<CefBrowser> browser,
-                                  CefRefPtr<CefFrame> frame,
-                                  CefRefPtr<CefRequest> request,
-                                  NavigationType navigation_type,
-                                  bool is_redirect) OVERRIDE {
-    // Allow or block different types of navigation...
-  }
-  virtual void OnContextCreated(CefRefPtr<CefBrowser> browser,
-                                CefRefPtr<CefFrame> frame,
-                                CefRefPtr<CefV8Context> context) OVERRIDE {
-    // JavaScript context created, add V8 bindings here...
-  }
-  virtual void OnContextReleased(CefRefPtr<CefBrowser> browser,
-                                 CefRefPtr<CefFrame> frame,
-                                 CefRefPtr<CefV8Context> context) OVERRIDE {
-    // JavaScript context released, release V8 references here...
-  }
-  virtual bool OnProcessMessageReceived(
-      CefRefPtr<CefBrowser> browser,
-      CefProcessId source_process,
-      CefRefPtr<CefProcessMessage> message) OVERRIDE {
-    // Handle IPC messages from the browser process...
-  }
-
-  IMPLEMENT_REFCOUNTING(MyApp);
-};
-```
+An example CefApp implementation can be seen in [cefsimple/simple\_app.h](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefsimple/simple_app.h?at=master) and [cefsimple/simple\_app.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefsimple/simple_app.cc?at=master).
 
 ## CefClient
 
@@ -595,201 +508,7 @@ The [CefClient](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefClient
   * Handlers for things like browser life span, context menus, dialogs, display notifications, drag events, focus events, keyboard events and more. The majority of handlers are optional. See the documentation in cef\_client.h for the side effects, if any, of not implementing a specific handler.
   * **OnProcessMessageReceived** which is called when an IPC message is received from the render process. See the “Inter-Process Communication” section for more information.
 
-Example CefClient implementation:
-
-```
-// MyHandler implements CefClient and a number of other interfaces.
-class MyHandler : public CefClient,
-                  public CefContextMenuHandler,
-                  public CefDisplayHandler,
-                  public CefDownloadHandler,
-                  public CefDragHandler,
-                  public CefGeolocationHandler,
-                  public CefKeyboardHandler,
-                  public CefLifeSpanHandler,
-                  public CefLoadHandler,
-                  public CefRequestHandler {
- public:
-  MyHandler();
-
-  // CefClient methods. Important to return |this| for the handler callbacks.
-  virtual CefRefPtr<CefContextMenuHandler> GetContextMenuHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefDownloadHandler> GetDownloadHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefDragHandler> GetDragHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefGeolocationHandler> GetGeolocationHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefKeyboardHandler> GetKeyboardHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefLoadHandler> GetLoadHandler() OVERRIDE {
-    return this;
-  }
-  virtual CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE {
-    return this;
-  }
-  virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
-                                        CefProcessId source_process,
-                                        CefRefPtr<CefProcessMessage> message)
-                                        OVERRIDE {
-    // Handle IPC messages from the render process...
-  }
-
-  // CefContextMenuHandler methods
-  virtual void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
-                                   CefRefPtr<CefFrame> frame,
-                                   CefRefPtr<CefContextMenuParams> params,
-                                   CefRefPtr<CefMenuModel> model) OVERRIDE {
-    // Customize the context menu...
-  }
-  virtual bool OnContextMenuCommand(CefRefPtr<CefBrowser> browser,
-                                    CefRefPtr<CefFrame> frame,
-                                    CefRefPtr<CefContextMenuParams> params,
-                                    int command_id,
-                                    EventFlags event_flags) OVERRIDE {
-    // Handle a context menu command...
-  }
-
-  // CefDisplayHandler methods
-  virtual void OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
-                                    bool isLoading,
-                                    bool canGoBack,
-                                    bool canGoForward) OVERRIDE {
-    // Update UI for browser state...
-  }
-  virtual void OnAddressChange(CefRefPtr<CefBrowser> browser,
-                               CefRefPtr<CefFrame> frame,
-                               const CefString& url) OVERRIDE {
-    // Update the URL in the address bar...
-  }
-  virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
-                             const CefString& title) OVERRIDE {
-    // Update the browser window title...
-  }
-  virtual bool OnConsoleMessage(CefRefPtr<CefBrowser> browser,
-                                const CefString& message,
-                                const CefString& source,
-                                int line) OVERRIDE {
-    // Log a console message...
-  }
-
-  // CefDownloadHandler methods
-  virtual void OnBeforeDownload(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefDownloadItem> download_item,
-      const CefString& suggested_name,
-      CefRefPtr<CefBeforeDownloadCallback> callback) OVERRIDE {
-    // Specify a file path or cancel the download...
-  }
-  virtual void OnDownloadUpdated(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefDownloadItem> download_item,
-      CefRefPtr<CefDownloadItemCallback> callback) OVERRIDE {
-    // Update the download status...
-  }
-
-  // CefDragHandler methods
-  virtual bool OnDragEnter(CefRefPtr<CefBrowser> browser,
-                           CefRefPtr<CefDragData> dragData,
-                           DragOperationsMask mask) OVERRIDE {
-    // Allow or deny drag events...
-  }
-
-  // CefGeolocationHandler methods
-  virtual void OnRequestGeolocationPermission(
-      CefRefPtr<CefBrowser> browser,
-      const CefString& requesting_url,
-      int request_id,
-      CefRefPtr<CefGeolocationCallback> callback) OVERRIDE {
-    // Allow or deny geolocation API access...
-  }
-
-  // CefKeyboardHandler methods
-  virtual bool OnPreKeyEvent(CefRefPtr<CefBrowser> browser,
-                             const CefKeyEvent& event,
-                             CefEventHandle os_event,
-                             bool* is_keyboard_shortcut) OVERRIDE {
-    // Perform custom handling of key events...
-  }
-
-  // CefLifeSpanHandler methods
-  virtual bool OnBeforePopup(CefRefPtr<CefBrowser> browser,
-                             CefRefPtr<CefFrame> frame,
-                             const CefString& target_url,
-                             const CefString& target_frame_name,
-                             const CefPopupFeatures& popupFeatures,
-                             CefWindowInfo& windowInfo,
-                             CefRefPtr<CefClient>& client,
-                             CefBrowserSettings& settings,
-                             bool* no_javascript_access) OVERRIDE {
-    // Allow or block popup windows, customize popup window creation...
-  }
-  virtual void OnAfterCreated(CefRefPtr<CefBrowser> browser) OVERRIDE {
-    // Browser window created successfully...
-  }
-  virtual bool DoClose(CefRefPtr<CefBrowser> browser) OVERRIDE {
-    // Allow or block browser window close...
-  }
-  virtual void OnBeforeClose(CefRefPtr<CefBrowser> browser) OVERRIDE {
-    // Browser window is closed, perform cleanup...
-  }
-
-  // CefLoadHandler methods
-  virtual void OnLoadStart(CefRefPtr<CefBrowser> browser,
-                           CefRefPtr<CefFrame> frame) OVERRIDE {
-    // A frame has started loading content...
-  }
-  virtual void OnLoadEnd(CefRefPtr<CefBrowser> browser,
-                         CefRefPtr<CefFrame> frame,
-                         int httpStatusCode) OVERRIDE {
-    // A frame has finished loading content...
-  }
-  virtual void OnLoadError(CefRefPtr<CefBrowser> browser,
-                           CefRefPtr<CefFrame> frame,
-                           ErrorCode errorCode,
-                           const CefString& errorText,
-                           const CefString& failedUrl) OVERRIDE {
-    // A frame has failed to load content...
-  }
-  virtual void OnRenderProcessTerminated(CefRefPtr<CefBrowser> browser,
-                                         TerminationStatus status) OVERRIDE {
-    // A render process has crashed...
-  }
-
-  // CefRequestHandler methods
-  virtual CefRefPtr<CefResourceHandler> GetResourceHandler(
-      CefRefPtr<CefBrowser> browser,
-      CefRefPtr<CefFrame> frame,
-      CefRefPtr<CefRequest> request) OVERRIDE {
-    // Optionally intercept resource requests...
-  }
-  virtual bool OnQuotaRequest(CefRefPtr<CefBrowser> browser,
-                              const CefString& origin_url,
-                              int64 new_size,
-                              CefRefPtr<CefQuotaCallback> callback) OVERRIDE {
-    // Allow or block quota requests...
-  }
-  virtual void OnProtocolExecution(CefRefPtr<CefBrowser> browser,
-                                   const CefString& url,
-                                   bool& allow_os_execution) OVERRIDE {
-    // Handle execution of external protocols...
-  }
-
-  IMPLEMENT_REFCOUNTING(MyHandler);
-};
-```
+An example CefClient implementation can be seen in [cefsimple/simple\_handler.h](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefsimple/simple_handler.h?at=master) and [cefsimple/simple\_handler.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefsimple/simple_handler.cc?at=master).
 
 ## Browser Life Span
 
@@ -809,7 +528,7 @@ CefBrowserSettings settings;
 CefRefPtr<MyClient> client(new MyClient);
 
 // Create the browser asynchronously. Initially loads the Google URL.
-CefBrowserHost::CreateBrowser(info, client.get(), “http://www.google.com”, settings);
+CefBrowserHost::CreateBrowser(info, client.get(), “http://www.google.com”, settings, NULL);
 ```
 
 The [CefLifeSpanHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefLifeSpanHandler.html) class provides the callbacks necessary for managing browser life span. Below is an extract of the relevant methods and members.
@@ -839,7 +558,6 @@ class MyClient : public CefClient,
   bool m_bIsClosing;
 
   IMPLEMENT_REFCOUNTING(MyClient);
-  IMPLEMENT_LOCKING(MyClient);  // Deprecated -- see the “Threads” section.
 };
 ```
 
@@ -849,9 +567,7 @@ The OnAfterCreated() method will be called immediately after the browser object 
 void MyClient::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
   // Must be executed on the UI thread.
   REQUIRE_UI_THREAD();
-  // Protect data members from access on multiple threads.
-  AutoLock lock_scope(this);  // Deprecated -- see the “Threads” section.
-
+ 
   if (!m_Browser.get())   {
     // Keep a reference to the main browser.
     m_Browser = browser;
@@ -920,38 +636,7 @@ gboolean delete_event(GtkWidget* widget, GdkEvent* event,
 }
 ```
 
-Handling the windowShouldClose: selector on Mac OS X:
-
-```
-// Called when the window is about to close. Perform the self-destruction
-// sequence by getting rid of the window. By returning YES, we allow the window
-// to be removed from the screen.
-- (BOOL)windowShouldClose:(id)window {
-  if (g_handler.get() && !g_handler->IsClosing()) {
-    CefRefPtr<CefBrowser> browser = g_handler->GetBrowser();
-    if (browser.get()) {
-      // Notify the browser window that we would like to close it. This will result in a call to 
-      // MyHandler::DoClose() if the JavaScript 'onbeforeunload' event handler allows it.
-      browser->GetHost()->CloseBrowser(false);
-
-      // Cancel the close.
-      return NO;
-    }
-  }
-
-  // Try to make the window go away.
-  [window autorelease];
-
-  // Clean ourselves up after clearing the stack of anything that might have the
-  // window on it.
-  [self performSelectorOnMainThread:@selector(cleanup:)
-                         withObject:window
-                      waitUntilDone:NO];
-
-  // Allow the close.
-  return YES;
-}
-```
+Shutdown on OS X is more complicated. See comments in [cefsimple/cefsimple\_mac.mm](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefsimple/cefsimple_mac.mm?at=master) for a complete understanding of how shutdown works on that platform.
 
 The DoClose() method sets the m\_bIsClosing flag and returns false to send the second OS close event.
 
@@ -959,16 +644,11 @@ The DoClose() method sets the m\_bIsClosing flag and returns false to send the s
 bool MyClient::DoClose(CefRefPtr<CefBrowser> browser) {
   // Must be executed on the UI thread.
   REQUIRE_UI_THREAD();
-  // Protect data members from access on multiple threads.
-  AutoLock lock_scope(this);
 
   // Closing the main window requires special handling. See the DoClose()
   // documentation in the CEF header for a detailed description of this
   // process.
   if (m_BrowserId == browser->GetIdentifier()) {
-    // Notify the browser that the parent window is about to close.
-    browser->GetHost()->ParentWindowWillClose();
-
     // Set a flag to indicate that the window close should be allowed.
     m_bIsClosing = true;
   }
@@ -985,8 +665,6 @@ When the OS function receives the second OS close event it allows the parent win
 void MyHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
   // Must be executed on the UI thread.
   REQUIRE_UI_THREAD();
-  // Protect data members from access on multiple threads.
-  AutoLock lock_scope(this);
 
   if (m_BrowserId == browser->GetIdentifier()) {
     // Free the browser pointer so that the browser can be destroyed.
@@ -1007,7 +685,7 @@ See the cefclient application for complete working examples on each platform.
 With off-screen rendering CEF does not create a native browser window. Instead, CEF provides the host application with invalidated regions and a pixel buffer and the host application notifies CEF of mouse, keyboard and focus events. Off-screen rendering does not currently support accelerated compositing so performance may suffer as compared to a windowed browser. Off-screen browsers will receive the same notifications as windowed browsers including the life span notifications described in the previous section. To use off-screen rendering:
 
   1. Implement the [CefRenderHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefRenderHandler.html) interface. All methods are required unless otherwise indicated.
-  1. Call CefWindowInfo::SetAsOffScreen() and optionally CefWindowInfo::SetTransparentPainting() before passing the CefWindowInfo structure to CefBrowserHost::CreateBrowser(). If no parent window is passed to SetAsOffScreen some functionality like context menus may not be available.
+  1. Call CefWindowInfo::SetAsWindowless() before passing the CefWindowInfo structure to CefBrowserHost::CreateBrowser(). If no parent window is passed to SetAsWindowless some functionality like context menus may not be available.
   1. The CefRenderHandler::GetViewRect() method will be called to retrieve the desired view rectangle.
   1. The CefRenderHandler::OnPaint() method will be called to provide invalid regions and the updated pixel buffer. The cefclient application draws the buffer using OpenGL but your application can use whatever technique you prefer.
   1. To resize the browser call CefBrowserHost::WasResized(). This will result in a call to GetViewRect() to retrieve the new size followed by a call to OnPaint().
@@ -1018,32 +696,14 @@ Run cefclient with the “--off-screen-rendering-enabled” command-line flag fo
 
 # Posting Tasks
 
-Tasks can be posted between the various threads in a single process using the CefPostTask family of methods (see the [cef\_task.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/cef_task?at=master) header file for the complete list). The task will execute asynchronously on the message loop of the target thread. For example, to execute the MyObject::MyMethod method on the UI thread and pass it two parameters:
+Tasks can be posted between the various threads in a single process using the CefPostTask family of methods (see the [include/cef\_task.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/cef_task.h?at=master) header file for the complete list). The task will execute asynchronously on the message loop of the target thread.
 
-```
-CefPostTask(TID_UI, NewCefRunnableMethod(object, &MyObject::MyMethod, param1, param2));
-```
-
-To execute the MyFunction function on the IO thread and pass it two parameters:
-
-```
-CefPostTask(TID_IO, NewCefRunnableFunction(MyFunction, param1, param2));
-```
-
-See the [cef\_runnable.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/cef_runnable.h?at=master) header file for more information on the NewCefRunnable templates (deprecated -- see below).
-
-If the host application needs to keep a reference to a run loop it can use the CefTaskRunner class. For example, to get the task runner for the UI thread:
-
-```
-CefRefPtr<CefTaskRunner> task_runner = CefTaskRunner::GetForThread(TID_UI);
-```
-
-Starting with trunk revision 1769 (on Google Code) cef\_runnable.h has been deprecated in favor of Chromium’s base::Bind and base::Callback types. These types are now exposed in CEF via the include/base folder. For example:
+CEF provides base::Bind and base::Callback templated callback classes for passing bound methods, objects and arguments to CefPostTask. For complete base::Bind and base::Callback usage information see comments in the [include/base/cef\_callback.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/base/cef_callback.h?at=master) header. The [include/wrapper/cef\_closure\_task.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_closure_task.h?at=master) header provides helpers for converting a base::Closure to a CefTask. For example:
 
 ```
 // Include the necessary headers.
-#include "include/base/cef_bind.h"
-#include "include/wrapper/cef_closure_task.h"
+#include “include/base/cef_bind.h”
+#include “include/wrapper/cef_closure_task.h”
 
 // To execute a bound function:
 
@@ -1074,7 +734,11 @@ CefRefPtr<MyClass> instance = new MyClass();
 CefPostTask(TID_UI, base::Bind(&MyClass::MyMethod, instance, 5));
 ```
 
-The [cef\_closure\_task.h](https://bitbucket.org/chromiumembedded/cef/src/include/wrapper/cef_closure_task.h?at=master) header provides helpers for converting a base::Closure to a CefTask. For complete base::Bind and base::Callback usage information see comments in the [cef\_callback.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/base/cef_callback.h?at=master) header.
+If the host application needs to keep a reference to a run loop it can use the CefTaskRunner class. For example, to get the task runner for the UI thread:
+
+```
+CefRefPtr<CefTaskRunner> task_runner = CefTaskRunner::GetForThread(TID_UI);
+```
 
 # Inter-Process Communication (IPC)
 
@@ -1142,11 +806,11 @@ CefRefPtr<CefFrame> frame = browser->GetFrame(frame_id);
 
 ## Asynchronous JavaScript Bindings
 
-JavaScriptIntegration is implemented in the render process but frequently need to communicate with the browser process. The JavaScript APIs themselves should be designed to work asynchronously using [closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) and [promises](http://www.html5rocks.com/en/tutorials/es6/promises/).
+[JavaScriptIntegration](https://bitbucket.org/chromiumembedded/cef/wiki/JavaScriptIntegration.md) is implemented in the render process but frequently need to communicate with the browser process. The JavaScript APIs themselves should be designed to work asynchronously using [closures](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) and [promises](http://www.html5rocks.com/en/tutorials/es6/promises/).
 
 ### Generic Message Router
 
-Starting with trunk revision 1574 (on Google Code) CEF provides a generic implementation for routing asynchronous messages between JavaScript running in the renderer process and C++ running in the browser process. An application interacts with the router by passing it data from standard CEF C++ callbacks (OnBeforeBrowse, OnProcessMessageRecieved, OnContextCreated, etc). The renderer-side router supports generic JavaScript callback registration and execution while the browser-side router supports application-specific logic via one or more application-provided Handler instances.
+CEF provides a generic implementation for routing asynchronous messages between JavaScript running in the renderer process and C++ running in the browser process. An application interacts with the router by passing it data from standard CEF C++ callbacks (OnBeforeBrowse, OnProcessMessageRecieved, OnContextCreated, etc). The renderer-side router supports generic JavaScript callback registration and execution while the browser-side router supports application-specific logic via one or more application-provided Handler instances.
 
 The JavaScript bindings look like this:
 
@@ -1217,7 +881,7 @@ class Handler {
 };
 ```
 
-See [wrapper/cef\_message\_router.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_message_router.h?at=master) for complete usage documentation.
+See [include/wrapper/cef\_message\_router.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_message_router.h?at=master) for complete usage documentation.
 
 ### Custom Implementation
 
@@ -1434,8 +1098,6 @@ Requests made with CefURLRequest can also specify custom behaviors via the CefRe
   * **UR\_FLAG\_SKIP\_CACHE** If set the cache will be skipped when handling the request.
   * **UR\_FLAG\_ALLOW\_CACHED\_CREDENTIALS** If set cookies may be sent with the request and saved from the response. UR\_FLAG\_ALLOW\_CACHED\_CREDENTIALS must also be set.
   * **UR\_FLAG\_REPORT\_UPLOAD\_PROGRESS** If set upload progress events will be generated when a request has a body.
-  * **UR\_FLAG\_REPORT\_LOAD\_TIMING** If set load timing info will be collected for the request.
-  * **UR\_FLAG\_REPORT\_RAW\_HEADERS** If set the headers sent and received for the request will be recorded.
   * **UR\_FLAG\_NO\_DOWNLOAD\_DATA** If set the CefURLRequestClient::OnDownloadData method will not be called.
   * **UR\_FLAG\_NO\_RETRY\_ON\_5XX** If set 5XX redirect errors will be propagated to the observer instead of automatically re-tried. This currently only applies for requests originated in the browser process.
 
@@ -1468,7 +1130,7 @@ A scheme handler is registered via the CefRegisterSchemeHandlerFactory() functio
 CefRegisterSchemeHandlerFactory("client", “myapp”, new MySchemeHandlerFactory());
 ```
 
-Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See the “Scheme Handler” test in cefclient (implemented in scheme\_test.[cpp|h]) for a working example.
+Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See [cefclient/browser/scheme\_test.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/browser/scheme_test.cc?at=master) (accessible via the Tests menu > Other Tests > Scheme Handler from inside the cefclient sample application) for a working example.
 
 ```
 // Implementation of the factory for creating client request handlers.
@@ -1553,7 +1215,7 @@ return new CefStreamResourceHandler("text/html", stream);
 
 ### Request Interception
 
-The CefRequestHandler::GetResourceHandler() method supports the interception of arbitrary requests. It uses the same CefResourceHandler class as the scheme handler approach. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See ClientHandler::GetResourceHandler (implemented in client\_handler.cpp) for a working example.
+The CefRequestHandler::GetResourceHandler() method supports the interception of arbitrary requests. It uses the same CefResourceHandler class as the scheme handler approach. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above.
 
 ```
 CefRefPtr<CefResourceHandler> MyHandler::GetResourceHandler(
@@ -1568,6 +1230,10 @@ CefRefPtr<CefResourceHandler> MyHandler::GetResourceHandler(
   return NULL;
 }
 ```
+
+### Response Filtering
+
+The CefRequestHandler::GetResourceResponseFilter() method supports filtering of request response data. See [cefclient/browser/response\_filter\_test.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/browser/response_filter_test.cc?at=master) (accessible via the Tests menu > Other Tests > Response Filtering from inside the cefclient sample application) for a working example.
 
 ## Other Callbacks
 
