@@ -42,7 +42,7 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 **What's Required**
 
 - Windows 7 or newer, 64-bit OS.
-- Visual Studio 2013 Professional Update 4 or Visual Studio 2015 Update 2 installed in the default location.
+- Visual Studio 2015 Update 1 or Update 2 RC installed in the default location.
 - [Windows 10.0.10586 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location. This SDK version is included with VS2015 so no need to install it separately if you installed that product.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
