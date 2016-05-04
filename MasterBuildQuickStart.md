@@ -42,7 +42,7 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 **What's Required**
 
 - Windows 7 or newer, 64-bit OS.
-- Visual Studio 2015 Update 1 or Update 2 RC installed in the default location.
+- Visual Studio 2015 Update 2 installed in the default location.
 - [Windows 10.0.10586 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location. This SDK version is included with VS2015 so no need to install it separately if you installed that product.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
@@ -78,8 +78,7 @@ update_depot_tools.bat
 6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
-# Change to 2015 if using VS2015
-set GYP_MSVS_VERSION=2013
+set GYP_MSVS_VERSION=2015
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
@@ -93,8 +92,7 @@ update.bat
 7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
-# Change to 2015 if using VS2015
-set GYP_MSVS_VERSION=2013
+set GYP_MSVS_VERSION=2015
 set GYP_GENERATORS=ninja,msvs-ninja
 call cef_create_projects.bat
 ```
