@@ -19,6 +19,7 @@ The Chromium Embedded Framework (CEF) is a simple framework for embedding Chromi
 * [LinkingDifferentRunTimeLibraries](LinkingDifferentRunTimeLibraries.md) - How to link CEF against a different run-time library.
 * [BuildingOnDebian7](BuildingOnDebian7.md) - How to build CEF on Debian 7 systems.
 * [ChromiumUpdate](ChromiumUpdate.md) - How to update CEF to use the newest Chromium revision.
+* [AutomatedBuildSetup](AutomatedBuildSetup.md) - How to set up an automated build system for CEF.
 
 The complete list of CEF Wiki pages is available [here](https://bitbucket.org/chromiumembedded/cef/wiki/browse/).
 
