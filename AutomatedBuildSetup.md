@@ -142,8 +142,10 @@ If VS2015 or SDK is not installed to the default location then set the following
 
 ```
 set GYP_MSVS_OVERRIDE_PATH=%vs_root%
+set CEF_VCVARS=none
 set PATH=%sdk_root%\bin\x86;%vs_root%\VC\bin;%PATH%
 set LIB=%sdk_root%\Lib\10.0.10586.0\um\x86;%sdk_root%\Lib\10.0.10586.0\ucrt\x86;%vs_root%\VC\lib;%vs_root%\VC\atlmfc\lib;%LIB%
+set INCLUDE=%sdk_root%\Include\10.0.10586.0\um;%sdk_root%\Include\10.0.10586.0\ucrt;%sdk_root%\Include\10.0.10586.0\shared;%sdk_root%\Include\10.0.10586.0\winrt;%vs_root%\VC\include;%vs_root%\VC\atlmfc\include;%INCLUDE%
 ```
 
 **64-bit Build Commands**
@@ -161,6 +163,8 @@ If VS2015 or SDK is not installed to the default location then set the following
 
 ```
 set GYP_MSVS_OVERRIDE_PATH=%vs_root%
+set CEF_VCVARS=none
 set PATH=%sdk_root%\bin\x64;%vs_root%\VC\bin\amd64;%PATH%
 set LIB=%sdk_root%\Lib\10.0.10586.0\um\x64;%sdk_root%\Lib\10.0.10586.0\ucrt\x64;%vs_root%\VC\lib\amd64;%vs_root%\VC\atlmfc\lib\amd64;%LIB%
+set INCLUDE=%sdk_root%\Include\10.0.10586.0\um;%sdk_root%\Include\10.0.10586.0\ucrt;%sdk_root%\Include\10.0.10586.0\shared;%sdk_root%\Include\10.0.10586.0\winrt;%vs_root%\VC\include;%vs_root%\VC\atlmfc\include;%INCLUDE%
 ```
