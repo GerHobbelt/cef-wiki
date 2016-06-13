@@ -259,6 +259,7 @@ wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automa
 
 ```
 #!/bin/bash
+export GYP_DEFINES="use_allocator=none"
 python ../automate/automate-git.py --download-dir=/home/marshall/code/chromium_git --depot-tools-dir=/home/marshall/code/depot_tools --no-distrib --no-build
 ```
 
@@ -280,6 +281,7 @@ cd ~/code/chromium_git
 
 ```
 cd ~/code/chromium_git/chromium/src/cef
+export GYP_DEFINES="use_allocator=none"
 ./cef_create_projects.sh
 ```
 
