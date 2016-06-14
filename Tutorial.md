@@ -12,15 +12,7 @@ This tutorial explains how to create a simple application using CEF3. It referen
 
 # Getting Started
 
-Begin by downloading a binary distribution for your platform from http://cefbuilds.com. For the purposes of this tutorial download the 2526 branch or newer. Currently supported platforms include Windows, Linux and Mac OS X. Each binary distribution contains all files necessary to build a particular version of CEF3 on a particular platform. See the included README.txt file or the "Getting Started" section of the [GeneralUsage](GeneralUsage.md) Wiki page for a detailed description of binary distribution contents. The source files linked from this tutorial are for the current CEF3 master branch and may differ slightly from the versions that you downloaded as part of the binary distribution.
-
-## Building the Included Project
-
-Applications based on CEF binary distributions can be built using standard platform build tools. This includes Visual Studio on Windows, Xcode on Mac OS X and gcc/make on Linux. Each platform has a slightly different build process and requirements.
-
-### Using CMake
-
-Project files for CEF3 sample applications must be built using CMake, a cross-platform open-source build system that can generate project files in many different formats. See the comments at the top of the CMakeLists.txt file included with the binary distribution for platform-specific CMake usage instructions.
+CEF provides a sample project that makes it really easy to get started with CEF development. Simply browse over to the [cef-project](https://bitbucket.org/chromiumembedded/cef-project) website and follow the step-by-step instructions. The source files linked from this tutorial are for the current CEF3 master branch and may differ slightly from the versions that are downloaded by cef-project.
 
 ## Loading a Custom URL
 
