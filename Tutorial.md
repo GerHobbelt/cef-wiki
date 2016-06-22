@@ -134,7 +134,7 @@ Application/
   1. Compile the libcef\_dll\_wrapper static library.
   1. Compile/link cefsimple.
     * Required source code files include: cefsimple\_linux.cc, simple\_app.cc, simple\_handler.cc, simple\_handler\_linux.cc.
-    * Required link libraries include: libcef\_dll\_wrapper.so, libcef.so and dependencies (identified at build time using the “pkg-config” tool).
+    * Required link libraries include: libcef\_dll\_wrapper.a, libcef.so and dependencies (identified at build time using the “pkg-config” tool).
     * Configure the rpath to find libcef.so in the current directory (“-Wl,-rpath,.”) or use the LD\_LIBRARY\_PATH environment variable.
   1. Copy all files from the Resources directory to the output directory.
   1. Copy all files from the Debug/Release directory to the output directory.
