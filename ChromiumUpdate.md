@@ -27,6 +27,7 @@ With CEF3 the following files should be evaluated for changes:
 ```
 content/shell/*
 content/content_shell.gypi
+chrome/browser/component_updater/chrome_component_updater_configurator.cc
 chrome/browser/extensions/api/streams_private/*
 chrome/browser/extensions/chrome_component_extension_resource_manager.[cc|h]
 chrome/browser/extensions/chrome_extension_web_contents_observer.[cc|h]
