@@ -28,12 +28,11 @@ With CEF3 the following files should be evaluated for changes:
 content/shell/*
 content/content_shell.gypi
 chrome/browser/component_updater/chrome_component_updater_configurator.cc
-chrome/browser/extensions/api/streams_private/*
+chrome/browser/extensions/api/tabs/tabs_api.[cc|h]
 chrome/browser/extensions/chrome_component_extension_resource_manager.[cc|h]
 chrome/browser/extensions/chrome_extension_web_contents_observer.[cc|h]
 chrome/browser/extensions/chrome_url_request_util.[cc|h]
 chrome/browser/extensions/component_loader.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
-chrome/browser/extensions/event_router_forwarder.[cc|h]
 chrome/browser/extensions/extension_service.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
 chrome/browser/guest_view/mime_handler_view/*
 chrome/browser/pdf/*
@@ -41,7 +40,8 @@ chrome/browser/plugins/plugin_info_message_filter.[cc|h]
 chrome/browser/printing/*
 chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.[cc|h]
 chrome/browser/renderer_host/pepper/*
-chrome/common/extensions/api/streams_private.idl
+chrome/common/extensions/api/_api_features.json
+chrome/common/extensions/api/_permission_features.json
 chrome/renderer/chrome_content_renderer_client.[cc|h]
 chrome/renderer/extensions/chrome_extensions_renderer_client.[cc|h]
 chrome/renderer/pepper/*
