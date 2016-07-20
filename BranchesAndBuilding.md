@@ -225,26 +225,7 @@ git checkout -t origin/2623
 
 ## Manual Building
 
-1\. Run the cef\_create\_projects script (.bat on Windows, .sh on OS X and Linux) to generate the build files based on the [GYP](http://code.google.com/p/gyp/) configuration.
-
-```
-cd /path/to/chromium/src/cef
-./cef_create_projects.sh
-```
-
-2\. Build CEF.
-
-Ninja is now the recommended and supported method for building CEF3/Chromium on all platforms when using newer release branches (1453+) and master.
-
-```
-export GYP_GENERATORS=ninja
-cd /path/to/chromium/src/cef
-./cef_create_projects.sh
-cd /path/to/chromium/src
-ninja -C out/Debug cefclient cef_unittests
-```
-
-Linux only: When using the 1750 branch or newer you must also build the chrome\_sandbox target and install it as described on the [LinuxSUIDSandboxDevelopment](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md) wiki page. See the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md#markdown-header-linux-setup) Wiki page for an example.
+See the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for an example of the recommended developer workflow.
 
 ## Manual Packaging
 
