@@ -75,10 +75,12 @@ update_depot_tools.bat
 
 5\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to "c:\code\automate\automate-git.py".
 
-6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
+6\. Create the "c:\code\chromium_git\update.bat" script with the following contents. Remove the GN_DEFINES line if you’re planning to create Release builds instead of Debug builds.
 
 ```
-set GYP_MSVS_VERSION=2015
+set CEF_USE_GN=1
+set GN_DEFINES=is_win_fastlink=true
+set GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
@@ -89,11 +91,12 @@ cd c:\code\chromium_git
 update.bat
 ```
 
-7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
+7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents. Remove the GN_DEFINES line if you’re planning to create Release builds instead of Debug builds.
 
 ```
-set GYP_MSVS_VERSION=2015
-set GYP_GENERATORS=ninja,msvs-ninja
+set CEF_USE_GN=1
+set GN_DEFINES=is_win_fastlink=true
+set GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
 ```
 
@@ -104,20 +107,20 @@ cd c:\code\chromium_git\chromium\src\cef
 create.bat
 ```
 
-This will generate a "c:\code\chromium_git\chromium\src\cef\cef.sln" file that can be loaded in Visual Studio for debugging and compiling individual files. Always use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+This will generate a "c:\code\chromium_git\chromium\src\out\Debug_GN_x86\cef.sln" file that can be loaded in Visual Studio for debugging and compiling individual files. Replace “x86” with “x64” in this path to work with the 64-bit build instead of the 32-bit build. Always use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
 
-8\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "c:\code\chromium_git\chromium\src\cef" and repeat this step multiple times to perform incremental builds while developing.
+8\. Create a Debug build of CEF/Chromium using Ninja. Replace “x86” with “x64” in the below example to generate a 64-bit build instead of a 32-bit build. Edit the CEF source code at "c:\code\chromium_git\chromium\src\cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
 cd c:\code\chromium_git\chromium\src
-ninja -C out\Debug cefclient cefsimple cef_unittests
+ninja -C out\Debug_GN_x86 cefclient cefsimple cef_unittests
 ```
 
 9\. Run the resulting cefclient sample application.
 
 ```
 cd c:\code\chromium_git\chromium\src
-out\Debug\cefclient.exe
+out\Debug_GN_x86\cefclient.exe
 ```
 
 See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-windows) for detailed debugging instructions.
@@ -161,6 +164,7 @@ export PATH=/Users/marshall/code/depot_tools:$PATH
 
 ```
 #!/bin/bash
+export CEF_USE_GN=1
 python ../automate/automate-git.py --download-dir=/Users/marshall/code/chromium_git --depot-tools-dir=/Users/marshall/code/depot_tools --no-distrib --no-build --x64-build
 ```
 
@@ -178,25 +182,40 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-6\. Run the "cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+6\. Create the "~/code/chromium_git/chromium/src/cef/create.sh" script with the following contents.
+
+```
+#!/bin/bash
+export CEF_USE_GN=1
+./cef_create_projects.sh
+```
+
+Give it executable permissions.
 
 ```
 cd ~/code/chromium_git/chromium/src/cef
-./cef_create_projects.sh
+chmod 755 create.sh
+```
+
+Run the "create.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
+
+```
+cd ~/code/chromium_git/chromium/src/cef
+./create.sh
 ```
 
 7\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
 cd ~/code/chromium_git/chromium/src
-ninja -C out/Debug cefclient cefsimple cef_unittests
+ninja -C out/Debug_GN_x64 cefclient cefsimple cef_unittests
 ```
 
 8\. Run the resulting cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
-open out/Debug/cefclient.app
+open out/Debug_GN_x64/cefclient.app
 ```
 
 See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-os-x) for detailed debugging instructions.
@@ -259,7 +278,7 @@ wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automa
 
 ```
 #!/bin/bash
-export GYP_DEFINES="use_allocator=none"
+export CEF_USE_GN=1
 python ../automate/automate-git.py --download-dir=/home/marshall/code/chromium_git --depot-tools-dir=/home/marshall/code/depot_tools --no-distrib --no-build
 ```
 
@@ -277,19 +296,33 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-8\. Run the "cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GYP configuration.
+8\. Create the "~/code/chromium_git/chromium/src/cef/create.sh" script with the following contents.
+
+```
+#!/bin/bash
+export CEF_USE_GN=1
+./cef_create_projects.sh
+```
+
+Give it executable permissions.
 
 ```
 cd ~/code/chromium_git/chromium/src/cef
-export GYP_DEFINES="use_allocator=none"
-./cef_create_projects.sh
+chmod 755 create.sh
+```
+
+Run the "create.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
+
+```
+cd ~/code/chromium_git/chromium/src/cef
+./create.sh
 ```
 
 9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target required by step 10.
 
 ```
 cd ~/code/chromium_git/chromium/src
-ninja -C out/Debug cefclient cefsimple cef_unittests chrome_sandbox
+ninja -C out/Debug_GN_x64 cefclient cefsimple cef_unittests chrome_sandbox
 ```
 
 10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md).
@@ -300,14 +333,14 @@ export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
 # This command only needs to be run a single time.
 cd ~/code/chromium_git/chromium/src
-sudo ./build/update-linux-sandbox.sh
+sudo ./build/update-linux-sandbox.sh BUILDTYPE=Debug_GN_x64
 ```
 
 11\. Run the cefclient sample application.
 
 ```
 cd ~/code/chromium_git/chromium/src
-./out/Debug/cefclient
+./out/Debug_GN_x64/cefclient
 ```
 
 See the [Linux debugging guide](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md) for detailed debugging instructions.
