@@ -52,7 +52,7 @@ To build Chromium/CEF with ASan enabled follow these steps:
 1\. Configure Chromium to build using ASan (see [Testing/AddressSanitizer](http://www.chromium.org/developers/testing/addresssanitizer) for complete Chromium-related ASan instructions).
 
 ```
-export GYP_DEFINES='asan=1'
+export GYP_DEFINES='asan=1 dcheck_always_on=1'
 ```
 
 2\. Generate CEF project files.
