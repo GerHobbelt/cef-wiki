@@ -52,7 +52,7 @@ In addition to generating [index.json](http://opensource.spotify.com/cefbuilds/i
 
 The following configurations are executed by the platform builder step. These are the recommended configurations for externally published artifacts but are not recommended for local builds. See the the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page for general build instructions.
 
-These instructions are intended for use with the current release branch (2785). For a limited time you can also build older release branches using these instructions by setting `CEF_USE_GN=0`. This will build CEF with GYP instread of GN -- see [this announcement](http://magpcss.org/ceforum/viewtopic.php?f=4&t=13995#p31549) for details. This Wiki page will be updated as build requirements change.
+These instructions are intended for use with the current release branch (2785). For a limited time you can also build older release branches using these instructions by setting `CEF_USE_GN=0`. This will build CEF with GYP instead of GN -- see [this announcement](http://magpcss.org/ceforum/viewtopic.php?f=4&t=13995#p31549) for details. This Wiki page will be updated as build requirements change.
 
 Lower-case values between %% (%download_dir%, %cef_branch%, etc.) must be provided by you.
 
