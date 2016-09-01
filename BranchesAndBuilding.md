@@ -28,7 +28,7 @@ CEF1 is no longer actively developed or supported. See the [CEF1 Retirement Plan
 
 # Release Branches
 
-CEF provides release branches that track specific Chromium releases. Users developing applications for production environments are encouraged to use release branches for the following reasons:
+CEF branches are created to track each Chromium release milesone (MXX) branch. Users developing applications for production environments are encouraged to use release branches for the following reasons:
 
   * Binary CEF builds are tied to specific Chromium releases.
   * Release versions of CEF/Chromium are better tested and more appropriate for release applications.
@@ -45,12 +45,23 @@ Modern CEF release version numbers have the format X.YYYY.A.gHHHHHHH where:
 
 Detailed Chromium and CEF version information is available in the include/cef\_version.h header file that will be created during the build process or by loading the “about:version” URL in a CEF-derived application.
 
-Current CEF release branches and associated platform build requirements are as follows. Due to ongoing changes in Chromium infrastructure and tooling (most notably the move from SVN to Git) it is no longer feasible to build branches older than 1750.
+CEF release branches and associated platform build requirements are as follows.
+
+## Current Release Branches (Supported)
+
+Support for newer branches begins when they enter the Chromium beta channel. Support for older branches ends when they exit the Chromium stable channel. The [Spotify automated builder](http://opensource.spotify.com/cefbuilds/index.html) provides CEF builds for the current Chromium stable channel and will switch to the next Chromium branch when that branch is promoted to the stable channel. Updating CEF branches is currently a manual process so there will likely be a delay between [Chromium release announcements](http://googlechromereleases.blogspot.com/) and the availability of associated CEF builds. See the [Chromium release calendar](https://www.chromium.org/developers/calendar) for estimated Chromium release dates and versions.
+
+| Branch Date | Release Branch | Chromium Version | Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
+|:------------|:---------------|:-----------------|:---------------------------|:----------------------------|:-------------------------|
+| Jul 2016    | [2785](https://bitbucket.org/chromiumembedded/cef/src/2785?at=2785) | 53               | Win 7+, VS2015u2 or VS2015u3, Win10.0.10586 SDK, Ninja | OS X 10.9-10.11, 10.9+ build system, 10.7+ deployment target, 10.10 base SDK, Xcode 7.3.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
+| May 2016    | [2743](https://bitbucket.org/chromiumembedded/cef/src/2743?at=2743) | 52               | Win 7+, VS2015u2 or VS2015u3, Win10.0.10586 SDK, Ninja | OS X 10.9-10.11, 10.9+ build system, 10.7+ deployment target, 10.10 base SDK, Xcode 7.1.1-7.3.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
+
+## Legacy Release Branches (Unsupported)
+
+Legacy CEF builds are available from the [Spotify automated builder](http://opensource.spotify.com/cefbuilds/index.html) back to 2704 branch and from the [Adobe automated builder](https://cefbuilds.com/) back to 1453 branch. Building legacy branches is not supported. If you choose to build a legacy branch you will need to solve any build errors on your own. Newer legacy branches (within the last few months) can often be built using the same tooling as current branches. Older legacy branches can potentially be built by downloading a CEF source archive at the desired branch from [here](https://bitbucket.org/chromiumembedded/cef/downloads?tab=branches) and a Chromium source archive at the associated/required version from [here](https://gsdview.appspot.com/chromium-browser-official/), and then combining them to create the required directory structure.
 
 | Branch Date | Release Branch | Chromium Version | CEF1 | CEF3 | Windows Build Requirements | Mac OS X Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:-----|:-----|:---------------------------|:----------------------------|:-------------------------|
-| Jul 2016    | [2785](https://bitbucket.org/chromiumembedded/cef/src/2785?at=2785) | 53               | No   | Yes  | Win 7+, VS2015u2 or VS2015u3, Win10.0.10586 SDK, Ninja | OS X 10.9-10.11, 10.9+ build system, 10.7+ deployment target, 10.10 base SDK, Xcode 7.3.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
-| May 2016    | [2743](https://bitbucket.org/chromiumembedded/cef/src/2743?at=2743) | 52               | No   | Yes  | Win 7+, VS2015u2 or VS2015u3, Win10.0.10586 SDK, Ninja | OS X 10.9-10.11, 10.9+ build system, 10.7+ deployment target, 10.10 base SDK, Xcode 7.1.1-7.3.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
 | Apr 2016    | [2704](https://bitbucket.org/chromiumembedded/cef/src/2704?at=2704) | 51               | No   | Yes  | Win 7+, VS2015u2, Win10.0.10586 SDK, Ninja | OS X 10.9-10.11, 10.9+ build system, 10.7+ deployment target, 10.10 base SDK, Xcode 7.1.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
 | Jan 2016    | [2623](https://bitbucket.org/chromiumembedded/cef/src/2623?at=2623) | 49               | No   | Yes  | WinXP+, VS2013u4 or VS2015u1 (experimental), Win10 SDK, Ninja | OS X 10.6-10.11, 10.7+ build system, 10.6+ deployment target, 10.10 base SDK, Xcode 7.1.1, Ninja, 64-bit only | Ubuntu 14.04+, Debian Wheezy+, Ninja |
 | Oct 2015    | [2526](https://bitbucket.org/chromiumembedded/cef/src/2526?at=2526) | 47               | No   | Yes  | WinXP+, VS2013u4 or VS2015u1 (experimental), Win8.1 SDK, Ninja | OS X 10.6-10.11, 10.6+ deployment target, 10.10 base SDK, Xcode 6.1, Ninja, 64-bit only | Ubuntu 12.04+, Debian Wheezy+, Ninja |
