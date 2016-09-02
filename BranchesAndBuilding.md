@@ -128,7 +128,7 @@ python /path/to/automate/automate-git.py --download-dir=/path/to/download
 To build a release branch:
 
 ```
-python /path/to/automate/automate-git.py --download-dir=/path/to/download --branch=2623
+python /path/to/automate/automate-git.py --download-dir=/path/to/download --branch=2785
 ```
 
 By default the script will download depot\_tools, Chromium and CEF source code, run Debug and Release builds of CEF, and create a binary distribution package containing the build artifacts in the “/path/to/download/chromium/src/cef/binary\_distrib” directory. Future runs of the script will perform the minimum work necessary (unless otherwise configured using command-line flags). For example, if there are no pending CEF or Chromium updates the script will do nothing.
@@ -155,7 +155,7 @@ These instructions apply only to the development (master) version of CEF3 using 
 
 2\. Create a chromium checkout directory (for example, /path/to/chromium). To avoid potential problems make sure the path is as short as possible and does not contain spaces or special characters.
 
-3\. View the CHROMIUM\_BUILD\_COMPATIBILITY.txt file in the CEF top-level directory to identify the Chromium Git commit hash or SVN revision number that you need. This will change over time as CEF is updated to work with newer Chromium revisions.
+3\. View the CHROMIUM\_BUILD\_COMPATIBILITY.txt file in the CEF top-level directory to identify the Chromium Git commit hash that you need. This will change over time as CEF is updated to work with newer Chromium revisions.
 
 4\. Download Chromium source code using the fetch tool included with depot\_tools. This step only needs to be performed the first time Chromium code is checked out.
 
@@ -164,23 +164,14 @@ cd /path/to/chromium
 fetch --nohooks chromium
 ```
 
-5\. If step 3 provided an SVN revision number you will need to discover the associated Git commit hash. Newer CEF3 master revisions include the required hash as the “chromium\_checkout” value in CHROMIUM\_BUILD\_COMPATIBILITY.txt.
-
-Chromium switched from SVN to Git on August 26, 2014. For changes prior to that date the required hash for an SVN revision can be found using the command-line. In this example the desired SVN revision is “123456”:
-
-```
-cd /path/to/chromium/src
-git log --grep=@123456 origin/master
-```
-
-6\. Update the Chromium checkout to the required Git commit hash. DO NOT use 'git checkout commit\_hash' directly because the sub-project dependencies will not be updated.
+5\. Update the Chromium checkout to the required Git commit hash. DO NOT use 'git checkout commit\_hash' directly because the sub-project dependencies will not be updated.
 
 ```
 cd /path/to/chromium
 gclient sync --revision <commit_hash> --jobs 16
 ```
 
-7\. Download CEF source code from the CEF Git repository to a "cef" directory inside the Chromium "src" directory. If Chromium code was downloaded to "/path/to/chromium/src" then CEF code should be downloaded to "/path/to/chromium/src/cef". Note that the directory must be named "cef".
+6\. Download CEF source code from the CEF Git repository to a "cef" directory inside the Chromium "src" directory. If Chromium code was downloaded to "/path/to/chromium/src" then CEF code should be downloaded to "/path/to/chromium/src/cef". Note that the directory must be named "cef".
 
 ```
 cd /path/to/chromium/src
@@ -195,7 +186,7 @@ These instructions apply only to release branches of CEF3 using the Git workflow
 
 2\. Create a chromium checkout directory (for example, /path/to/chromium). To avoid potential problems make sure the path is as short as possible and does not contain spaces or special characters.
 
-3\. View the CHROMIUM\_BUILD\_COMPATIBILITY.txt file in the CEF top-level directory to identify what Chromium release branch you need. This will change over time as CEF is updated to work with newer Chromium release branches.
+3\. View the CHROMIUM\_BUILD\_COMPATIBILITY.txt file in the CEF top-level directory to identify what Chromium release version that you need. This will change over time as CEF is updated to work with newer Chromium release versions.
 
 4\. Download Chromium source code using the fetch tool included with depot\_tools. This step only needs to be performed the first time Chromium code is checked out.
 
@@ -218,8 +209,8 @@ git fetch --tags
 ```
 cd /path/to/chromium/src
 
-# Check out the release version (“49.0.2623.54” in this example).
-git checkout refs/tags/49.0.2623.54
+# Check out the release version (“53.0.2785.89” in this example).
+git checkout refs/tags/53.0.2785.89
 
 # Update third-party dependencies.
 gclient sync --jobs 16
@@ -232,8 +223,8 @@ cd /path/to/chromium/src
 git clone https://bitbucket.org/chromiumembedded/cef.git
 cd cef
 
-# Create a local branch tracking the remote branch (“2623” in this example).
-git checkout -t origin/2623
+# Create a local branch tracking the remote branch (“2785” in this example).
+git checkout -t origin/2785
 ```
 
 ## Manual Building
