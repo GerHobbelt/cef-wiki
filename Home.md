@@ -9,7 +9,6 @@ The Chromium Embedded Framework (CEF) is a simple framework for embedding Chromi
 * [Tutorial](Tutorial.md) - Tutorial explaining how to create a simple application using CEF3.
 * [MasterBuildQuickStart](MasterBuildQuickStart.md) - Quick-start guide for building the CEF/Chromium master (development) branch.
 * [BranchesAndBuilding](BranchesAndBuilding.md) - Information about CEF branches and instructions for downloading, building and packaging source code.
-* [ContributingWithGit](ContributingWithGit.md) - How to contribute code changes to CEF using Git.
 * [GeneralUsage](GeneralUsage.md) - Overview and general usage of CEF3.
 * [JavaScriptIntegration](JavaScriptIntegration.md) - How to use V8 JavaScript integration in client applications.
 * [Architecture](Architecture.md) - Overview of the CEF architecture.
@@ -28,5 +27,5 @@ The complete list of CEF Wiki pages is available [here](https://bitbucket.org/ch
 * Support Forum - http://www.magpcss.org/ceforum/
 * CEF1 C++ API Docs - http://magpcss.org/ceforum/apidocs/
 * CEF3 C++ API Docs - http://magpcss.org/ceforum/apidocs3/
-* Downloads - http://www.magpcss.net/cef_downloads/ and http://cefbuilds.com (automated nightly builds)
+* Downloads - http://opensource.spotify.com/cefbuilds/index.html and http://cefbuilds.com
 * Donations - http://www.magpcss.org/ceforum/donate.php
