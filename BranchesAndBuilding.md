@@ -91,23 +91,7 @@ Note that 1025 and older branches contain only CEF1 source code and that 1547 an
 
 # Building from Source
 
-Building from source code is currently supported on Windows, Mac OS X and Linux platforms. Use of the Automated Method described below is recommended. For an example of building CEF/Chromium using the master branch see the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page. For other branches see the build requirements listed above.
-
-  * Building on most platforms will require at least 8GB of system memory.
-  * [Ninja](https://code.google.com/p/chromium/wiki/NinjaBuild) must be used when building newer CEF/Chromium branches.
-  * [GYP](https://gyp.gsrc.io/docs/UserDocumentation.md) is supported by 2785 branch and older. [GN](http://www.chromium.org/developers/gn-build-configuration) is supported by 2785 branch and newer, and required starting with 2840 branch. Set `CEF_USE_GN=1` to build 2785 branch with GN instead of GYP.
-  * CEF does not support component builds (see [issue #1617](https://bitbucket.org/chromiumembedded/cef/issues/1617)).
-  * To perform a 64-bit build on Windows (any branch) or OS X (branch 2171 or older) set `GYP_DEFINES=target_arch=x64` (GYP only) or build the `out/[Debug|Release]_GN_x64` target (GN only). Linux by default will perform a build appropriate to the system (32-bit build on 32-bit system and 64-bit build on 64-bit system). To perform a 32-bit Linux build on a 64-bit Linux system see instructions on the [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration) Wiki page.
-  * To perform an “official” build set `GYP_DEFINES=buildtype=Official` (GYP only) or `GN_DEFINES=is_official_build=true` (GN only). This will disable debugging code and enable additional link-time optimizations in Release builds. See instructions on the [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md) Wiki page for additional official build recommendations.
-  * Windows -
-    * If multiple versions of Visual Studio are installed on your system you can set the GYP\_MSVS\_VERSION environment variable to create project files for that version. For example, set the value to "2013" for VS2013 or "2015" for VS2015. Check the Chromium documentation for the correct value when using other Visual Studio versions.
-    * If you wish to use Visual Studio for debugging and compiling in combination with a Ninja build you can set `GYP_GENERATORS=ninja,msvs-ninja` (GYP only) or `GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*` (GN only) to generate both Ninja and VS project files. Visual Studio is supported only for debugging and compiling individual source files -- it will not build whole targets successfully. You must use Ninja when building CEF/Chromium targets.
-  * Mac OS X -
-    * The combination of deployment target and base SDK version will determine the platforms supported by the resulting binaries. For proper functioning you must use the versions specified under build requirements for each branch.
-    * 32-bit builds are no longer supported with 2272 branch and newer. See [here](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/sdsDCkq_zwo/yep65H8Eg3sJ) for the Chromium announcement.
-  * Linux -
-    * CEF is developed and tested using Ubuntu 14.04 and Debian 7.8. It should be possible to build and run CEF on other compatible Linux distributions but this is untested.
-    * The libgtkglext1-dev package is required in branch 1547 and newer to support the off-screen rendering example in cefclient. This is only a requirement for cefclient and not a requirement for other applications using CEF.
+Building from source code is currently supported on Windows, Mac OS X and Linux platforms. Use of the Automated Method described below is recommended. Building the current CEF/Chromium master branch for local development is described on the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page. Building the current CEF/Chromium stable branch automatically for production use is described on the  [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration) Wiki page. For other branches see the build requirements listed in the “Release Branches” section above and the “Build Notes” section below.
 
 ## Automated Method
 
@@ -245,3 +229,23 @@ If the process succeeds a binary distribution package will be created in the /pa
 See the [make\_distrib.py](https://bitbucket.org/chromiumembedded/cef/src/master/tools/make_distrib.py) script for additional usage options.
 
 The resulting binary distribution can then be built using CMake and platform toolchains. See the README.txt file included with the binary distribution for more information.
+
+## Build Notes
+
+This section summarizes build-related requirements and options.
+
+  * Building on most platforms will require at least 8GB of system memory.
+  * [Ninja](https://code.google.com/p/chromium/wiki/NinjaBuild) must be used when building newer CEF/Chromium branches.
+  * [GYP](https://gyp.gsrc.io/docs/UserDocumentation.md) is supported by 2785 branch and older. [GN](http://www.chromium.org/developers/gn-build-configuration) is supported by 2785 branch and newer, and required starting with 2840 branch. Set `CEF_USE_GN=1` to build 2785 branch with GN instead of GYP.
+  * CEF does not support component builds (see [issue #1617](https://bitbucket.org/chromiumembedded/cef/issues/1617)).
+  * To perform a 64-bit build on Windows (any branch) or OS X (branch 2171 or older) set `GYP_DEFINES=target_arch=x64` (GYP only) or build the `out/[Debug|Release]_GN_x64` target (GN only). Linux by default will perform a build appropriate to the system (32-bit build on 32-bit system and 64-bit build on 64-bit system). To perform a 32-bit Linux build on a 64-bit Linux system see instructions on the [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration) Wiki page.
+  * To perform an “official” build set `GYP_DEFINES=buildtype=Official` (GYP only) or `GN_DEFINES=is_official_build=true` (GN only). This will disable debugging code and enable additional link-time optimizations in Release builds. See instructions on the [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md) Wiki page for additional official build recommendations.
+  * Windows -
+    * If multiple versions of Visual Studio are installed on your system you can set the GYP\_MSVS\_VERSION environment variable to create project files for that version. For example, set the value to "2013" for VS2013 or "2015" for VS2015. Check the Chromium documentation for the correct value when using other Visual Studio versions.
+    * If you wish to use Visual Studio for debugging and compiling in combination with a Ninja build you can set `GYP_GENERATORS=ninja,msvs-ninja` (GYP only) or `GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*` (GN only) to generate both Ninja and VS project files. Visual Studio is supported only for debugging and compiling individual source files -- it will not build whole targets successfully. You must use Ninja when building CEF/Chromium targets.
+  * Mac OS X -
+    * The combination of deployment target and base SDK version will determine the platforms supported by the resulting binaries. For proper functioning you must use the versions specified under build requirements for each branch.
+    * 32-bit builds are no longer supported with 2272 branch and newer. See [here](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/sdsDCkq_zwo/yep65H8Eg3sJ) for the Chromium announcement.
+  * Linux -
+    * CEF is developed and tested using Ubuntu 14.04 and Debian 7.8. It should be possible to build and run CEF on other compatible Linux distributions but this is untested.
+    * The libgtkglext1-dev package is required in branch 1547 and newer to support the off-screen rendering example in cefclient. This is only a requirement for cefclient and not a requirement for other applications using CEF.
