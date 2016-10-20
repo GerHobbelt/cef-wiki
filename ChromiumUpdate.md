@@ -37,7 +37,7 @@ chrome/browser/guest_view/mime_handler_view/*
 chrome/browser/pdf/*
 chrome/browser/plugins/plugin_info_message_filter.[cc|h]
 chrome/browser/printing/*
-chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.[cc|h]
+chrome/browser/loader/chrome_resource_dispatcher_host_delegate.[cc|h]
 chrome/browser/renderer_host/pepper/*
 chrome/common/extensions/api/_api_features.json
 chrome/common/extensions/api/_permission_features.json
