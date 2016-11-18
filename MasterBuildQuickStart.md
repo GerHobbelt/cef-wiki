@@ -113,7 +113,7 @@ This will generate a "c:\code\chromium_git\chromium\src\out\Debug_GN_x86\cef.sln
 
 ```
 cd c:\code\chromium_git\chromium\src
-ninja -C out\Debug_GN_x86 cefclient cefsimple cef_unittests
+ninja -C out\Debug_GN_x86 cef
 ```
 
 9\. Run the resulting cefclient sample application.
@@ -208,7 +208,7 @@ cd ~/code/chromium_git/chromium/src/cef
 
 ```
 cd ~/code/chromium_git/chromium/src
-ninja -C out/Debug_GN_x64 cefclient cefsimple cef_unittests
+ninja -C out/Debug_GN_x64 cef
 ```
 
 8\. Run the resulting cefclient sample application.
@@ -322,7 +322,7 @@ cd ~/code/chromium_git/chromium/src/cef
 
 ```
 cd ~/code/chromium_git/chromium/src
-ninja -C out/Debug_GN_x64 cefclient cefsimple cef_unittests chrome_sandbox
+ninja -C out/Debug_GN_x64 cef chrome_sandbox
 ```
 
 10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md).
