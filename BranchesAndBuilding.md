@@ -102,7 +102,9 @@ These steps apply to the Git workflow only. The Git workflow is recommended for 
 
 1\. Download the [automate-git.py script](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py). Use the most recent master version of this script even when building release branches.
 
-2\. Run the automate-git.py script at whatever interval is appropriate (for each CEF commit, once per day, once per week, etc).
+2\. On Linux: Chromium requires that certain packages be installed. You can install them by running the [install-build-deps.sh script](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md#markdown-header-linux-setup) or by [explicitly running](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration) the necessary installation commands.
+
+3\. Run the automate-git.py script at whatever interval is appropriate (for each CEF commit, once per day, once per week, etc).
 
 To build master:
 
