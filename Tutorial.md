@@ -109,7 +109,7 @@ Build steps vary depending on the platform. Explore the CMake files included wit
   1. Compile the libcef\_dll\_wrapper static library.
   1. Compile/link cefsimple.exe.
     * Required source code files include: cefsimple\_win.cc, simple\_app.cc, simple\_handler.cc, simple\_handler\_win.cc.
-    * Required link libraries include: comctl32.lib, shlwapi.lib, rcprt4.lib, libcef\_dll\_wrapper.lib, libcef.lib, cef\_sandbox.lib. Note that cef\_sandbox.lib (required for sandbox support) is a static library currently built with Visual Studio 2013 and it may not compile with other Visual Studio versions. See comments in cefsimple\_win.cc for how to disable sandbox support.
+    * Required link libraries include: comctl32.lib, shlwapi.lib, rcprt4.lib, libcef\_dll\_wrapper.lib, libcef.lib, cef\_sandbox.lib. Note that cef\_sandbox.lib (required for sandbox support) is a static library currently built with Visual Studio 2015 Update 3 and it may not compile with other Visual Studio versions. See comments in cefsimple\_win.cc for how to disable sandbox support.
     * Resource file is cefsimple.rc.
     * Manifest files are cefsimple.exe.manifest and compatibility.manifest.
   1. Copy all files from the Resources directory to the output directory.
