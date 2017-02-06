@@ -30,6 +30,9 @@ AppName=<Windows only; App-specific folder name component for storing crash
          information; default to "CEF">
 ExternalHandler=<Windows only; Name of the external handler exe to use
                  instead of re-launching the main exe; default to empty>
+BrowserCrashForwardingEnabled=<macOS only; True if browser process crashes
+                              should be forwarded to the system crash
+                              reporter; default to false>
 ServerURL=<crash server URL; default to empty>
 RateLimitEnabled=<True if uploads should be rate limited; default to true>
 MaxUploadsPerDay=<Max uploads per 24 hours, used if rate limit is enabled;
@@ -51,6 +54,7 @@ Values in the "[Config]" section work as follows:
 * If "ProductName" and/or "ProductVersion" are set then the specified values will be included in the crash dump metadata. On macOS if these values are set to empty then they will be retrieved from the Info.plist file using the "CFBundleName" and "CFBundleShortVersionString" keys respectively.
 * If "AppName" is set on Windows then crash report information (metrics, database and dumps) will be stored locally on disk under the "C:\Users\\[CurrentUser]\AppData\Local\\[AppName]\User Data" folder. On other platforms the CefSettings.user_data_path value will be used.
 * If "ExternalHandler" is set on Windows then the specified exe will be launched as the crashpad-handler instead of re-launching the main process exe. The value can be an absolute path or a path relative to the main exe directory. On Linux the CefSettings.browser_subprocess_path value will be used. On macOS the existing subprocess app bundle will be used.
+* If "BrowserCrashForwardingEnabled" is set to true on macOS then browser process crashes will be forwarded to the system crash reporter. This results in the crash UI dialog being displayed to the user and crash reports being logged under "~/Library/Logs/DiagnosticReports". Forwarding of crash reports from non-browser processes and Debug builds is always disabled.
 * If "ServerURL" is set then crashes will be uploaded as a multi-part POST request to the specified URL. Otherwise, reports will only be stored locally on disk.
 * If "RateLimitEnabled" is set to true then crash report uploads will be rate limited as follows:
     * If "MaxUploadsPerDay" is set to a positive value then at most the specified number of crashes will be uploaded in each 24 hour period.
