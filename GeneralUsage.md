@@ -231,7 +231,7 @@ Many features in CEF3 and Chromium can be configured using command line argument
   * To specify CEF/Chromium command line arguments inside the host application implement the CefApp::OnBeforeCommandLineProcessing() method.
   * To pass application-specific (non-CEF/Chromium) command line arguments to sub-processes implement the CefBrowserProcessHandler::OnBeforeChildProcessLaunch() method.
 
-See comments in [cefclient/common/client\_switches.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/common/client_switches.cc?at=master) for more information on how to discover supported CEF/Chromium command line switches.
+See comments in [shared/common/client\_switches.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/shared/common/client_switches.cc?at=master) for more information on how to discover supported CEF/Chromium command line switches.
 
 # Application Layout
 
