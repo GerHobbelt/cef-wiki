@@ -130,7 +130,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 **What's Required**
 
 - OS X 10.10 or newer.
-- Xcode 7.2.
+- Xcode 8.3.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
