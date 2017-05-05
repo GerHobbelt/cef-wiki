@@ -29,5 +29,5 @@ The complete list of CEF Wiki pages is available [here](https://bitbucket.org/ch
 * Support Forum - http://www.magpcss.org/ceforum/
 * CEF1 C++ API Docs - http://magpcss.org/ceforum/apidocs/
 * CEF3 C++ API Docs - http://magpcss.org/ceforum/apidocs3/
-* Downloads - http://opensource.spotify.com/cefbuilds/index.html and http://cefbuilds.com
+* Downloads - http://opensource.spotify.com/cefbuilds/index.html
 * Donations - http://www.magpcss.org/ceforum/donate.php
