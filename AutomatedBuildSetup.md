@@ -8,7 +8,7 @@ This Wiki page describes the setup of an automated build system for CEF.
 
 # Overview
 
-CEF provides tools for automatically downloading, building and packaging Chromium and CEF source code. These tools are the recommended way of building CEF locally and can also be integrated with an automated build system. Examples of automated build systems for CEF include https://cefbuilds.com hosted by Adobe and http://opensource.spotify.com/cefbuilds/index.html hosted by Spotify. This document outlines how to build a system similar to Spotify's. For general CEF build instructions see the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page.
+CEF provides tools for automatically downloading, building and packaging Chromium and CEF source code. These tools are the recommended way of building CEF locally and can also be integrated with an automated build system. Examples of automated build systems for CEF include http://opensource.spotify.com/cefbuilds/index.html hosted by Spotify. This document outlines how to build a system similar to Spotify's. For general CEF build instructions see the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page.
 
 # Services
 
