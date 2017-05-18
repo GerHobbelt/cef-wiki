@@ -192,11 +192,24 @@ git reset --hard origin/master
 Once your personal changes are complete you can request that they be merged into the main CEF (or JCEF) repository. This is done using a pull request. Before submitting a pull request you should:
 
 * Rebase your changes on the upstream CEF (or JCEF) branch (see "Rebasing on Upstream Changes").
+* Fix any coding style issues (see "Coding Style").
 * Squash your changes into a single commit (see "Squashing Commits").
 * Find or create an appropriate issue in the [CEF issue tracker](https://bitbucket.org/chromiumembedded/cef/issues?status=new&status=open) (or [JCEF issue tracker](https://bitbucket.org/chromiumembedded/java-cef/issues?status=new&status=open) if the change targets that project). Make sure the issue number is referenced in your commit description.
-* Follow the style of existing CEF (or JCEF) source files. In general CEF uses the [Chromium coding style](http://www.chromium.org/developers/coding-style).
 * Include new or modified unit tests as appropriate to the functionality.
 * Remove unnecessary or unrelated changes.
+
+## Coding Style
+
+CEF uses the [Chromium coding style](https://chromium.googlesource.com/chromium/src/+/master/styleguide/styleguide.md). All C/C++/ObjC code must be formatted using the fix_style tool. For example, to fix the style of the unstaged files in your CEF Git checkout:
+
+```
+cd /path/to/chromium/src/cef
+./tools/fix_style.sh unstaged
+```
+
+The fix_style tool supports file paths and git hashes as input. Run `tools/fix_style.[bat|sh]` without arguments for complete usage information.
+
+Changes to other types of files should match the existing style in that file.
 
 ## Squashing Commits
 
