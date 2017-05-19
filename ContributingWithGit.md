@@ -200,7 +200,7 @@ Once your personal changes are complete you can request that they be merged into
 
 ## Coding Style
 
-CEF uses the [Chromium coding style](https://chromium.googlesource.com/chromium/src/+/master/styleguide/styleguide.md). All C/C++/ObjC code must be formatted using the fix_style tool. For example, to fix the style of the unstaged files in your CEF Git checkout:
+CEF uses the [Chromium coding style](https://chromium.googlesource.com/chromium/src/+/master/styleguide/styleguide.md). All C/C++, ObjC and Java code must be formatted using the fix_style tool. For example, to fix the style of the unstaged files in your CEF Git checkout:
 
 ```
 cd /path/to/chromium/src/cef
