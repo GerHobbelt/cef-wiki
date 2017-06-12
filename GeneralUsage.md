@@ -810,78 +810,7 @@ CefRefPtr<CefFrame> frame = browser->GetFrame(frame_id);
 
 ### Generic Message Router
 
-CEF provides a generic implementation for routing asynchronous messages between JavaScript running in the renderer process and C++ running in the browser process. An application interacts with the router by passing it data from standard CEF C++ callbacks (OnBeforeBrowse, OnProcessMessageRecieved, OnContextCreated, etc). The renderer-side router supports generic JavaScript callback registration and execution while the browser-side router supports application-specific logic via one or more application-provided Handler instances.
-
-The JavaScript bindings look like this:
-
-```
-// Create and send a new query.
-var request_id = window.cefQuery({
-    request: 'my_request',
-    persistent: false,
-    onSuccess: function(response) {},
-    onFailure: function(error_code, error_message) {}
-});
-
-// Optionally cancel the query.
-window.cefQueryCancel(request_id);
-```
-
-The C++ handler looks like this:
-
-```
-class Callback : public CefBase {
- public:
-  ///
-  // Notify the associated JavaScript onSuccess callback that the query has
-  // completed successfully with the specified |response|.
-  ///
-  virtual void Success(const CefString& response) =0;
-
-  ///
-  // Notify the associated JavaScript onFailure callback that the query has
-  // failed with the specified |error_code| and |error_message|.
-  ///
-  virtual void Failure(int error_code, const CefString& error_message) =0;
-};
-
-class Handler {
- public:
-  ///
-  // Executed when a new query is received. |query_id| uniquely identifies the
-  // query for the life span of the router. Return true to handle the query
-  // or false to propagate the query to other registered handlers, if any. If
-  // no handlers return true from this method then the query will be
-  // automatically canceled with an error code of -1 delivered to the
-  // JavaScript onFailure callback. If this method returns true then a
-  // Callback method must be executed either in this method or asynchronously
-  // to complete the query.
-  ///
-  virtual bool OnQuery(CefRefPtr<CefBrowser> browser,
-                       CefRefPtr<CefFrame> frame,
-                       int64 query_id,
-                       const CefString& request,
-                       bool persistent,
-                       CefRefPtr<Callback> callback) {
-    return false;
-  }
-
-  ///
-  // Executed when a query has been canceled either explicitly using the
-  // JavaScript cancel function or implicitly due to browser destruction,
-  // navigation or renderer process termination. It will only be called for
-  // the single handler that returned true from OnQuery for the same
-  // |query_id|. No references to the associated Callback object should be
-  // kept after this method is called, nor should any Callback methods be
-  // executed.
-  ///
-  virtual void OnQueryCanceled(CefRefPtr<CefBrowser> browser,
-                               CefRefPtr<CefFrame> frame,
-                               int64 query_id) {}
-};
-```
-
-See [include/wrapper/cef\_message\_router.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_message_router.h?at=master) for complete usage documentation.
+CEF provides a generic implementation for routing asynchronous messages between JavaScript running in the renderer process and C++ running in the browser process. An application interacts with the router by passing it data from standard CEF C++ callbacks (OnBeforeBrowse, OnProcessMessageRecieved, OnContextCreated, etc). The renderer-side router supports generic JavaScript callback registration and execution while the browser-side router supports application-specific logic via one or more application-provided Handler instances. See the [message_router example](https://bitbucket.org/chromiumembedded/cef-project/src/master/examples/message_router/?at=master) for a stand-alone example application that demonstates CefMessageRouter usage. See [include/wrapper/cef\_message\_router.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_message_router.h?at=master) for complete usage documentation.
 
 ### Custom Implementation
 
@@ -1121,6 +1050,10 @@ void MyApp::OnRegisterCustomSchemes(CefRefPtr<CefSchemeRegistrar> registrar) {
   registrar->AddCustomScheme("client", true, false, false);
 }
 ```
+
+### Generic Resource Manager
+
+CEF provides a generic implementation for managing resource requests from one or more data sources. This user registers handlers for different data sources, such as directories on disk, zip archives or custom implementations, and the manager handles the requests. An application interacts with the router by passing it data from standard CEF C++ callbacks (OnBeforeResourceLoad, GetResourceHandler). See the [resource_manager example](https://bitbucket.org/chromiumembedded/cef-project/src/master/examples/resource_manager/?at=master) for a stand-alone example application that demonstates CefResourceManager usage. See [include/wrapper/cef\_resource\_manager.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/wrapper/cef_resource_manager.h?at=master) for complete usage documentation.
 
 ### Scheme Handler
 
