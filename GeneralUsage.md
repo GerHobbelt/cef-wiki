@@ -1047,7 +1047,7 @@ If you choose to use a custom scheme (anything other than “HTTP”, “HTTPS�
 ```
 void MyApp::OnRegisterCustomSchemes(CefRefPtr<CefSchemeRegistrar> registrar) {
   // Register "client" as a standard scheme.
-  registrar->AddCustomScheme("client", true, false, false);
+  registrar->AddCustomScheme("client", true, ...);
 }
 ```
 
@@ -1063,69 +1063,7 @@ A scheme handler is registered via the CefRegisterSchemeHandlerFactory() functio
 CefRegisterSchemeHandlerFactory("client", “myapp”, new MySchemeHandlerFactory());
 ```
 
-Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See [cefclient/browser/scheme\_test.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/browser/scheme_test.cc?at=master) (accessible via the Tests menu > Other Tests > Scheme Handler from inside the cefclient sample application) for a working example.
-
-```
-// Implementation of the factory for creating client request handlers.
-class MySchemeHandlerFactory : public CefSchemeHandlerFactory {
- public:
-  virtual CefRefPtr<CefResourceHandler> Create(CefRefPtr<CefBrowser> browser,
-                                               CefRefPtr<CefFrame> frame,
-                                               const CefString& scheme_name,
-                                               CefRefPtr<CefRequest> request)
-                                               OVERRIDE {
-    // Return a new resource handler instance to handle the request.
-    return new MyResourceHandler();
-  }
-
-  IMPLEMENT_REFCOUNTING(MySchemeHandlerFactory);
-};
-
-// Implementation of the resource handler for client requests.
-class MyResourceHandler : public CefResourceHandler {
- public:
-  MyResourceHandler() {}
-
-  virtual bool ProcessRequest(CefRefPtr<CefRequest> request,
-                              CefRefPtr<CefCallback> callback)
-                              OVERRIDE {
-    // Evaluate |request| to determine proper handling...
-    // Execute |callback| once header information is available.
-    // Return true to handle the request.
-    return true;
-  }
-
-  virtual void GetResponseHeaders(CefRefPtr<CefResponse> response,
-                                  int64& response_length,
-                                  CefString& redirectUrl) OVERRIDE {
-    // Populate the response headers.
-    response->SetMimeType("text/html");
-    response->SetStatus(200);
-
-    // Specify the resulting response length.
-    response_length = ...;
-  }
-
-  virtual void Cancel() OVERRIDE {
-    // Cancel the response...
-  }
-
-  virtual bool ReadResponse(void* data_out,
-                            int bytes_to_read,
-                            int& bytes_read,
-                            CefRefPtr<CefCallback> callback)
-                            OVERRIDE {
-    // Read up to |bytes_to_read| data into |data_out| and set |bytes_read|.
-    // If data isn't immediately available set bytes_read=0 and execute
-    // |callback| asynchronously.
-    // Return true to continue the request or false to complete the request.
-    return …;
-  }
-
- private:
-  IMPLEMENT_REFCOUNTING(MyResourceHandler);
-};
-```
+Handlers can be used with both built-in schemes (HTTP, HTTPS, etc) and custom schemes. When using a built-in scheme choose a domain name unique to your application (like “myapp” or “internal”). Implement the [CefSchemeHandlerFactory](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefSchemeHandlerFactory.html) and [CefResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefResourceHandler.html) classes to handle the request and provide response data. If using custom schemes don't forget to implement the CefApp::OnRegisterCustomSchemes method as described above. See the [scheme_handler example](https://bitbucket.org/chromiumembedded/cef-project/src/master/examples/scheme_handler/?at=master) for a stand-alone example application that demonstates CefSchemeHandlerFactory usage. See [include/cef\_scheme.h](https://bitbucket.org/chromiumembedded/cef/src/master/include/cef_scheme.h?at=master) for complete usage documentation.
 
 If the response data is known at request time the [CefStreamResourceHandler](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefStreamResourceHandler.html) class provides a convenient default implementation of CefResourceHandler.
 
