@@ -123,6 +123,8 @@ cd c:\code\chromium_git\chromium\src
 out\Debug_GN_x86\cefclient.exe
 ```
 
+Developers on Windows may wish to use component builds, which are supported in 3202 branch and newer, for faster link times. See [issue #1617](https://bitbucket.org/chromiumembedded/cef/issues/1617#comment-38074395) for details.
+
 See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-windows) for detailed debugging instructions.
 
 # Mac OS X Setup
