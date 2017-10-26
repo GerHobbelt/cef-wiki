@@ -4,7 +4,7 @@ This Wiki page describes how to build CEF on Debian 7 systems.
 
 ***
 
-**Note: Developing Chromium/CEF on Debian 7 is not recommended. Building CEF on Debian 7 is currently necessary to support Debian 7 client installations until such time as the [GLIBC version issue](https://bitbucket.org/chromiumembedded/cef/issue/1575) is resolved.**
+**Note: Developing Chromium/CEF on Debian 7 is not recommended. Chromium stopped supporting Debian 7 in [March 2017](https://bugs.chromium.org/p/chromium/issues/detail?id=701894). These instructions should be considered valid only for branch 3029 and older.**
 
 CEF/Chromium is primarily developed on Ubuntu 14 LTS systems as described on the [BranchesAndBuilding](https://code.google.com/p/chromiumembedded/wiki/BranchesAndBuilding) Wiki page. To build CEF/Chromium on a Debian 7 system additional manual steps are required.
 
