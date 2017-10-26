@@ -42,8 +42,8 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 **What's Required**
 
 - Windows 7 or newer, 64-bit OS.
-- Visual Studio 2015 Update 3 installed in the default location.
-- [Windows 10.0.14393 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location.
+- Visual Studio VS2017 15.3.2+ installed in the default location.
+- [Windows 10.0.15063.468 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk) installed in the default location. You must install this exact SDK version to avoid build issues.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -80,7 +80,7 @@ update_depot_tools.bat
 ```
 set CEF_USE_GN=1
 set GN_DEFINES=is_win_fastlink=true
-set GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*
+set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
@@ -96,7 +96,7 @@ update.bat
 ```
 set CEF_USE_GN=1
 set GN_DEFINES=is_win_fastlink=true
-set GN_ARGUMENTS=--ide=vs2015 --sln=cef --filters=//cef/*
+set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
 ```
 
