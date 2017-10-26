@@ -17,7 +17,7 @@ The Chromium Embedded Framework (CEF) is a simple framework for embedding Chromi
 * [UsingAddressSanitizer](UsingAddressSanitizer.md) - How to use AddressSanitizer with CEF-based applications.
 * [UsingTheCAPI](UsingTheCAPI.md) - How to use the C API in your client application.
 * [LinkingDifferentRunTimeLibraries](LinkingDifferentRunTimeLibraries.md) - How to link CEF against a different run-time library.
-* [BuildingOnDebian7](BuildingOnDebian7.md) - How to build CEF on Debian 7 systems.
+* [BuildingOnDebian7](BuildingOnDebian7.md) - How to build CEF on Debian 7 systems (these instructions are deprecated).
 * [ChromiumUpdate](ChromiumUpdate.md) - How to update CEF to use the newest Chromium revision.
 * [AutomatedBuildSetup](AutomatedBuildSetup.md) - How to set up an automated build system for CEF.
 * [CrashReporting](CrashReporting.md) - How to handle crash reporting from CEF-based applications.
