@@ -224,7 +224,7 @@ See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/d
 
 **What's Required**
 
-- [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop) is recommended. To build on Debian 7 64-bit see the [BuildingOnDebian7](https://bitbucket.org/chromiumembedded/cef/wiki/BuildingOnDebian7.md) Wiki page for additional instructions. Building with other versions or distros has not been tested and may experience issues.
+- [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop) is recommended. Building with other versions or distros has not been tested and may experience issues.
 - At least 6GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
