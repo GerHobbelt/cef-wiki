@@ -75,7 +75,7 @@ update_depot_tools.bat
 
 5\. Download the [automate-git.py](https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py) script to "c:\code\automate\automate-git.py".
 
-6\. Create the "c:\code\chromium_git\update.bat" script with the following contents. Remove the GN_DEFINES line if you’re planning to create Release builds instead of Debug builds.
+6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
 set CEF_USE_GN=1
@@ -90,7 +90,7 @@ cd c:\code\chromium_git
 update.bat
 ```
 
-7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents. Remove the GN_DEFINES line if you’re planning to create Release builds instead of Debug builds.
+7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
 set CEF_USE_GN=1
