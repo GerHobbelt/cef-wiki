@@ -74,12 +74,12 @@ Platform-specific debugging tips are also available for [Windows](https://www.ch
 
 ## Threads
 
-Each process in CEF3 runs multiple threads. For a complete list of threads see the [cef\_thread\_id\_t](http://magpcss.org/ceforum/apidocs3/projects/(default)/cef_thread_id_t.html) enumeration. The browser process for example contains the following commonly-referenced threads:
+Each process in CEF3 runs multiple threads. For a complete list of threads see the [cef\_thread\_id\_t](http://magpcss.org/ceforum/apidocs3/projects/(default)/cef_thread_id_t.html) enumeration. These are some of the commonly-referenced threads:
 
-  * **TID\_UI** thread is the main thread in the browser process. This will be the same as the main application thread if CefInitialize() is called with a CefSettings.multi\_threaded\_message\_loop value of false.
-  * **TID\_IO** thread is used in the browser process to process IPC and network messages.
-  * **TID\_FILE** thread is used in the browser process to interact with the file system.
-  * **TID\_RENDERER** thread is the main thread in the renderer process.
+  * **TID\_UI** thread is the main thread in the browser process. This thread will be the same as the main application thread if CefInitialize() is called with a CefSettings.multi\_threaded\_message\_loop value of false.
+  * **TID\_IO** thread is used in the browser process to handle IPC and network messages.
+  * **TID\_FILE** thread is used in the browser process to interact with the file system. Blocking operations should only be performed on this thread or a [CefThread](http://magpcss.org/ceforum/apidocs3/projects/(default)/CefThread.html) created by the client application.
+  * **TID\_RENDERER** thread is the main thread in the renderer process. All Blink and V8 interation must take place on this thread.
 
 Due to the multi-threaded nature of CEF it’s important to use message passing or locking to protect data members from access on multiple threads. The CefPostTask family of functions support easy asynchronous message passing between threads. See the “Posting Tasks” section for more information.
 
