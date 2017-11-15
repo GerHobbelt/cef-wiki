@@ -8,7 +8,7 @@ This Wiki page provides an overview of the CEF architecture.
 
 # Background
 
-The Chromium Embedded Framework (CEF) is an open source project founded by Marshall Greenblatt in 2008 to develop a Web browser control based on the [Google Chromium](http://www.chromium.org/Home) project. CEF currently supports a range of programming languages and operating systems and can be easily integrated into both new and existing applications. It was designed from the ground up with both performance and ease of use in mind. The base framework includes C and C++ programming interfaces exposed via native libraries that insulate the host application from Chromium and WebKit implementation details. It provides close integration between the browser control and the host application including support for custom plugins, protocols, JavaScript objects and JavaScript extensions. The host application can optionally control resource loading, navigation, context menus, printing and more, while taking advantage of the same performance and HTML5 technologies available in the Google Chrome Web browser.
+The Chromium Embedded Framework (CEF) is an open source project founded by Marshall Greenblatt in 2008 to develop a Web browser control based on the [Google Chromium](http://www.chromium.org/Home) project. CEF currently supports a range of programming languages and operating systems and can be easily integrated into both new and existing applications. It was designed from the ground up with both performance and ease of use in mind. The base framework includes C and C++ programming interfaces exposed via native libraries that insulate the host application from Chromium and Blink implementation details. It provides close integration between the browser control and the host application including support for custom plugins, protocols, JavaScript objects and JavaScript extensions. The host application can optionally control resource loading, navigation, context menus, printing and more, while taking advantage of the same performance and HTML5 technologies available in the Google Chrome Web browser.
 
 # Dependencies
 
@@ -48,7 +48,7 @@ The libcef shared library exports a C API that isolates the user from the CEF ru
 
 # CEF1 (Discontinued)
 
-The single process architecture used by CEF1 integrates Chromium and WebKit directly into the client application. Advantages to the single process arcitecture include reduced memory usage and closer integration with the client application. Disadvantages include [reduced performance](https://bitbucket.org/chromiumembedded/cef/issue/304) with certain types of accelerated content and [crashes](https://bitbucket.org/chromiumembedded/cef/issue/242) due to plugins like Flash running in the same process.
+CEF1 was discontinued when Google forked the WebKit project and subsequently deleted the Chromium WebKit API. The single process architecture used by CEF1 integrates Chromium and WebKit directly into the client application. Advantages to the single process arcitecture include reduced memory usage and closer integration with the client application. Disadvantages include [reduced performance](https://bitbucket.org/chromiumembedded/cef/issue/304) with certain types of accelerated content and [crashes](https://bitbucket.org/chromiumembedded/cef/issue/242) due to plugins like Flash running in the same process.
 
 ## API Usage
 
