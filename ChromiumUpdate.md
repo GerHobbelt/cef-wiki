@@ -6,7 +6,7 @@ This Wiki page describes how to update CEF to use the newest Chromium revision.
 
 The Chromium developers work very hard to introduce new features and capabilities as quickly as possible. Consequently, projects like CEF that depend on Chromium must also be updated regularly. The update process can be complicated and must be done carefully to avoid introducing new bugs and breakage. Below are the steps to follow when updating CEF to work with a new Chromium revision.
 
-1\. Identify the commit hash for the last known compiling revision of Chromium (origin/lkcr):
+1\. Identify the Chromium commit hash for the update. It's best to choose a commit that is likely to build successfully on most platforms. Good choices include the canary channel "branch_commit" value listed at https://omahaproxy.appspot.com/ or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/liRNCHAzY2Q/aIQA2dZHBwAJ) was sent for the M64 branch and contains the text "Branched Chromium @ revision: 520840". To identify the associated Chromium commit hash:
 
 ```
 cd /path/to/chromium/src
@@ -14,11 +14,12 @@ cd /path/to/chromium/src
 # Fetch the most recent Chromium sources without applying them to a branch.
 git fetch
 
-# Query the current value of origin/lkcr
-git log -1 origin/lkcr
+# Query the commit hash associated with revision 520840.
+git log -1 --grep="#520840" origin/master
+# Returns: commit 5fdc0fab22ce7efd32532ee989b223fa12f8171e
 ```
 
-You can also view current build status on the [Chromium build waterfall](https://chromium-build.appspot.com/p/chromium/console).
+You can also view current Chromium master build status on the [Chromium build waterfall](https://ci.chromium.org/p/chromium/g/main/console).
 
 2\. Create a diff of relevant directories between the last Chromium commit hash and new Chromium commit hash.
 
@@ -35,15 +36,12 @@ chrome/browser/extensions/component_loader.[cc|h]   (for libcef/browser/extensio
 chrome/browser/extensions/extension_service.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
 chrome/browser/guest_view/mime_handler_view/*
 chrome/browser/pdf/*
-chrome/browser/plugins/plugin_info_message_filter.[cc|h]
 chrome/browser/printing/*
 chrome/browser/loader/chrome_resource_dispatcher_host_delegate.[cc|h]
-chrome/browser/renderer_host/pepper/*
 chrome/common/extensions/api/_api_features.json
 chrome/common/extensions/api/_permission_features.json
 chrome/renderer/chrome_content_renderer_client.[cc|h]
 chrome/renderer/extensions/chrome_extensions_renderer_client.[cc|h]
-chrome/renderer/pepper/*
 chrome/renderer/printing/*
 content/browser/webui/shared_resources_data_source.cc   (for libcef/browser/chrome_scheme_handler.cc)
 content/browser/web_contents/web_contents_view_guest.cc   (for libcef/browser/web_contents_view_osr.cc)
@@ -80,7 +78,7 @@ python patch_updater.py --resave
 
 4\. Make the necessary changes to CEF, build (clean if necessary) and fix whatever is broken.
 
-5\. Run cef\_unittests and the various tests available via the Tests menu in cefclient to verify that everything still works.
+5\. Run ceftests and the various tests available via the Tests menu in cefclient to verify that everything still works.
 
 In most cases (say, 90% of the time) any code breakage will be due to naming changes, minor code reorganization and/or project name/location changes. The remaining 10% can require pretty significant changes to CEF, usually due to the ongoing refactoring in Chromium code. If you identify a change to Chromium that has broken a required feature for CEF, and you can't work around the breakage by making reasonable changes to CEF, then you should work with the Chromium team to resolve the problem.
 
@@ -88,7 +86,7 @@ In most cases (say, 90% of the time) any code breakage will be due to naming cha
 
 2\. Post a message to the chromium-dev mailing list explaining why the change broke CEF and either seeking additional information or suggesting a fix that works for both CEF and Chromium.
 
-3\. After feedback from the Chromium developers create an issue in the [Chromium issue tracker](http://crbug.com) and a [code review](http://www.chromium.org/developers/contributing-code) with the fix and publish it with the appropriate (responsible) developer(s) as reviewers.
+3\. After feedback from the Chromium developers create an issue in the [Chromium issue tracker](https://crbug.com) and a [code review](http://www.chromium.org/developers/contributing-code) with the fix and publish it with the appropriate (responsible) developer(s) as reviewers.
 
 4\. Follow through with the Chromium developer(s) to get the code review committed.
 
