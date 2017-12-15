@@ -125,8 +125,8 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 **What's Required**
 
 - Windows 7 or newer, 64-bit OS.
-- Visual Studio 2015 Update 2 or Update 3.
-- [Windows 10.0.10586 SDK](https://dev.windows.com/en-us/downloads/windows-10-sdk).
+- Visual Studio 2017 15.3.2+.
+- [Windows 10.0.15063.468 SDK](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive).
 - At least 8GB of RAM and 40GB of free disk space.
 
 See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src/2785/tools/gclient_hook.py?at=2785&fileviewer=file-view-default#gclient_hook.py-54) for Windows custom toolchain requirements. VS + SDK can be packaged for distribution to build agents using a script like Chromium's [package_from_installed.py](https://code.google.com/p/chromium/codesearch#chromium/tools/depot_tools/win_toolchain/package_from_installed.py).
@@ -139,12 +139,12 @@ To build 32-bit CEF on a 64-bit Windows host system:
 set CEF_USE_GN=1
 set GN_DEFINES=is_official_build=true
 set GYP_DEFINES=buildtype=Official
-set GYP_MSVS_VERSION=2015
+set GYP_MSVS_VERSION=2017
 set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
 ```
 
-If VS2015 or SDK is not installed to the default location then set the following before executing automate-git.py:
+If VS2017 or SDK is not installed to the default location then set the following before executing automate-git.py:
 
 ```
 set WIN_CUSTOM_TOOLCHAIN=1
@@ -152,9 +152,9 @@ set CEF_VCVARS=none
 set GYP_MSVS_OVERRIDE_PATH=%vs_root%
 set VS_CRT_ROOT=%vs_crt_root%
 set SDK_ROOT=%sdk_root%
-set PATH=%sdk_root%\bin\x86;%vs_root%\VC\bin;%PATH%
-set LIB=%sdk_root%\Lib\10.0.10586.0\um\x86;%sdk_root%\Lib\10.0.10586.0\ucrt\x86;%vs_root%\VC\lib;%vs_root%\VC\atlmfc\lib;%LIB%
-set INCLUDE=%sdk_root%\Include\10.0.10586.0\um;%sdk_root%\Include\10.0.10586.0\ucrt;%sdk_root%\Include\10.0.10586.0\shared;%sdk_root%\Include\10.0.10586.0\winrt;%vs_root%\VC\include;%vs_root%\VC\atlmfc\include;%INCLUDE%
+set PATH=%sdk_root%\bin\%sdk_version%\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x64;%vs_root%\VC\Redist\MSVC\%vc_redist_version%\x64\%vc_redist_crt%;%vs_root%\SystemCRT;%PATH%
+set LIB=%sdk_root%\Lib\%sdk_version\um\x86;%sdk_root%\Lib\%sdk_version\ucrt\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\lib\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\lib\x86;%LIB%
+set INCLUDE=%sdk_root%\Include\%sdk_version%\um;%sdk_root%\Include\%sdk_version%\ucrt;%sdk_root%\Include\%sdk_version%\shared;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\include;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\include;%INCLUDE%
 ```
 
 **64-bit Build Commands**
@@ -165,12 +165,12 @@ To build 64-bit CEF on a 64-bit Windows host system:
 set CEF_USE_GN=1
 set GN_DEFINES=is_official_build=true
 set GYP_DEFINES=buildtype=Official
-set GYP_MSVS_VERSION=2015
+set GYP_MSVS_VERSION=2017
 set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
 ```
 
-If VS2015 or SDK is not installed to the default location then set the following before executing automate-git.py:
+If VS2017 or SDK is not installed to the default location then set the following before executing automate-git.py:
 
 ```
 set WIN_CUSTOM_TOOLCHAIN=1
@@ -178,7 +178,7 @@ set CEF_VCVARS=none
 set GYP_MSVS_OVERRIDE_PATH=%vs_root%
 set VS_CRT_ROOT=%vs_crt_root%
 set SDK_ROOT=%sdk_root%
-set PATH=%sdk_root%\bin\x64;%vs_root%\VC\bin\amd64;%PATH%
-set LIB=%sdk_root%\Lib\10.0.10586.0\um\x64;%sdk_root%\Lib\10.0.10586.0\ucrt\x64;%vs_root%\VC\lib\amd64;%vs_root%\VC\atlmfc\lib\amd64;%LIB%
-set INCLUDE=%sdk_root%\Include\10.0.10586.0\um;%sdk_root%\Include\10.0.10586.0\ucrt;%sdk_root%\Include\10.0.10586.0\shared;%sdk_root%\Include\10.0.10586.0\winrt;%vs_root%\VC\include;%vs_root%\VC\atlmfc\include;%INCLUDE%
+set PATH=%sdk_root%\bin\%sdk_version%\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x64;%vs_root%\VC\Redist\MSVC\%vc_redist_version%\x64\%vc_redist_crt%;%vs_root%\SystemCRT;%PATH%
+set LIB=%sdk_root%\Lib\%sdk_version\um\x64;%sdk_root%\Lib\%sdk_version\ucrt\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\lib\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\lib\x64;%LIB%
+set INCLUDE=%sdk_root%\Include\%sdk_version%\um;%sdk_root%\Include\%sdk_version%\ucrt;%sdk_root%\Include\%sdk_version%\shared;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\include;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\include;%INCLUDE%
 ```
