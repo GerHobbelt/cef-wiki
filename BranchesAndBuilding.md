@@ -62,6 +62,7 @@ Legacy CEF builds are available from the [Spotify automated builder](http://open
 
   * Newer legacy branches (within the past year) can often be built using the same tooling as current branches. You will need to (a) manually download depot_tools, (b) sync depot_tools to a revision that existed at the time of the branch, and (c) set the `DEPOT_TOOLS_UPDATE=0` environment variable to keep it from updating automatically.
   * Older legacy branches can potentially be built by downloading a CEF source archive at the desired branch from [here](https://bitbucket.org/chromiumembedded/cef/downloads?tab=branches) and a Chromium source archive at the associated/required version from [here](https://gsdview.appspot.com/chromium-browser-official/), and then combining them to create the required directory structure.
+  * See the Build Notes section at the end of this page for historical build details.
 
 | Branch Date | Release Branch | Chromium Version | CEF1 | CEF3 | Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:-----|:-----|:---------------------------|:----------------------------|:-------------------------|
