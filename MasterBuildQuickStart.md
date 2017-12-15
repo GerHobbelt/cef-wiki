@@ -79,6 +79,7 @@ update_depot_tools.bat
 
 ```
 set CEF_USE_GN=1
+set GN_DEFINES=use_jumbo_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
@@ -94,6 +95,7 @@ update.bat
 
 ```
 set CEF_USE_GN=1
+set GN_DEFINES=use_jumbo_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
 ```
