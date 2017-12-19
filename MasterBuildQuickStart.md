@@ -47,6 +47,8 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
+WARNING: If you are using VS2017 15.5.* then you must add `enable_precompiled_headers=false` to GN_DEFINES in steps 6 and 7 to avoid a [known issue](https://bugs.chromium.org/p/chromium/issues/detail?id=780124) with clang.
+
 **Step-by-step Guide**
 
 All of the below commands should be run using the system "cmd.exe" and not a Cygwin shell.
