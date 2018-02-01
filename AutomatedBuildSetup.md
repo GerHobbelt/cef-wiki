@@ -131,6 +131,8 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src/2785/tools/gclient_hook.py?at=2785&fileviewer=file-view-default#gclient_hook.py-54) for Windows custom toolchain requirements. VS + SDK can be packaged for distribution to build agents using a script like Chromium's [package_from_installed.py](https://code.google.com/p/chromium/codesearch#chromium/tools/depot_tools/win_toolchain/package_from_installed.py).
 
+WARNING: If you are using VS2017 15.5.* to build 3282 branch then you must add `enable_precompiled_headers=false` to GN_DEFINES to avoid a [known issue](https://bugs.chromium.org/p/chromium/issues/detail?id=780124) with clang.
+
 **32-bit Build Commands**
 
 To build 32-bit CEF on a 64-bit Windows host system:
