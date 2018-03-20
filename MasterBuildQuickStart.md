@@ -60,6 +60,8 @@ c:\code\automate
 c:\code\chromium_git
 ```
 
+WARNING: If you change the above directory names/locations make sure to (a) use only ASCII characters and (b) choose a short file path (less than 35 characters total). Otherwise, some tooling may fail later in the build process due to invalid or overly long file paths.
+
 2\. Download [depot_tools.zip](https://storage.googleapis.com/chrome-infra/depot_tools.zip) and extract to "c:\code\depot_tools". Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
 
 3\. Run "update_depot_tools.bat" to install Python, Git and SVN.
