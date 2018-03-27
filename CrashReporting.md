@@ -66,7 +66,7 @@ Values in the "[Config]" section work as follows:
 
 ## [CrashKeys] section
 
-Any number of crash keys can be specified for use by the application. Crash key values will be truncated based on the specified size (small = 63 bytes, medium = 252 bytes, large = 1008 bytes). The value of crash keys can be set from any thread or process using the `CefSetCrashKeyValue` function. These key/value pairs will be sent to the crash server along with the minidump file. Medium and large values may be chunked for submission. For example, if your key is named "mykey" then the value will be broken into ordered chunks and submitted using keys named "mykey-1", "mykey-2", etc.
+A maximum of 26 crash keys of each size can be specified for use by the application. Crash key values will be truncated based on the specified size (small = 64 bytes, medium = 256 bytes, large = 1024 bytes). The value of crash keys can be set from any thread or process using the CefSetCrashKeyValue function. These key/value pairs will be sent to the crash server along with the crash dump file.
 
 # Testing
 
@@ -99,9 +99,12 @@ MaxUploadsPerDay=0
 
 [CrashKeys]
 # The cefclient sample application sets these values (see step 5 below).
-testkey1=small
-testkey2=medium
-testkey3=large
+testkey_small1=small
+testkey_small2=small
+testkey_medium1=medium
+testkey_medium2=medium
+testkey_large1=large
+testkey_large2=large
 ```
 
 3\. Load one of the following URLs in the CEF-based application to cause a crash:
@@ -161,17 +164,23 @@ You can work around this error by adding the "NSAppTransportSecurity" key to the
 In [tests/cefclient/browser/client_browser.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/browser/client_browser.cc?at=master&fileviewer=file-view-default) (browser process):
 
 ```
-CefSetCrashKeyValue("testkey1", "value1_browser");
-CefSetCrashKeyValue("testkey2", "value2_browser");
-CefSetCrashKeyValue("testkey3", "value3_browser");
+CefSetCrashKeyValue("testkey_small1", "value1_small_browser");
+CefSetCrashKeyValue("testkey_small2", "value2_small_browser");
+CefSetCrashKeyValue("testkey_medium1", "value1_medium_browser");
+CefSetCrashKeyValue("testkey_medium2", "value2_medium_browser");
+CefSetCrashKeyValue("testkey_large1", "value1_large_browser");
+CefSetCrashKeyValue("testkey_large2", "value2_large_browser");
 ```
 
 In [tests/cefclient/renderer/client_renderer.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/renderer/client_renderer.cc?at=master&fileviewer=file-view-default) (renderer process):
 
 ```
-CefSetCrashKeyValue("testkey1", "value1_renderer");
-CefSetCrashKeyValue("testkey2", "value2_renderer");
-CefSetCrashKeyValue("testkey3", "value3_renderer");
+CefSetCrashKeyValue("testkey_small1", "value1_small_renderer");
+CefSetCrashKeyValue("testkey_small2", "value2_small_renderer");
+CefSetCrashKeyValue("testkey_medium1", "value1_medium_renderer");
+CefSetCrashKeyValue("testkey_medium2", "value2_medium_renderer");
+CefSetCrashKeyValue("testkey_large1", "value1_large_renderer");
+CefSetCrashKeyValue("testkey_large2", "value2_large_renderer");
 ```
 
 When crashing the browser or renderer processes with cefclient you should verify that the test crash key values are included in the metadata ("<id>.json") file. Some values may be chunked as described in the Configuration section above.
@@ -189,9 +198,12 @@ Example metadata for a browser process crash:
   "ptype": "browser",
   "switch-1": "--url=chrome:\/\/inducebrowsercrashforrealz",
   "switch-2": "--lang=en-US",
-  "testkey1": "value1_browser"
-  "testkey2": "value2_browser",
-  "testkey3-1": "value3_browser",
+  "testkey_large1": "value1_large_browser", 
+  "testkey_large2": "value2_large_browser", 
+  "testkey_medium1": "value1_medium_browser", 
+  "testkey_medium2": "value2_medium_browser", 
+  "testkey_small1": "value1_small_browser", 
+  "testkey_small2": "value2_small_browser", 
   "version": "1.0.0",
 }
 ```
@@ -226,9 +238,12 @@ Example metadata for a renderer process crash:
   "switch-8": "--enable-gpu-memory-buffer-compositor-resources",
   "switch-9": "--enable-main-frame-before-activation",
   "switch-10": "--renderer-client-id=3",
-  "testkey1": "value1_renderer",
-  "testkey2": "value2_renderer",
-  "testkey3-1": "value3_renderer",
+  "testkey_large1": "value1_large_renderer", 
+  "testkey_large2": "value2_large_renderer", 
+  "testkey_medium1": "value1_medium_renderer", 
+  "testkey_medium2": "value2_medium_renderer", 
+  "testkey_small1": "value1_small_renderer", 
+  "testkey_small2": "value2_small_renderer", 
   "v8-ignition": "N",
   "version": "1.0.0",
 }
