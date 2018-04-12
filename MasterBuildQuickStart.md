@@ -136,7 +136,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 **What's Required**
 
 - OS X 10.10 or newer.
-- Xcode 8.3.
+- Xcode 8.3 or newer.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -147,6 +147,7 @@ In this example "~" is "/Users/marshall". Note that in some cases the absolute p
 1\. Create the following directories.
 
 ```
+mkdir ~/code
 mkdir ~/code/automate
 mkdir ~/code/chromium_git
 ```
@@ -230,7 +231,7 @@ See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/d
 
 **What's Required**
 
-- [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop) is recommended. Building with other versions or distros has not been tested and may experience issues.
+- [Ubuntu 16.04 LTS 64-bit](https://www.ubuntu.com/download/desktop) is recommended. Building with other versions or distros has not been tested and may experience issues.
 - At least 6GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -241,6 +242,7 @@ In this example "~" is "/home/marshall". Note that in some cases the absolute pa
 1\. Create the following directories.
 
 ```
+mkdir ~/code
 mkdir ~/code/automate
 mkdir ~/code/chromium_git
 ```
@@ -249,6 +251,7 @@ mkdir ~/code/chromium_git
 
 ```
 cd ~/code
+sudo apt-get install curl
 curl 'https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT' | base64 -d > install-build-deps.sh
 chmod 755 install-build-deps.sh
 sudo ./install-build-deps.sh
