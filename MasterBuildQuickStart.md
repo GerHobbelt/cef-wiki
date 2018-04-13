@@ -342,7 +342,7 @@ export CHROME_DEVEL_SANDBOX=/usr/local/sbin/chrome-devel-sandbox
 
 # This command only needs to be run a single time.
 cd ~/code/chromium_git/chromium/src
-sudo ./build/update-linux-sandbox.sh BUILDTYPE=Debug_GN_x64
+sudo BUILDTYPE=Debug_GN_x64 ./build/update-linux-sandbox.sh
 ```
 
 11\. Run the cefclient sample application.
