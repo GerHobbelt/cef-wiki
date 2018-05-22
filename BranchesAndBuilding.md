@@ -18,7 +18,7 @@ Current CEF master branch build requirements are as follows. See the [MasterBuil
 
 Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
 |:---------------------------|:----------------------------|:-------------------------|
-Win 7+, VS2017 15.3.2+, Win10.0.15063.468 SDK, Ninja | macOS 10.9-10.13, 10.9+ build system, 10.9+ deployment target, 10.10 base SDK, Xcode 9.3, Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
+Win 7+, VS2017 15.7.1+, Win10.0.17134.0 SDK, Ninja | macOS 10.9-10.13, 10.9+ build system, 10.9+ deployment target, 10.10 base SDK, Xcode 9.3, Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
 
 The following URLs should be used for downloading development versions of CEF.
 
