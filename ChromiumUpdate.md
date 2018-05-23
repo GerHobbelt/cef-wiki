@@ -3,82 +3,120 @@ This Wiki page describes how to update CEF to use the newest Chromium revision.
 **Note to Editors: Changes made to this Wiki page without prior approval via the [CEF Forum](http://magpcss.org/ceforum/) or[ Issue Tracker](https://bitbucket.org/chromiumembedded/cef/issues?status=new&status=open) may be lost or reverted.**
 
 ***
+[TOC]
+***
+
+# Overview
 
 The Chromium developers work very hard to introduce new features and capabilities as quickly as possible. Consequently, projects like CEF that depend on Chromium must also be updated regularly. The update process can be complicated and must be done carefully to avoid introducing new bugs and breakage. Below are the steps to follow when updating CEF to work with a new Chromium revision.
 
-1\. Identify the Chromium commit hash for the update. It's best to choose a commit that is likely to build successfully on most platforms. Good choices include the canary channel "branch_commit" value listed at https://omahaproxy.appspot.com/ or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/liRNCHAzY2Q/aIQA2dZHBwAJ) was sent for the M64 branch and contains the text "Branched Chromium @ revision: 520840". To identify the associated Chromium commit hash:
+# Recommended workflow
+
+1\. Setup a local developer checkout of the CEF/Chromium master branch as described on the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page. The standard `automate-git.py` parameters discussed on that Wiki page are represented by the `<...>` placeholder in the below examples.
+
+2\. Start the update by running `automate-git.py` with the following parameters:
 
 ```
-cd /path/to/chromium/src
-
-# Fetch the most recent Chromium sources without applying them to a branch.
-git fetch
-
-# Query the commit hash associated with revision 520840.
-git log -1 --grep="#520840" origin/master
-# Returns: commit 5fdc0fab22ce7efd32532ee989b223fa12f8171e
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000
 ```
 
-You can also view current Chromium master build status on the [Chromium build waterfall](https://ci.chromium.org/p/chromium/g/main/console).
+This will:
 
-2\. Create a diff of relevant directories between the last Chromium commit hash and new Chromium commit hash.
-
-With CEF3 the following files should be evaluated for changes:
+A\. Identify the most appropriate Chromium version for the update. You will see output like the following:
 
 ```
-content/shell/*
-content/content_shell.gypi
-chrome/browser/extensions/api/tabs/tabs_api.[cc|h]
-chrome/browser/extensions/chrome_component_extension_resource_manager.[cc|h]
-chrome/browser/extensions/chrome_extension_web_contents_observer.[cc|h]
-chrome/browser/extensions/chrome_url_request_util.[cc|h]
-chrome/browser/extensions/component_loader.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
-chrome/browser/extensions/extension_service.[cc|h]   (for libcef/browser/extensions/extension_system.cc)
-chrome/browser/guest_view/mime_handler_view/*
-chrome/browser/pdf/*
-chrome/browser/printing/*
-chrome/browser/loader/chrome_resource_dispatcher_host_delegate.[cc|h]
-chrome/common/extensions/api/_api_features.json
-chrome/common/extensions/api/_permission_features.json
-chrome/renderer/chrome_content_renderer_client.[cc|h]
-chrome/renderer/extensions/chrome_extensions_renderer_client.[cc|h]
-chrome/renderer/printing/*
-content/browser/webui/shared_resources_data_source.cc   (for libcef/browser/chrome_scheme_handler.cc)
-content/browser/web_contents/web_contents_view_guest.cc   (for libcef/browser/web_contents_view_osr.cc)
-extensions/shell/*
+--> Computed Chromium update for win canary at distance 2000
+--> Compat:  2018-05-09 03:16:29 UTC refs/tags/68.0.3425.0 695380fc6b1f9aee91d4b3933000c8a7da1d25f8 (#557062)
+--> Target:  2018-05-17 03:16:09 UTC refs/tags/68.0.3433.0 a78a6a072852b51a8a42e796e12192eb5bd4bfb6 (#559327)
+--> Channel: 2018-05-20 03:14:11 UTC refs/tags/68.0.3436.0 11cc97646015a81933d79d43bc335351452460e6 (#560157)
 ```
 
-On Windows you can create a batch script called `diff.bat` in the directory that contains the `src` folder where `[list of paths]` is the above list of file paths excluding wildcards.
+* *Compat* is the Chromium version that is currently compatible with CEF as listed in the [CHROMIUM_BUILD_COMPATIBILITY.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_BUILD_COMPATIBILITY.txt) file
+* *Target* is the Chromium version that has been selected for this update.
+* *Channel* is newest available version from the Chromium canary channel as listed at https://omahaproxy.appspot.com/.
+
+*Target* and *Channel* may be the same if they're close enough together (within the specified 2000 commit distance).
+
+If you would prefer to manually pick the Chromium version see the "Choosing the Chromium version manually" section below. This is useful when updating to a specific Chromium milestone version, for example.
+
+B\. Run CEF's `patch_updater.py` script to update the Chromium patch files in the `patch/patches` directory.
+
+Sometimes patches cannot be updated automatically. In that case the `automate-git.py` script will fail with output like the following:
 
 ```
-@echo off
-cd src
-call git diff --relative --no-prefix %1..%2 -- [list of paths] > ../diff_%1-%2.diff
-cd ..
+--------------------------------------------------------------------------------
+!!!! FAILED PATCHES, fix manually and run with --resave
+content_2015:
+  Hunk #4 FAILED at 4220.
+  1 out of 5 hunks FAILED -- saving rejects to file content/browser/frame_host/render_frame_host_impl.cc.rej
+storage_partition_1973:
+  Hunk #1 FAILED at 167.
+  1 out of 1 hunk FAILED -- saving rejects to file content/browser/shared_worker/shared_worker_service_impl.cc.rej
+--------------------------------------------------------------------------------
 ```
 
-And run it as follows:
-```
-diff.bat OLDHASH NEWHASH
-```
-
-This will be your guide to identifying what has changed. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files.
-
-3\. Use CEF's `patch_updater.py` tool to update the Chromium patch files in the `patch/patches` directory. Use of this tool requires the `patch` binary which is distributed with Posix systems (Linux, OS X, Cygwin on Windows).
+Use a text editor to manually fix the specified files. Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
 
 ```
-cd /path/to/chromium/src/cef/tools
-
-# Attempt to update patch files. Any merge conflicts will be highlighted in the output.
-python patch_updater.py
-
-# After manually resolving merge conflicts re-save the patch files.
-python patch_updater.py --resave
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000 --resave
 ```
 
-4\. Make the necessary changes to CEF, build (clean if necessary) and fix whatever is broken.
+C\. Identify potentially relevant changes in the Chromium source code between versions. This creates a `chromium_update_changes.diff` file in your download directory that will act as your guide when updating the CEF source code. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files. The list of relevant paths is taken from CEF's [CHROMIUM_UPDATE.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_UPDATE.txt) file.
 
-5\. Run ceftests and the various tests available via the Tests menu in cefclient to verify that everything still works.
+D\. Identify problematic patterns in the Chromium source code. This creates a `chromium_update_patterns.txt` file in your download directory. If these patterns are found then the `automate-git.py` script with fail with output like the following:
+
+```
+Evaluating pattern: static_cast<StoragePartitionImpl\*>(
+ERROR Matches found. See chromium_update_changes.diff for output.
+```
+
+In that case the contents of `chromium_update_changes.diff` might look like this:
+
+```
+!!!! WARNING: FOUND PATTERN: static_cast<StoragePartitionImpl\*>(
+New instances in non-test files should be converted to call StoragePartition methods.
+See storage_partition_1973.patch.
+
+content/browser/loader/navigation_url_loader_impl.cc:1295:  auto* partition = static_cast<StoragePartitionImpl*>(storage_partition);
+content/browser/renderer_interface_binders.cc:189:        static_cast<StoragePartitionImpl*>(host->GetStoragePartition())
+```
+
+Use a text editor to manually fix the specified files (usually by removing the static_cast, but see [storage_partition_1973.patch](https://bitbucket.org/chromiumembedded/cef/src/master/patch/patches/storage_partition_1973.patch) for other related fixes).
+
+If new files must be added to the patch file use this command:
+
+```
+cd /path/to/chromium/src/cef
+tools/patch_updater.sh --resave --patch storage_partition_1973 --add content/browser/loader/navigation_url_loader_impl.cc --add content/browser/renderer_interface_binders.cc
+```
+
+Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
+
+```
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000 --resave
+```
+
+3\. Build CEF and fix whatever else is broken. The diff file created in step C above will assist you in this process. Refer to the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for build instructions. If Chromium changes are required refer to the "Resolving Chromium breakage" section below.
+
+4\. Run ceftests and the the various tests available via the Tests menu in cefclient to verify that everything still works. If any particular subsystem had significant changes (like printing, for example) then make sure to give that subsystem additional testing.
+
+5\. Update the compatible Chromium version listed in CEF's [CHROMIUM_BUILD_COMPATIBILITY.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_BUILD_COMPATIBILITY.txt) file.
+
+**WARNING: Remove the `--chromium-channel` switches from your `automate-git.py` command-line at this time to avoid accidentally performing another Chromium update. **
+
+6\. Create a commit with your changes and submit a PR as described on the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page. See the [CEF commit history](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) for examples of the expected commit message format.
+
+7\. Tests your changes on other supported platforms. You can update, build and run tests automatically on those platforms with the following command:
+
+```
+python automate-git.py <...> --run-tests --build-failure-limit=1000 --fast-update --force-cef-update
+```
+
+If running in headless mode on Linux install the `xvfb` package and add the `--test-prefix=xvfb-run --test-args="--no-sandbox"` command-line flags.
+
+Access to automated builders as described on the [AutomatedBuildSetup](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md) Wiki page is recommended for this step.
+
+# Resolving Chromium breakage
 
 In most cases (say, 90% of the time) any code breakage will be due to naming changes, minor code reorganization and/or project name/location changes. The remaining 10% can require pretty significant changes to CEF, usually due to the ongoing refactoring in Chromium code. If you identify a change to Chromium that has broken a required feature for CEF, and you can't work around the breakage by making reasonable changes to CEF, then you should work with the Chromium team to resolve the problem.
 
@@ -91,3 +129,24 @@ In most cases (say, 90% of the time) any code breakage will be due to naming cha
 4\. Follow through with the Chromium developer(s) to get the code review committed.
 
 The CEF build currently contains a patch capability that should be used only as a last resort or as a stop-gap measure if you expect the code review to take a while. The best course of action is always to get your Chromium changes accepted into the Chromium trunk if possible.
+
+# Choosing the Chromium version manually
+
+You can also choose a Chromium version or commit hash manually. It's best to choose a commit that is likely to build successfully on most platforms. Good choices include the canary channel "branch_commit" value listed at https://omahaproxy.appspot.com/ or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/liRNCHAzY2Q/aIQA2dZHBwAJ) was sent for the M64 branch and contains the text "Branched Chromium @ revision: 520840". To identify the associated Chromium commit hash:
+
+```
+cd /path/to/chromium/src
+
+# Fetch the most recent Chromium sources without applying them to a branch.
+git fetch
+
+# Query the commit hash associated with revision 520840.
+git log -1 --grep="#520840" origin/master
+# Returns: commit 5fdc0fab22ce7efd32532ee989b223fa12f8171e
+```
+
+To manually specify the Chromium version or commit hash to checkout:
+
+```
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-checkout=5fdc0fab22ce7efd32532ee989b223fa12f8171e
+```
