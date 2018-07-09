@@ -434,7 +434,6 @@ CEF can also integrate with an existing application message loop instead of runn
 
 The CefSettings structure allows configuration of application-wide CEF settings. Some commonly configured members include:
 
-  * **single\_process** Set to true to use a single process for the browser and renderer. Also configurable using the "single-process" command-line switch. See the “Processes” section for more information.
   * **browser\_subprocess\_path** The path to a separate executable that will be launched for sub-processes. See the “Separate Sub-Process Executable” section for more information.
   * **multi\_threaded\_message\_loop** Set to true to have the browser process message loop run in a separate thread. See the “Message Loop Integration” section for more information.
   * **command\_line\_args\_disabled** Set to true to disable configuration of browser process features using standard CEF and Chromium command-line arguments. See the “Command Line Arguments” section for more information.
