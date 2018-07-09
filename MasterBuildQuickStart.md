@@ -82,7 +82,6 @@ update_depot_tools.bat
 6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
-set CEF_USE_GN=1
 set GN_DEFINES=use_jumbo_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
@@ -98,7 +97,6 @@ update.bat
 7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
-set CEF_USE_GN=1
 set GN_DEFINES=use_jumbo_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
@@ -171,7 +169,6 @@ export PATH=/Users/marshall/code/depot_tools:$PATH
 
 ```
 #!/bin/bash
-export CEF_USE_GN=1
 python ../automate/automate-git.py --download-dir=/Users/marshall/code/chromium_git --depot-tools-dir=/Users/marshall/code/depot_tools --no-distrib --no-build --x64-build
 ```
 
@@ -193,7 +190,6 @@ cd ~/code/chromium_git
 
 ```
 #!/bin/bash
-export CEF_USE_GN=1
 ./cef_create_projects.sh
 ```
 
@@ -287,7 +283,6 @@ wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automa
 
 ```
 #!/bin/bash
-export CEF_USE_GN=1
 python ../automate/automate-git.py --download-dir=/home/marshall/code/chromium_git --depot-tools-dir=/home/marshall/code/depot_tools --no-distrib --no-build
 ```
 
@@ -309,7 +304,6 @@ cd ~/code/chromium_git
 
 ```
 #!/bin/bash
-export CEF_USE_GN=1
 ./cef_create_projects.sh
 ```
 
