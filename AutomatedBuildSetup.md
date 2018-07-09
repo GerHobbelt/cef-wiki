@@ -52,7 +52,7 @@ In addition to generating [index.json](http://opensource.spotify.com/cefbuilds/i
 
 The following configurations are executed by the platform builder step. These are the recommended configurations for externally published artifacts but are not recommended for local builds. See the the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md) Wiki page for general build instructions.
 
-These instructions are intended for use with the current release branch (2785). For a limited time you can also build older release branches using these instructions by setting `CEF_USE_GN=0`. This will build CEF with GYP instead of GN -- see [this announcement](http://magpcss.org/ceforum/viewtopic.php?f=4&t=13995#p31549) for details. This Wiki page will be updated as build requirements change.
+These instructions are intended for use with the [currently supported release branches](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported). This Wiki page will be updated as build requirements change.
 
 Lower-case values between %% (%download_dir%, %cef_branch%, etc.) must be provided by you.
 
@@ -74,9 +74,7 @@ dpkg --add-architecture i386
 apt-get install aptitude
 aptitude -y update
 DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip lib32gcc1 lib32stdc++6 libc6-i386 linux-libc-dev:i386 libasound2:i386 libcap2:i386 libelf-dev:i386 libfontconfig1:i386 libgconf-2-4:i386 libglib2.0-0:i386 libgpm2:i386 libgtk2.0-0:i386 libgtk-3-0:i386 libncurses5:i386 libnss3:i386 libpango1.0-0:i386 libssl1.0.0:i386 libtinfo-dev:i386 libxcomposite1:i386 libxcursor1:i386 libxdamage1:i386 libxi6:i386 libxrandr2:i386 libxss1:i386 libxtst6:i386
-export CEF_USE_GN=1
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1"
-export GYP_DEFINES="disable_nacl=1 use_sysroot=1 host_arch=x86_64 target_arch=ia32 buildtype=Official use_allocator=none"
 export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple
 ```
@@ -91,9 +89,7 @@ To build 64-bit CEF on a 64-bit Linux host system:
 apt-get install aptitude
 aptitude -y update
 DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgconf-2-4 libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip
-export CEF_USE_GN=1
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1"
-export GYP_DEFINES="disable_nacl=1 use_sysroot=1 buildtype=Official use_allocator=none"
 export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build --build-target=cefsimple
 ```
@@ -113,9 +109,7 @@ If Xcode is not installed to the default location then set the correct location 
 To build 64-bit CEF on a 64-bit OS X host system:
 
 ```
-export CEF_USE_GN=1
 export GN_DEFINES=is_official_build=true
-export GYP_DEFINES=buildtype=Official
 export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
 ```
@@ -138,9 +132,7 @@ WARNING: If you are using VS2017 15.5.* to build 3282 branch then you must add `
 To build 32-bit CEF on a 64-bit Windows host system:
 
 ```
-set CEF_USE_GN=1
 set GN_DEFINES=is_official_build=true
-set GYP_DEFINES=buildtype=Official
 set GYP_MSVS_VERSION=2017
 set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
@@ -164,9 +156,7 @@ set INCLUDE=%sdk_root%\Include\%sdk_version%\um;%sdk_root%\Include\%sdk_version%
 To build 64-bit CEF on a 64-bit Windows host system:
 
 ```
-set CEF_USE_GN=1
 set GN_DEFINES=is_official_build=true
-set GYP_DEFINES=buildtype=Official
 set GYP_MSVS_VERSION=2017
 set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
