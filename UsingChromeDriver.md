@@ -39,9 +39,11 @@ public class Example  {
     // Path to the ChromeDriver executable.
     System.setProperty("webdriver.chrome.driver", "c:/temp/chromedriver.exe");
 
-    // Path to the CEF executable.
     ChromeOptions options = new ChromeOptions();
+    // Path to the CEF executable.
     options.setBinary("c:/temp/cef_binary_3.2171.1979_windows32_client/Release/cefclient.exe");
+    // Port to communicate on. Required starting with ChromeDriver v2.41.
+    options.addArguments("remote-debugging-port=12345");
 
     WebDriver driver = new ChromeDriver(options);
     driver.get("http://www.google.com/xhtml");
