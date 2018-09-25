@@ -970,7 +970,7 @@ class MyRequestClient : public CefURLRequestClient {
     : upload_total_(0),
       download_total_(0) {}
 
-  virtual void OnRequestComplete(CefRefPtr<CefURLRequest> request) OVERRIDE {
+  void OnRequestComplete(CefRefPtr<CefURLRequest> request) OVERRIDE {
     CefURLRequest::Status status = request->GetRequestStatus();
     CefURLRequest::ErrorCode error_code = request->GetRequestError();
     CefRefPtr<CefResponse> response = request->GetResponse();
@@ -978,27 +978,36 @@ class MyRequestClient : public CefURLRequestClient {
     // Do something with the response...
   }
 
-  virtual void OnUploadProgress(CefRefPtr<CefURLRequest> request,
-                                uint64 current,
-                                uint64 total) OVERRIDE {
+  void OnUploadProgress(CefRefPtr<CefURLRequest> request,
+                        int64 current,
+                        int64 total) OVERRIDE {
     upload_total_ = total;
   }
 
-  virtual void OnDownloadProgress(CefRefPtr<CefURLRequest> request,
-                                  uint64 current,
-                                  uint64 total) OVERRIDE {
+  void OnDownloadProgress(CefRefPtr<CefURLRequest> request,
+                          int64 current,
+                          int64 total) OVERRIDE {
     download_total_ = total;
   }
 
-  virtual void OnDownloadData(CefRefPtr<CefURLRequest> request,
-                              const void* data,
-                              size_t data_length) OVERRIDE {
+  void OnDownloadData(CefRefPtr<CefURLRequest> request,
+                      const void* data,
+                      size_t data_length) OVERRIDE {
     download_data_ += std::string(static_cast<const char*>(data), data_length);
   }
 
+  bool GetAuthCredentials(bool isProxy,
+                          const CefString& host,
+                          int port,
+                          const CefString& realm,
+                          const CefString& scheme,
+                          CefRefPtr<CefAuthCallback> callback) OVERRIDE {
+    return false;  // Not handled.
+  }
+
  private:
-  uint64 upload_total_;
-  uint64 download_total_;
+  int64 upload_total_;
+  int64 download_total_;
   std::string download_data_;
 
  private:
@@ -1017,7 +1026,7 @@ CefRefPtr<CefRequest> request = CefRequest::Create();
 CefRefPtr<MyRequestClient> client = new MyRequestClient();
 
 // Start the request. MyRequestClient callbacks will be executed asynchronously.
-CefRefPtr<CefURLRequest> url_request = CefURLRequest::Create(request, client.get());
+CefRefPtr<CefURLRequest> url_request = CefURLRequest::Create(request, client.get(), nullptr);
 // To cancel the request: url_request->Cancel();
 ```
 
