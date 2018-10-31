@@ -250,7 +250,7 @@ cd ~/code
 sudo apt-get install curl
 curl 'https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT' | base64 -d > install-build-deps.sh
 chmod 755 install-build-deps.sh
-sudo ./install-build-deps.sh
+sudo ./install-build-deps.sh --no-arm --no-chromeos-fonts --no-nacl
 ```
 
 3\. Install the "libgtkglext1-dev" package required by the cefclient sample application.
