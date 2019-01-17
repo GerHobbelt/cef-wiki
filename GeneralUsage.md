@@ -304,7 +304,7 @@ cefclient.app/
             binding.html, ... <= cefclient application resources
 ```
 
-The "Chromium Embedded Framework.framework" is an [unversioned framework](http://src.chromium.org/viewvc/chrome/trunk/src/build/mac/copy_framework_unversioned.sh?view=markup) that contains all CEF binaries and resources. Executables (cefclient, cefclient Helper, etc) are linked to libcef.dylib using [install\_name\_tool](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/install_name_tool.1.html) and a path relative to @executable\_path.
+The "Chromium Embedded Framework.framework" is an [unversioned framework](http://src.chromium.org/viewvc/chrome/trunk/src/build/mac/copy_framework_unversioned.sh?view=markup) that contains all CEF binaries and resources. Executables (cefclient, cefclient Helper, etc) dynamically load the CEF Framework as described [here](https://groups.google.com/d/msg/cef-announce/Fith0A3kWtw/6ds_mJVMCQAJ).
 
 The "cefclient Helper" app is used for executing separate processes (renderer, plugin, etc) with different characteristics. It needs to have a separate app bundle and Info.plist file so that, among other things, it doesn’t show dock icons.
 
@@ -380,6 +380,12 @@ Main application entry-point function:
 ```
 // Program entry-point function.
 int main(int argc, char* argv[]) {
+  // Load the CEF framework library at runtime instead of linking directly
+  // as required by the macOS sandbox implementation.
+  CefScopedLibraryLoader library_loader;
+  if (!library_loader.LoadInMain())
+    return 1;
+
   // Structure for passing command-line arguments.
   // The definition of this structure is platform-specific.
   CefMainArgs main_args(argc, argv);
@@ -411,6 +417,17 @@ Sub-process application entry-point function:
 ```
 // Program entry-point function.
 int main(int argc, char* argv[]) {
+  // Initialize the macOS sandbox for this helper process.
+  CefScopedSandboxContext sandbox_context;
+  if (!sandbox_context.Initialize(argc, argv))
+    return 1;
+
+  // Load the CEF framework library at runtime instead of linking directly
+  // as required by the macOS sandbox implementation.
+  CefScopedLibraryLoader library_loader;
+  if (!library_loader.LoadInHelper())
+    return 1;
+
   // Structure for passing command-line arguments.
   // The definition of this structure is platform-specific.
   CefMainArgs main_args(argc, argv);
