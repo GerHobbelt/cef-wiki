@@ -161,14 +161,14 @@ Application/
   1. Compile the libcef\_dll\_wrapper static library.
   1. Compile/link/package the “cefsimple Helper” app.
     * Required source code files include: process\_helper\_mac.cc.
-    * Required link frameworks include: AppKit.framework, Chromium Embedded Framework.framework (unversioned, included in the binary distribution).
+    * Required link frameworks include: AppKit.framework.
     * App bundle configuration is provided via “cefsimple/mac/helper-Info.plist”.
-    * Use “install\_name\_tool -change” to rewrite the framework link so that it points to  the “Chromium Embedded Framework.framework/Chromium Embedded Framework” library in the correct location.
+    * Load the CEF Framework as described [here](https://groups.google.com/d/msg/cef-announce/Fith0A3kWtw/6ds_mJVMCQAJ).
   1. Compile/link/package the “cefsimple” app.
     * Required source code files include: cefsimple\_mac.mm, simple\_app.cc, simple\_handler.cc, simple\_handler\_mac.mm.
-    * Required link frameworks include: AppKit.framework, Chromium Embedded Framework.framework (unversioned, included in the binary distribution).
+    * Required link frameworks include: AppKit.framework.
     * App bundle configuration is provided via “cefsimple/mac/Info.plist”.
-    * Use “install\_name\_tool -change” to rewrite the framework link so that it points to  the “Chromium Embedded Framework.framework/Chromium Embedded Framework” library in the correct location.
+    * Load the CEF Framework as described [here](https://groups.google.com/d/msg/cef-announce/Fith0A3kWtw/6ds_mJVMCQAJ).
   1. Create a Contents/Frameworks directory in the cefsimple.app bundle. Copy the following files to that directory: “cefsimple Helper.app”, “Chromium Embedded Framework.framework”.
 
 The resulting directory structure looks like this for 2526 branch:
