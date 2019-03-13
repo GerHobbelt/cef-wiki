@@ -51,10 +51,10 @@ CEF release branches and associated platform build requirements are as follows.
 
 Support for newer branches begins when they enter the Chromium beta channel. Support for older branches ends when they exit the Chromium stable channel. The [Spotify automated builder](http://opensource.spotify.com/cefbuilds/index.html) provides CEF builds for the current Chromium stable channel and will switch to the next Chromium branch when that branch is promoted to the stable channel. Updating CEF branches is currently a manual process so there will likely be a delay between [Chromium release announcements](http://googlechromereleases.blogspot.com/) and the availability of associated CEF builds. See the [Chromium release calendar](https://www.chromium.org/developers/calendar) for estimated Chromium release dates and versions.
 
-| Branch Date | Release Branch | Chromium Version | Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
-|:------------|:---------------|:-----------------|:---------------------------|:----------------------------|:-------------------------|
-| Feb 2019    | [3683](https://bitbucket.org/chromiumembedded/cef/src/3683?at=3683) | 73               | Win 7+, VS2017 15.7.1+, Win 10.0.17134.0 or 10.0.17763 SDK, Ninja | macOS 10.10-10.14, 10.10+ deployment target, 10.12+ build system w/ 10.12+ base SDK (Xcode 8.3.2+), Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
-| Dec 2018    | [3626](https://bitbucket.org/chromiumembedded/cef/src/3626?at=3626) | 72               | Win 7+, VS2017 15.7.1+, Win 10.0.17134.0 or 10.0.17763 SDK, Ninja | macOS 10.10-10.14, 10.10+ deployment target, 10.12+ build system w/ 10.12+ base SDK (Xcode 8.3.2+), Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
+| Branch Date | Release Branch | Chromium Version | CEF Version | Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
+|:------------|:---------------|:-----------------|:------------|:---------------------------|:----------------------------|:-------------------------|
+| Feb 2019    | [3683](https://bitbucket.org/chromiumembedded/cef/src/3683?at=3683) | 73               | 3          | Win 7+, VS2017 15.7.1+, Win 10.0.17134.0 or 10.0.17763 SDK, Ninja | macOS 10.10-10.14, 10.10+ deployment target, 10.12+ build system w/ 10.12+ base SDK (Xcode 8.3.2+), Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
+| Dec 2018    | [3626](https://bitbucket.org/chromiumembedded/cef/src/3626?at=3626) | 72               | 3          | Win 7+, VS2017 15.7.1+, Win 10.0.17134.0 or 10.0.17763 SDK, Ninja | macOS 10.10-10.14, 10.10+ deployment target, 10.12+ build system w/ 10.12+ base SDK (Xcode 8.3.2+), Ninja, 64-bit only | Ubuntu 14.04+, Debian Jessie+, Ninja |
 
 ## Legacy Release Branches (Unsupported)
 
