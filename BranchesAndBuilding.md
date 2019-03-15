@@ -36,16 +36,28 @@ CEF branches are created to track each Chromium release milesone (MXX) branch. U
   * CEF release branches can include patches to Chromium/Blink source if necessary.
   * CEF master development won't interfere with consumer release schedules.
 
-Modern CEF release version numbers have the format X.YYYY.A.gHHHHHHH where:
+CEF release branches and associated platform build requirements are described below.
 
-  * "X" is the CEF major version (currently 3).
+## Version Number Format
+
+The CEF version number format was recently changed to include more relevant information and to provide compatibility with the [Semantic Versioning 2.0](https://semver.org/spec/v2.0.0.html) standard.
+
+Newer CEF release version numbers have the format "X.Y.Z+gHHHHHHH+chromium-A.B.C.D" where:
+
+* "X" is the Chromium major version (e.g. 73).
+* "Y" is an incremental number that starts at 0 when a release branch is created and changes only when the CEF C/C++ API changes (as determined by updates to the include/cef\_api\_hash.h file).
+* "Z" is an incremental number that starts at 0 when a release branch is created and changes on each commit, with reset to 0 when "Y" changes.
+* "gHHHHHHH" is the 7-character abbreviation for the Git commit hash. This facilitates lookup of the relevant commit history in Git.
+* "A.B.C.D" is the Chromium version (e.g. 73.0.3683.75).
+
+Older CEF release version numbers have the format X.YYYY.A.gHHHHHHH where:
+
+  * "X" is the CEF major version (e.g. 3).
   * "YYYY" is the Chromium branch.
   * "A" is an incremental number representing the number of commits in the current branch. This is roughly equivalent to the SVN revision number but on a per-branch basis and assists people in quickly determining the order of builds in the same branch (for bug reports, etc).
   * "gHHHHHHH" is the 7-character abbreviation for the Git commit hash. This facilitates lookup of the relevant commit history in Git.
 
-Detailed Chromium and CEF version information is available in the include/cef\_version.h header file that will be created during the build process or by loading the “about:version” URL in a CEF-derived application.
-
-CEF release branches and associated platform build requirements are as follows.
+Detailed Chromium and CEF version information is available in the include/cef\_version.h header file which is created during the build process or by loading the “about:version” URL in a CEF-derived application.
 
 ## Current Release Branches (Supported)
 
