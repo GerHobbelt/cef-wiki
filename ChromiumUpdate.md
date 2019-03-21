@@ -138,7 +138,13 @@ You can also choose a Chromium version or commit hash manually. It's best to cho
 * Good choices for master updates include the canary channel "current_version" value or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/ieGUR8J2JXM/t0xL98wkFAAJ) was sent for the M73 branch. These versions should have 0 as the last component (e.g. "73.0.3683.0").
 * Good choices for release branch updates include the most recent "current_version" value listed for that branch. These versions should not have 0 as the last component (e.g. "73.0.3683.75").
 
-To manually specify the Chromium version and update an existing release branch checkout:
+To manually specify the Chromium version and update the checkout of master:
+
+```
+python automate-git.py <...> --no-build --fast-update --log-chromium-changes --chromium-checkout=refs/tags/73.0.3683.0
+```
+
+To manually specify the Chromium version and update the checkout of an existing release branch:
 
 ```
 python automate-git.py <...> --no-build --fast-update --force-cef-update --branch=3683 --chromium-checkout=refs/tags/73.0.3683.75
