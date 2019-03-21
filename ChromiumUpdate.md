@@ -132,21 +132,14 @@ The CEF build currently contains a patch capability that should be used only as 
 
 # Choosing the Chromium version manually
 
-You can also choose a Chromium version or commit hash manually. It's best to choose a commit that is likely to build successfully on most platforms. Good choices include the canary channel "branch_commit" value listed at https://omahaproxy.appspot.com/ or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/liRNCHAzY2Q/aIQA2dZHBwAJ) was sent for the M64 branch and contains the text "Branched Chromium @ revision: 520840". To identify the associated Chromium commit hash:
+You can also choose a Chromium version or commit hash manually. It's best to choose a version that is likely to build successfully on most platforms.
+
+* Current Chromium channel version information can be found at https://omahaproxy.appspot.com/
+* Good choices for master updates include the canary channel "current_version" value or the value from the most recent branch announcement email sent to the chromium-dev mailing list. For example, [this email](https://groups.google.com/a/chromium.org/d/msg/chromium-dev/ieGUR8J2JXM/t0xL98wkFAAJ) was sent for the M73 branch. These versions should have 0 as the last component (e.g. "73.0.3683.0").
+* Good choices for release branch updates include the most recent "current_version" value listed for that branch. These versions should not have 0 as the last component (e.g. "73.0.3683.75").
+
+To manually specify the Chromium version and update an existing release branch checkout:
 
 ```
-cd /path/to/chromium/src
-
-# Fetch the most recent Chromium sources without applying them to a branch.
-git fetch
-
-# Query the commit hash associated with revision 520840.
-git log -1 --grep="#520840" origin/master
-# Returns: commit 5fdc0fab22ce7efd32532ee989b223fa12f8171e
-```
-
-To manually specify the Chromium version or commit hash to checkout:
-
-```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-checkout=5fdc0fab22ce7efd32532ee989b223fa12f8171e
+python automate-git.py <...> --no-build --fast-update --force-cef-update --branch=3683 --chromium-checkout=refs/tags/73.0.3683.75
 ```
