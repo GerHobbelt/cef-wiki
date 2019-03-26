@@ -63,14 +63,14 @@ python automate-git.py <...> --log-chromium-changes --no-build --fast-update --c
 
 C\. Identify potentially relevant changes in the Chromium source code between versions. This creates a `chromium_update_changes.diff` file in your download directory that will act as your guide when updating the CEF source code. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files. The list of relevant paths is taken from CEF's [CHROMIUM_UPDATE.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_UPDATE.txt) file.
 
-D\. Identify problematic patterns in the Chromium source code. This creates a `chromium_update_patterns.txt` file in your download directory. If these patterns are found then the `automate-git.py` script with fail with output like the following:
+D\. Identify problematic patterns in the Chromium source code. If these patterns are found then the `automate-git.py` script will create a `chromium_update_patterns.txt` file in your download directory and fail with output like the following:
 
 ```
 Evaluating pattern: static_cast<StoragePartitionImpl\*>(
 ERROR Matches found. See chromium_update_changes.diff for output.
 ```
 
-In that case the contents of `chromium_update_changes.diff` might look like this:
+In that case the contents of `chromium_update_patterns.txt` might look like this:
 
 ```
 !!!! WARNING: FOUND PATTERN: static_cast<StoragePartitionImpl\*>(
@@ -81,9 +81,7 @@ content/browser/loader/navigation_url_loader_impl.cc:1295:  auto* partition = st
 content/browser/renderer_interface_binders.cc:189:        static_cast<StoragePartitionImpl*>(host->GetStoragePartition())
 ```
 
-Use a text editor to manually fix the specified files (usually by removing the static_cast, but see [storage_partition_1973.patch](https://bitbucket.org/chromiumembedded/cef/src/master/patch/patches/storage_partition_1973.patch) for other related fixes).
-
-If new files must be added to the patch file use this command:
+Use a text editor to manually fix the specified files. If new files must be added to the patch file use this command:
 
 ```
 cd /path/to/chromium/src/cef
