@@ -35,8 +35,6 @@ A\. Identify the most appropriate Chromium version for the update. You will see 
 * *Target* is the Chromium version that has been selected for this update.
 * *Channel* is newest available version from the Chromium canary channel as listed at https://omahaproxy.appspot.com/.
 
-*Target* and *Channel* may be the same if they're close enough together (within the specified 2000 commit distance).
-
 If you would prefer to manually pick the Chromium version see the "Choosing the Chromium version manually" section below. This is useful when updating to a specific Chromium milestone version, for example.
 
 B\. Run CEF's `patch_updater.py` script to update the Chromium patch files in the `patch/patches` directory.
