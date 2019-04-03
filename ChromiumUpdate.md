@@ -17,7 +17,7 @@ The Chromium developers work very hard to introduce new features and capabilitie
 2\. Start the update by running `automate-git.py` with the following parameters:
 
 ```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary
 ```
 
 This will:
@@ -25,9 +25,9 @@ This will:
 A\. Identify the most appropriate Chromium version for the update. You will see output like the following:
 
 ```
---> Computed Chromium update for win canary at distance 2000
+--> Computed Chromium update for win canary at distance 0
 --> Compat:  2018-05-09 03:16:29 UTC refs/tags/68.0.3425.0 695380fc6b1f9aee91d4b3933000c8a7da1d25f8 (#557062)
---> Target:  2018-05-17 03:16:09 UTC refs/tags/68.0.3433.0 a78a6a072852b51a8a42e796e12192eb5bd4bfb6 (#559327)
+--> Target:  2018-05-20 03:14:11 UTC refs/tags/68.0.3436.0 11cc97646015a81933d79d43bc335351452460e6 (#560157)
 --> Channel: 2018-05-20 03:14:11 UTC refs/tags/68.0.3436.0 11cc97646015a81933d79d43bc335351452460e6 (#560157)
 ```
 
@@ -58,7 +58,7 @@ storage_partition_1973:
 Use a text editor to manually fix the specified files. Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
 
 ```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000 --resave
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --resave
 ```
 
 C\. Identify potentially relevant changes in the Chromium source code between versions. This creates a `chromium_update_changes.diff` file in your download directory that will act as your guide when updating the CEF source code. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files. The list of relevant paths is taken from CEF's [CHROMIUM_UPDATE.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_UPDATE.txt) file.
@@ -91,7 +91,7 @@ tools/patch_updater.sh --resave --patch storage_partition_1973 --add content/bro
 Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
 
 ```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --chromium-channel-distance=2000 --resave
+python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --resave
 ```
 
 3\. Build CEF and fix whatever else is broken. The diff file created in step C above will assist you in this process. Refer to the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for build instructions. If Chromium changes are required refer to the "Resolving Chromium breakage" section below.
