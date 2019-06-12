@@ -80,7 +80,7 @@ update_depot_tools.bat
 6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
-set GN_DEFINES=use_jumbo_build=true
+set GN_DEFINES=use_jumbo_build=true is_component_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
@@ -95,7 +95,7 @@ update.bat
 7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
-set GN_DEFINES=use_jumbo_build=true
+set GN_DEFINES=use_jumbo_build=true is_component_build=true
 set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
 ```
@@ -122,8 +122,6 @@ ninja -C out\Debug_GN_x86 cef
 cd c:\code\chromium_git\chromium\src
 out\Debug_GN_x86\cefclient.exe
 ```
-
-Developers on Windows may wish to use component builds, which are supported in 3202 branch and newer, for faster link times. See [issue #1617](https://bitbucket.org/chromiumembedded/cef/issues/1617#comment-38074395) for details.
 
 See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-windows) for detailed debugging instructions.
 
