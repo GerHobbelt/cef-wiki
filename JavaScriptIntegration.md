@@ -182,9 +182,9 @@ public:
                    const CefRefPtr<CefV8Value> value,
                    CefString& exception) OVERRIDE {
     if (name == "myval") {
-      if (value.IsString()) {
+      if (value->IsString()) {
         // Store the value.
-        myval_ = value.GetStringValue();
+        myval_ = value->GetStringValue();
       } else {
         // Throw an exception.
         exception = "Invalid value type";
