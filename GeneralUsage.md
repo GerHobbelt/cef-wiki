@@ -766,7 +766,7 @@ To provide all render processes with the same information on startup implement C
 
 ## Process Runtime Messages
 
-To pass information at any time during the process lifespan use process messages via the CefProcessMessage class. These messages are associated with a specific CefBrowser instance and are sent using the CefBrowser::SendProcessMessage() method. The process message should contain whatever state information is required via CefProcessMessage::GetArgumentList().
+Messages can be passed between processes at runtime using the CefProcessMessage class. These messages are associated with a specific CefBrowser and CefFrame instance and sent using the CefFrame::SendProcessMessage() method. The process message should contain whatever state information is required via CefProcessMessage::GetArgumentList().
 
 ```
 // Create the message object.
@@ -779,9 +779,9 @@ CefRefPtr<CefListValue> args = msg>GetArgumentList();
 args->SetString(0, “my string”);
 args->SetInt(0, 10);
 
-// Send the process message to the render process.
+// Send the process message to the main frame in the render process.
 // Use PID_BROWSER instead when sending a message to the browser process.
-browser->SendProcessMessage(PID_RENDERER, msg);
+browser->GetMainFrame()->SendProcessMessage(PID_RENDERER, msg);
 ```
 
 A message sent from the browser process to the render process will arrive in CefRenderProcessHandler::OnProcessMessageReceived(). A message sent from the render process to the browser process will arrive in CefClient::OnProcessMessageReceived().
@@ -789,6 +789,7 @@ A message sent from the browser process to the render process will arrive in Cef
 ```
 bool MyHandler::OnProcessMessageReceived(
     CefRefPtr<CefBrowser> browser,
+    CefRefPtr<CefFrame> frame,
     CefProcessId source_process,
     CefRefPtr<CefProcessMessage> message) {
   // Check the message name.
@@ -799,25 +800,6 @@ bool MyHandler::OnProcessMessageReceived(
   }
   return false;
 }
-```
-
-To associate the message with a particular CefFrame pass the frame ID (retrievable via CefFrame::GetIdentifier()) as an argument and retrieve the associated CefFrame in the receiving process via the CefBrowser::GetFrame() method.
-
-```
-// Helper macros for splitting and combining the int64 frame ID value.
-#define MAKE_INT64(int_low, int_high) \
-    ((int64) (((int) (int_low)) | ((int64) ((int) (int_high))) << 32))
-#define LOW_INT(int64_val) ((int) (int64_val))
-#define HIGH_INT(int64_val) ((int) (((int64) (int64_val) >> 32) & 0xFFFFFFFFL))
-
-// Sending the frame ID.
-const int64 frame_id = frame->GetIdentifier();
-args->SetInt(0, LOW_INT(frame_id));
-args->SetInt(1, HIGH_INT(frame_id));
-
-// Receiving the frame ID.
-const int64 frame_id = MAKE_INT64(args->GetInt(0), args->GetInt(1));
-CefRefPtr<CefFrame> frame = browser->GetFrame(frame_id);
 ```
 
 ## Asynchronous JavaScript Bindings
