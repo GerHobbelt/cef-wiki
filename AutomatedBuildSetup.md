@@ -94,6 +94,32 @@ export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build --build-target=cefsimple
 ```
 
+**ARM Build Commands**
+
+To build ARM CEF on a 64-bit Linux host system start with the 64-bit Build Commands and change the following:
+
+1\. Add the following environment variables:
+
+```
+export GYP_DEFINES=target_arch=arm
+export CEF_INSTALL_SYSROOT=arm
+```
+
+2\. Change the `automate-git.py` command-line flag from `--x64-build` to `--arm-build`.
+
+**ARM64 Build Commands**
+
+To build ARM64 CEF on a 64-bit Linux host system start with the 64-bit Build Commands and change the following:
+
+1\. Add the following environment variables:
+
+```
+export GYP_DEFINES=target_arch=arm64
+export CEF_INSTALL_SYSROOT=arm64
+```
+
+2\. Change the `automate-git.py` command-line flag from `--x64-build` to `--arm64-build`.
+
 ## Mac OS X Configuration
 
 **What's Required**
