@@ -112,7 +112,7 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 **ARM64 Build Commands**
 
-To build ARM64 CEF on a 64-bit Linux host system start with the 64-bit Build Commands and change the following:
+To build ARM64 CEF on a 64-bit Linux host system:
 
 ```
 dpkg --add-architecture i386
