@@ -110,6 +110,12 @@ export CEF_INSTALL_SYSROOT=arm
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm-build --build-target=cefsimple
 ```
 
+Note: The `gcc-multilib` package conflicts with the arm cross compiler (at least in trusty) but `g++-X.Y-multilib` gives the necessary 32-bit support. The above example uses `g++-5-multilib` which may not exist on your system. Find out the appropriate value of X and Y by running this command:
+
+```
+apt-cache depends g++-multilib --important | grep -E --color=never --only-matching '\bg\+\+-[0-9.]+-multilib\b
+```
+
 **ARM64 Build Commands**
 
 To build ARM64 CEF on a 64-bit Linux host system:
@@ -125,6 +131,8 @@ export GYP_DEFINES=target_arch=arm64
 export CEF_INSTALL_SYSROOT=arm64
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build --build-target=cefsimple
 ```
+
+See above note about the `gcc-multilib` package.
 
 ## Mac OS X Configuration
 
