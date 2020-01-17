@@ -96,29 +96,35 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 **ARM Build Commands**
 
-To build ARM CEF on a 64-bit Linux host system start with the 64-bit Build Commands and change the following:
-
-1\. Add the following environment variables:
+To build ARM CEF on a 64-bit Linux host system:
 
 ```
+dpkg --add-architecture i386
+apt-get install aptitude
+aptitude -y update
+DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgconf-2-4 libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml python3 python3-cherrypy3 python3-crypto python3-dev python3-psutil python3-numpy python3-opencv python3-openssl python3-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip g++-arm-linux-gnueabihf libc6-dev-armhf-cross linux-libc-dev-armhf-cross
+export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+export CEF_ARCHIVE_FORMAT=tar.bz2
 export GYP_DEFINES=target_arch=arm
 export CEF_INSTALL_SYSROOT=arm
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm-build --build-target=cefsimple
 ```
-
-2\. Change the `automate-git.py` command-line flag from `--x64-build` to `--arm-build`.
 
 **ARM64 Build Commands**
 
 To build ARM64 CEF on a 64-bit Linux host system start with the 64-bit Build Commands and change the following:
 
-1\. Add the following environment variables:
-
 ```
+dpkg --add-architecture i386
+apt-get install aptitude
+aptitude -y update
+DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgconf-2-4 libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml python3 python3-cherrypy3 python3-crypto python3-dev python3-psutil python3-numpy python3-opencv python3-openssl python3-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip g++-arm-linux-gnueabihf libc6-dev-armhf-cross linux-libc-dev-armhf-cross
+export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+export CEF_ARCHIVE_FORMAT=tar.bz2
 export GYP_DEFINES=target_arch=arm64
 export CEF_INSTALL_SYSROOT=arm64
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build --build-target=cefsimple
 ```
-
-2\. Change the `automate-git.py` command-line flag from `--x64-build` to `--arm64-build`.
 
 ## Mac OS X Configuration
 
