@@ -60,7 +60,7 @@ Lower-case values between %% (%download_dir%, %cef_branch%, etc.) must be provid
 
 **What's Required**
 
-- [Ubuntu 14.04 LTS 64-bit](http://www.ubuntu.com/download/desktop).
+- Linux Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 6GB of RAM and 40GB of free disk space.
 
 The following commands can also be executed in a [chroot environment](https://help.ubuntu.com/community/BasicChroot).
@@ -142,8 +142,7 @@ export CEF_INSTALL_SYSROOT=arm64
 
 **What's Required**
 
-- OS X 10.10.4 or newer.
-- Xcode 8.3.
+- macOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 8GB of RAM and 40GB of free disk space.
 
 If Xcode is not installed to the default location then set the correct location using the `xcodeselect` tool.
@@ -162,9 +161,7 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 **What's Required**
 
-- Windows 7 or newer, 64-bit OS.
-- Visual Studio 2017 15.7.1+.
-- [Windows 10.0.17763 SDK](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive).
+- Windows Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 8GB of RAM and 40GB of free disk space.
 
 See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src/2785/tools/gclient_hook.py?at=2785&fileviewer=file-view-default#gclient_hook.py-54) for Windows custom toolchain requirements. VS + SDK can be packaged for distribution to build agents using a script like Chromium's [package_from_installed.py](https://code.google.com/p/chromium/codesearch#chromium/tools/depot_tools/win_toolchain/package_from_installed.py).
