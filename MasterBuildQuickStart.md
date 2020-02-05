@@ -41,9 +41,8 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 
 **What's Required**
 
-- Windows 7 or newer, 64-bit OS.
-- Visual Studio VS2017 15.7.1+ installed in the default location.
-- [Windows 10.0.18362 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) installed in the default location. You must install this exact SDK version to avoid build issues.
+- Windows Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
+- Install the exact Windows SDK version specified in the default location to avoid build issues.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -62,7 +61,7 @@ WARNING: If you change the above directory names/locations make sure to (a) use 
 
 2\. Download [depot_tools.zip](https://storage.googleapis.com/chrome-infra/depot_tools.zip) and extract to "c:\code\depot_tools". Do not use drag-n-drop or copy-n-paste extract from Explorer, this will not extract the hidden ".git" folder which is necessary for depot_tools to auto-update itself. You can use "Extract all..." from the context menu though. [7-zip](http://www.7-zip.org/download.html) is also a good tool for this.
 
-3\. Run "update_depot_tools.bat" to install Python, Git and SVN.
+3\. Run "update_depot_tools.bat" to install Python and Git.
 
 ```
 cd c:\code\depot_tools
@@ -81,7 +80,8 @@ update_depot_tools.bat
 
 ```
 set GN_DEFINES=use_jumbo_build=true is_component_build=true
-set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
+# Use vs2017 or vs2019 as appropriate.
+set GN_ARGUMENTS=--ide=vs2019 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
 ```
 
@@ -96,7 +96,8 @@ update.bat
 
 ```
 set GN_DEFINES=use_jumbo_build=true is_component_build=true
-set GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*
+# Use vs2017 or vs2019 as appropriate.
+set GN_ARGUMENTS=--ide=vs2019 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
 ```
 
@@ -129,8 +130,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 
 **What's Required**
 
-- OS X 10.13.2 or newer.
-- Xcode 9.3.1 or newer.
+- macOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
 - At least 8GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
@@ -224,7 +224,8 @@ See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/d
 
 **What's Required**
 
-- [Ubuntu 16.04 LTS 64-bit](https://www.ubuntu.com/download/desktop) is recommended. Building with other versions or distros has not been tested and may experience issues.
+- Linux Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
+- Building with other versions or distros has not been tested and may experience issues.
 - At least 6GB of RAM and 40GB of free disk space.
 - Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
 
