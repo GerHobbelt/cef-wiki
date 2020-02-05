@@ -179,7 +179,7 @@ set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
 ```
 
-If VS2017 or SDK is not installed to the default location then set the following before executing automate-git.py:
+If Visual Studio or Windows SDK is not installed to the default location then set environment variables like the following before executing automate-git.py:
 
 ```
 set WIN_CUSTOM_TOOLCHAIN=1
@@ -203,7 +203,7 @@ set CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
 ```
 
-If VS2017 or SDK is not installed to the default location then set the following before executing automate-git.py:
+If Visual Studio or Windows SDK is not installed to the default location then set environment variables like the following before executing automate-git.py:
 
 ```
 set WIN_CUSTOM_TOOLCHAIN=1
