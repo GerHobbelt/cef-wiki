@@ -170,8 +170,6 @@ Install the required Visual Studio sub-components by passing the following argum
 $ PATH_TO_INSTALLER.EXE ^
 --add Microsoft.VisualStudio.Workload.NativeDesktop ^
 --add Microsoft.VisualStudio.Component.VC.ATLMFC ^
---add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ^
---add Microsoft.VisualStudio.Component.VC.MFC.x86.x64 ^
 --includeRecommended
 ```
 
