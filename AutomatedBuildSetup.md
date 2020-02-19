@@ -161,44 +161,27 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 **What's Required**
 
-- Windows Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
+- Visual Studio and Windows SDK versions as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 8GB of RAM and 40GB of free disk space.
 
-See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src/2785/tools/gclient_hook.py?at=2785&fileviewer=file-view-default#gclient_hook.py-54) for Windows custom toolchain requirements. VS + SDK can be packaged for distribution to build agents using a script like Chromium's [package_from_installed.py](https://code.google.com/p/chromium/codesearch#chromium/tools/depot_tools/win_toolchain/package_from_installed.py).
-
-**32-bit Build Commands**
-
-To build 32-bit CEF on a 64-bit Windows host system:
+Install the required Visual Studio sub-components by passing the following arguments to the Visual Studio installer:
 
 ```
-set GN_DEFINES=is_official_build=true
-set GYP_MSVS_VERSION=2017
-set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
+$ PATH_TO_INSTALLER.EXE ^
+--add Microsoft.VisualStudio.Workload.NativeDesktop ^
+--add Microsoft.VisualStudio.Component.VC.ATLMFC ^
+--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ^
+--add Microsoft.VisualStudio.Component.VC.MFC.x86.x64 ^
+--includeRecommended
 ```
 
-If Visual Studio or Windows SDK is not installed to the default location then set environment variables like the following before executing automate-git.py:
+If building for ARM64 install the following additional sub-components:
 
 ```
-set WIN_CUSTOM_TOOLCHAIN=1
-set CEF_VCVARS=none
-set GYP_MSVS_OVERRIDE_PATH=%vs_root%
-set VS_CRT_ROOT=%vs_crt_root%
-set SDK_ROOT=%sdk_root%
-set PATH=%sdk_root%\bin\%sdk_version%\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x64;%vs_root%\VC\Redist\MSVC\%vc_redist_version%\x64\%vc_redist_crt%;%vs_root%\SystemCRT;%PATH%
-set LIB=%sdk_root%\Lib\%sdk_version\um\x86;%sdk_root%\Lib\%sdk_version\ucrt\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\lib\x86;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\lib\x86;%LIB%
-set INCLUDE=%sdk_root%\Include\%sdk_version%\um;%sdk_root%\Include\%sdk_version%\ucrt;%sdk_root%\Include\%sdk_version%\shared;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\include;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\include;%INCLUDE%
-```
-
-**64-bit Build Commands**
-
-To build 64-bit CEF on a 64-bit Windows host system:
-
-```
-set GN_DEFINES=is_official_build=true
-set GYP_MSVS_VERSION=2017
-set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
+$ PATH_TO_INSTALLER.EXE ^
+--add Microsoft.VisualStudio.Component.VC.Tools.ARM64 ^
+--add Microsoft.VisualStudio.Component.VC.MFC.ARM64 ^
+--includeRecommended
 ```
 
 If Visual Studio or Windows SDK is not installed to the default location then set environment variables like the following before executing automate-git.py:
@@ -210,6 +193,44 @@ set GYP_MSVS_OVERRIDE_PATH=%vs_root%
 set VS_CRT_ROOT=%vs_crt_root%
 set SDK_ROOT=%sdk_root%
 set PATH=%sdk_root%\bin\%sdk_version%\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\bin\HostX64\x64;%vs_root%\VC\Redist\MSVC\%vc_redist_version%\x64\%vc_redist_crt%;%vs_root%\SystemCRT;%PATH%
-set LIB=%sdk_root%\Lib\%sdk_version\um\x64;%sdk_root%\Lib\%sdk_version\ucrt\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\lib\x64;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\lib\x64;%LIB%
+set LIB=%sdk_root%\Lib\%sdk_version\um\%arch%;%sdk_root%\Lib\%sdk_version\ucrt\%arch%;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\lib\%arch%;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\lib\%arch%;%LIB%
 set INCLUDE=%sdk_root%\Include\%sdk_version%\um;%sdk_root%\Include\%sdk_version%\ucrt;%sdk_root%\Include\%sdk_version%\shared;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\include;%vs_root%\VC\Tools\MSVC\%vc_tools_version%\atlmfc\include;%INCLUDE%
+```
+
+The correct `PATH`, `LIB` and `INCLUDE` values for your installation can be determined by running the `vcvarsall.bat` script and passing in the desired architecture and SDK version.
+
+See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src/2785/tools/gclient_hook.py?at=2785&fileviewer=file-view-default#gclient_hook.py-54) for Windows custom toolchain requirements. VS + SDK can be packaged for distribution to build agents using a script like Chromium's [package_from_installed.py](https://code.google.com/p/chromium/codesearch#chromium/tools/depot_tools/win_toolchain/package_from_installed.py).
+
+**32-bit Build Commands**
+
+To build 32-bit CEF on a 64-bit Windows host system:
+
+```
+set GN_DEFINES=is_official_build=true
+set GYP_MSVS_VERSION=2019
+set CEF_ARCHIVE_FORMAT=tar.bz2
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
+```
+
+**64-bit Build Commands**
+
+To build 64-bit CEF on a 64-bit Windows host system:
+
+```
+set GN_DEFINES=is_official_build=true
+set GYP_MSVS_VERSION=2019
+set CEF_ARCHIVE_FORMAT=tar.bz2
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
+```
+
+**ARM64 Build Commands**
+
+To build ARM64 CEF on a 64-bit Windows host system:
+
+```
+set CEF_ENABLE_ARM64=1
+set GN_DEFINES=is_official_build=true target_cpu=arm64
+set GYP_MSVS_VERSION=2019
+set CEF_ARCHIVE_FORMAT=tar.bz2
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build
 ```
