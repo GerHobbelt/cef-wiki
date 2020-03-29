@@ -79,7 +79,7 @@ update_depot_tools.bat
 6\. Create the "c:\code\chromium_git\update.bat" script with the following contents.
 
 ```
-set GN_DEFINES=use_jumbo_build=true is_component_build=true
+set GN_DEFINES=is_component_build=true
 # Use vs2017 or vs2019 as appropriate.
 set GN_ARGUMENTS=--ide=vs2019 --sln=cef --filters=//cef/*
 python ..\automate\automate-git.py --download-dir=c:\code\chromium_git --depot-tools-dir=c:\code\depot_tools --no-distrib --no-build
@@ -95,7 +95,7 @@ update.bat
 7\. Create the "c:\code\chromium_git\chromium\src\cef\create.bat" script with the following contents.
 
 ```
-set GN_DEFINES=use_jumbo_build=true is_component_build=true
+set GN_DEFINES=is_component_build=true
 # Use vs2017 or vs2019 as appropriate.
 set GN_ARGUMENTS=--ide=vs2019 --sln=cef --filters=//cef/*
 call cef_create_projects.bat
@@ -186,7 +186,6 @@ cd ~/code/chromium_git
 
 ```
 #!/bin/bash
-export GN_DEFINES=use_jumbo_build=true
 ./cef_create_projects.sh
 ```
 
@@ -302,7 +301,6 @@ cd ~/code/chromium_git
 
 ```
 #!/bin/bash
-export GN_DEFINES=use_jumbo_build=true
 ./cef_create_projects.sh
 ```
 
