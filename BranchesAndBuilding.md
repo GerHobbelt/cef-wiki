@@ -209,8 +209,8 @@ This section summarizes build-related requirements and options.
     * If multiple versions of Visual Studio are installed on your system you can set the GYP\_MSVS\_VERSION environment variable to create project files for that version. For example, set the value to "2015" for VS2015 or "2017" for VS2017. Check the Chromium documentation for the correct value when using other Visual Studio versions.
     * If you wish to use Visual Studio for debugging and compiling in combination with a Ninja build you can set `GYP_GENERATORS=ninja,msvs-ninja` (GYP only) or `GN_ARGUMENTS=--ide=vs2017 --sln=cef --filters=//cef/*` (GN only) to generate both Ninja and VS project files. Visual Studio is supported only for debugging and compiling individual source files -- it will not build whole targets successfully. You must use Ninja when building CEF/Chromium targets.
     * For best local developer (non-official debug) build-time performance:
-        * When using VS2015 set `GN_DEFINES=is_win_fastlink=true` for improved compile and link time.
-        * When using VS2017 set `GN_DEFINES=use_jumbo_build=true` for improved compile and link time.
+        * When using VS2015 set `GN_DEFINES=is_win_fastlink=true` for improved compile and link time (branches <= 3202).
+        * When using VS2017 or VS2019 set `GN_DEFINES=use_jumbo_build=true` for improved compile and link time (branches <= 4044).
         * Component builds are supported by 3202 branch and newer and significantly reduce link time. Add `is_component_build=true` to GN_DEFINES in combination with the above VS-version-specific values. Component builds cannot be used to create a CEF binary distribution. See [issue #1617](https://bitbucket.org/chromiumembedded/cef/issues/1617#comment-38074395) for details.
   * macOS -
     * The combination of deployment target and base SDK version will determine the platforms supported by the resulting binaries. For proper functioning you must use the versions specified under build requirements for each branch.
