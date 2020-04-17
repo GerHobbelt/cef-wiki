@@ -271,7 +271,7 @@ For more information on using interactive rebase see [this article](https://help
 
 ## Creating a Pull Request
 
-You can create a pull request via the "Create pull request" option in Bitbucket's left-hand navigation bar. Pull requests will only be accepted if they meet the requirements described above. Detailed information about working with Bitbucket pull requests is available [here](https://confluence.atlassian.com/bitbucket/create-a-pull-request-945541466.html).
+Pull requests can only be created from a repository that was [forked](https://confluence.atlassian.com/bitbucket/forking-a-repository-221449527.html) using the Bitbucket interface. After pushing your changes to the forked repository you can create the pull request as described [here](https://confluence.atlassian.com/bitbucket/create-a-pull-request-945541466.html). Pull requests will only be accepted if they meet the requirements described above.
 
 ## Reviewing a Pull Request
 
