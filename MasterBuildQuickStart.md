@@ -43,8 +43,8 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 
 - Windows Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
 - Install the exact Windows SDK version specified in the default location to avoid build issues.
-- At least 8GB of RAM and 40GB of free disk space.
-- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
+- At least 8GB of RAM (32GB+ recommended) and 90GB of free disk space (for a Debug build).
+- Approximately 4 hours with a fast internet connection (100Mbps) and fast build machine (2.4Ghz, 16 logical cores, SSD).
 
 **Step-by-step Guide**
 
@@ -131,8 +131,8 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 **What's Required**
 
 - macOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
-- At least 8GB of RAM and 40GB of free disk space.
-- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
+- At least 8GB of RAM (16GB+ recommended) and 100GB of free disk space (for a Debug build).
+- Approximately 4 hours with a fast internet connection (100Mbps) and fast build machine (2.4Ghz, 16 logical cores, SSD).
 
 **Step-by-step Guide**
 
@@ -225,8 +225,8 @@ See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/d
 
 - Linux Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
 - Building with other versions or distros has not been tested and may experience issues.
-- At least 6GB of RAM and 40GB of free disk space.
-- Approximately 2 hours with a fast internet connection (25Mbps) and fast build machine (2.6Ghz+, 4+ logical cores).
+- At least 6GB of RAM (16GB+ recommended) and 60GB of free disk space (for a Debug build).
+- Approximately 3 hours with a fast internet connection (100Mbps) and fast build machine (2.4Ghz, 16 logical cores, SSD).
 
 **Step-by-step Guide**
 
