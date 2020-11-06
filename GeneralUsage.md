@@ -235,7 +235,7 @@ See comments in [shared/common/client\_switches.cc](https://bitbucket.org/chromi
 
 # Application Layout
 
-Application layout can differ significantly depending on the platform. For example, on Mac OS X your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a “Sample Application” from http://opensource.spotify.com/cefbuilds/index.html. Some distributed files are required and some are optional. Requirements and additional information for each file can be found in the binary distribution README.txt file.
+Application layout can differ significantly depending on the platform. For example, on Mac OS X your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a “Sample Application” from https://cef-builds.spotifycdn.com/index.html. Some distributed files are required and some are optional. Requirements and additional information for each file can be found in the binary distribution README.txt file.
 
 ## Windows
 

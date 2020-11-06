@@ -61,7 +61,7 @@ Detailed Chromium and CEF version information is available in the include/cef\_v
 
 ## Current Release Branches (Supported)
 
-Support for newer branches begins when they enter the Chromium beta channel. Support for older branches ends when they exit the Chromium stable channel. The [Spotify automated builder](http://opensource.spotify.com/cefbuilds/index.html) provides CEF builds for the current Chromium stable channel and will switch to the next Chromium branch when that branch is promoted to the stable channel. Updating CEF branches is currently a manual process so there will likely be a delay between [Chromium release announcements](http://googlechromereleases.blogspot.com/) and the availability of associated CEF builds. See the [Chromium release calendar](https://www.chromium.org/developers/calendar) for estimated Chromium release dates and versions.
+Support for newer branches begins when they enter the Chromium beta channel. Support for older branches ends when they exit the Chromium stable channel. The [Spotify automated builder](https://cef-builds.spotifycdn.com/index.html) provides CEF builds for the current Chromium stable channel and will switch to the next Chromium branch when that branch is promoted to the stable channel. Updating CEF branches is currently a manual process so there will likely be a delay between [Chromium release announcements](http://googlechromereleases.blogspot.com/) and the availability of associated CEF builds. See the [Chromium release calendar](https://www.chromium.org/developers/calendar) for estimated Chromium release dates and versions.
 
 | Branch Date | Release Branch | Chromium Version | CEF Version | Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:------------|:---------------------------|:----------------------------|:-------------------------|
@@ -70,7 +70,7 @@ Support for newer branches begins when they enter the Chromium beta channel. Sup
 
 ## Legacy Release Branches (Unsupported)
 
-Legacy CEF builds are available from the [Spotify automated builder](http://opensource.spotify.com/cefbuilds/index.html) back to 2704 branch. Building legacy branches is not supported. If you choose to build a legacy branch you will need to solve any build errors on your own.
+Legacy CEF builds are available from the [Spotify automated builder](https://cef-builds.spotifycdn.com/index.html) back to 2704 branch. Building legacy branches is not supported. If you choose to build a legacy branch you will need to solve any build errors on your own.
 
   * Newer legacy branches (within the past year) can often be built using the same tooling as current branches. You will need to (a) manually download depot_tools, (b) sync depot_tools to a revision that existed at the time of the branch, and (c) set the `DEPOT_TOOLS_UPDATE=0` environment variable to keep it from updating automatically.
   * Older legacy branches can potentially be built by downloading a CEF source archive at the desired branch from [here](https://bitbucket.org/chromiumembedded/cef/downloads?tab=branches) and a Chromium source archive at the associated/required version from [here](https://gsdview.appspot.com/chromium-browser-official/), and then combining them to create the required directory structure.
