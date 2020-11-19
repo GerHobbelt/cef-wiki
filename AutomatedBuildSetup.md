@@ -63,30 +63,23 @@ Lower-case values between %% (%download_dir%, %cef_branch%, etc.) must be provid
 - Linux Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 6GB of RAM and 40GB of free disk space.
 
-The following commands can also be executed in a [chroot environment](https://help.ubuntu.com/community/BasicChroot).
+We recommend building on Linux using a [Docker container](https://www.docker.com/resources/what-container). All architectures can be built using the same Linux container image with a configuration [as shown here](https://magpcss.org/ceforum/viewtopic.php?f=7&t=17776&p=46448#p47371) that utilizes Chromium's [install-build-deps.sh](https://source.chromium.org/chromium/chromium/src/+/master:build/install-build-deps.sh) script.
 
 **64-bit Build Commands**
 
-To build 64-bit CEF on a 64-bit Linux host system:
+To build 64-bit CEF with a 64-bit Linux Docker image:
 
 ```
-apt-get install aptitude
-aptitude -y update
-DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgconf-2-4 libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml python3 python3-cherrypy3 python3-crypto python3-dev python3-psutil python3-numpy python3-opencv python3-openssl python3-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build --build-target=cefsimple
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --x64-build
 ```
 
 **32-bit Build Commands**
 
-To build 32-bit CEF on a 64-bit Linux host system:
+To build 32-bit CEF with a 64-bit Linux Docker image:
 
 ```
-dpkg --add-architecture i386
-apt-get install aptitude
-aptitude -y update
-DEBIAN_FRONTEND=noninteractive aptitude -y install bison build-essential cdbs curl devscripts dpkg-dev elfutils fakeroot flex g++ git-core git-svn gperf libapache2-mod-php5 libasound2-dev libav-tools libbrlapi-dev libbz2-dev libcairo2-dev libcap-dev libcups2-dev libcurl4-gnutls-dev libdrm-dev libelf-dev libexif-dev libffi-dev libgconf2-dev libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libpci-dev libpulse-dev libsctp-dev libspeechd-dev libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev libxss-dev libxt-dev libxtst-dev mesa-common-dev openbox patch perl php5-cgi pkg-config python python-cherrypy3 python-crypto python-dev python-psutil python-numpy python-opencv python-openssl python-yaml python3 python3-cherrypy3 python3-crypto python3-dev python3-psutil python3-numpy python3-opencv python3-openssl python3-yaml rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic ttf-kochi-mincho fonts-thai-tlwg wdiff wget zip lib32gcc1 lib32stdc++6 libc6-i386 linux-libc-dev:i386 libasound2:i386 libcap2:i386 libelf-dev:i386 libfontconfig1:i386 libgconf-2-4:i386 libglib2.0-0:i386 libgpm2:i386 libgtk2.0-0:i386 libgtk-3-0:i386 libncurses5:i386 libnss3:i386 libpango1.0-0:i386 libssl1.0.0:i386 libtinfo-dev:i386 libxcomposite1:i386 libxcursor1:i386 libxdamage1:i386 libxi6:i386 libxrandr2:i386 libxss1:i386 libxtst6:i386
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1"
 export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple
@@ -94,49 +87,25 @@ automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-di
 
 **ARM Build Commands**
 
-To build ARM CEF on a 64-bit Linux host system start with the *32-bit Build Commands* and make the following changes:
-
-1\. Add the following packages to the install command:
+To build ARM CEF with a 64-bit Linux Docker image:
 
 ```
-binutils-arm-linux-gnueabihf g++-arm-linux-gnueabihf libc6-dev-armhf-cross linux-libc-dev-armhf-cross g++-5-multilib
-```
-
-Note: The `gcc-multilib` package conflicts with the arm cross compiler (at least in trusty) but `g++-X.Y-multilib` gives the necessary 32-bit support. The above example uses `g++-5-multilib` which may not exist on your system. Find out the appropriate value of X and Y by running this command:
-
-```
-apt-cache depends g++-multilib --important | grep -E --color=never --only-matching '\bg\+\+-[0-9.]+-multilib\b
-```
-
-2\. Define the following environment variables before running `automate-git.py`:
-
-```
-export GYP_DEFINES=target_arch=arm
 export CEF_INSTALL_SYSROOT=arm
+export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+export CEF_ARCHIVE_FORMAT=tar.bz2
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm-build
 ```
-
-3\. Add the `--arm-build` flag to the `automate-git.py` command-line.
 
 **ARM64 Build Commands**
 
-To build ARM64 CEF on a 64-bit Linux host system start with the *32-bit Build Commands* and make the following changes:
-
-1\. Add the following packages to the install command:
+To build ARM64 CEF with a 64-bit Linux Docker image:
 
 ```
-binutils-aarch64-linux-gnu g++-arm-linux-gnueabihf libc6-dev-armhf-cross linux-libc-dev-armhf-cross g++-5-multilib
-```
-
-See the above note about the `gcc-multilib` package.
-
-2\. Define the following environment variables before running `automate-git.py`:
-
-```
-export GYP_DEFINES=target_arch=arm64
 export CEF_INSTALL_SYSROOT=arm64
+export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+export CEF_ARCHIVE_FORMAT=tar.bz2
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
 ```
-
-3\. Add the `--arm64-build` flag to the `automate-git.py` command-line.
 
 ## Mac OS X Configuration
 
