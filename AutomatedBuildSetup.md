@@ -107,23 +107,36 @@ export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
 ```
 
-## Mac OS X Configuration
+## MacOS Configuration
 
 **What's Required**
 
-- macOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
+- MacOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-current-release-branches-supported) Wiki page.
 - At least 8GB of RAM and 40GB of free disk space.
 
 If Xcode is not installed to the default location then set the correct location using the `xcodeselect` tool.
 
 **64-bit Build Commands**
 
-To build 64-bit CEF on a 64-bit OS X host system:
+To build 64-bit CEF on a Intel 64-bit MacOS host system:
 
 ```
 export GN_DEFINES=is_official_build=true
 export CEF_ARCHIVE_FORMAT=tar.bz2
 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
+```
+
+**ARM64 Build Commands**
+
+ARM64 builds require Xcode 12.2 and CEF branch 4280 or newer. Building directly on an ARM64 Mac is not yet supported (see [this](https://bugs.chromium.org/p/chromium/issues/detail?id=1103236) Chromium issue).
+
+To build ARM64 CEF on a Intel 64-bit MacOS host system:
+
+```
+export GN_DEFINES=is_official_build=true
+export CEF_ARCHIVE_FORMAT=tar.bz2
+export CEF_ENABLE_ARM64=1
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build
 ```
 
 ## Windows Configuration
