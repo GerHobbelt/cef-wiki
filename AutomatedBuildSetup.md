@@ -72,7 +72,7 @@ To build 64-bit CEF with a 64-bit Linux Docker image:
 ```
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --x64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --x64-build
 ```
 
 **32-bit Build Commands**
@@ -82,7 +82,7 @@ To build 32-bit CEF with a 64-bit Linux Docker image:
 ```
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1"
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple
 ```
 
 **ARM Build Commands**
@@ -93,7 +93,7 @@ To build ARM CEF with a 64-bit Linux Docker image:
 export CEF_INSTALL_SYSROOT=arm
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm-build
 ```
 
 **ARM64 Build Commands**
@@ -104,7 +104,7 @@ To build ARM64 CEF with a 64-bit Linux Docker image:
 export CEF_INSTALL_SYSROOT=arm64
 export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
 ```
 
 ## MacOS Configuration
@@ -123,7 +123,7 @@ To build 64-bit CEF on a Intel 64-bit MacOS host system:
 ```
 export GN_DEFINES=is_official_build=true
 export CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
 ```
 
 **ARM64 Build Commands**
@@ -136,7 +136,7 @@ To build ARM64 CEF on a Intel 64-bit MacOS host system:
 export GN_DEFINES=is_official_build=true
 export CEF_ARCHIVE_FORMAT=tar.bz2
 export CEF_ENABLE_ARM64=1
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build
 ```
 
 ## Windows Configuration
@@ -189,7 +189,7 @@ To build 32-bit CEF on a 64-bit Windows host system:
 set GN_DEFINES=is_official_build=true
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
 ```
 
 **64-bit Build Commands**
@@ -200,7 +200,7 @@ To build 64-bit CEF on a 64-bit Windows host system:
 set GN_DEFINES=is_official_build=true
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
 ```
 
 **ARM64 Build Commands**
@@ -212,5 +212,5 @@ set CEF_ENABLE_ARM64=1
 set GN_DEFINES=is_official_build=true
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
+python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
 ```
