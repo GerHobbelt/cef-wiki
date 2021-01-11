@@ -209,8 +209,8 @@ To build ARM64 CEF on a 64-bit Windows host system:
 
 ```
 set CEF_ENABLE_ARM64=1
-set GN_DEFINES=is_official_build=true target_cpu=arm64
+set GN_DEFINES=is_official_build=true
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
-automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --arm64-build
+automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
 ```
