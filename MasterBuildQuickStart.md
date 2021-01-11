@@ -12,7 +12,7 @@ This page provides a quick-start guide for setting up a minimal development envi
 
 This guide is NOT intended for:
 
-- Those seeking a prebuilt binary distribution for use in third-party apps. Go [here](http://magpcss.net/cef_downloads/) instead.
+- Those seeking a prebuilt binary distribution for use in third-party apps. Go [here](https://cef-builds.spotifycdn.com/index.html) instead.
 - Those seeking to build the binary distribution in a completely automated manner. Go [here](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-automated-method) instead.
 
 Development systems can be configured using dedicated hardware or a [VMware](http://www.vmware.com/products/player), [Parallels](http://www.parallels.com/eu/products/desktop/download/) or [VirtualBox](https://www.virtualbox.org/wiki/Downloads) virtual machine.
@@ -42,6 +42,7 @@ With this file structure you can develop multiple CEF/Chromium branches side-by-
 **What's Required**
 
 - Windows Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
+- Install required Visual Studio sub-components as described [here](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup#markdown-header-windows-configuration).
 - Install the exact Windows SDK version specified in the default location to avoid build issues.
 - At least 8GB of RAM (32GB+ recommended) and 90GB of free disk space (for a Debug build).
 - Approximately 4 hours with a fast internet connection (100Mbps) and fast build machine (2.4Ghz, 16 logical cores, SSD).
@@ -110,12 +111,14 @@ create.bat
 
 This will generate a "c:\code\chromium_git\chromium\src\out\Debug_GN_x86\cef.sln" file that can be loaded in Visual Studio for debugging and compiling individual files. Replace “x86” with “x64” in this path to work with the 64-bit build instead of the 32-bit build. Always use Ninja to build the complete project. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
 
-8\. Create a Debug build of CEF/Chromium using Ninja. Replace “x86” with “x64” in the below example to generate a 64-bit build instead of a 32-bit build. Edit the CEF source code at "c:\code\chromium_git\chromium\src\cef" and repeat this step multiple times to perform incremental builds while developing.
+8\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "c:\code\chromium_git\chromium\src\cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
 cd c:\code\chromium_git\chromium\src
 ninja -C out\Debug_GN_x86 cef
 ```
+
+Replace "Debug" with "Release" to generate a Release build instead of a Debug build. Replace “x86” with “x64” to generate a 64-bit build instead of a 32-bit build.
 
 9\. Run the resulting cefclient sample application.
 
@@ -209,6 +212,8 @@ cd ~/code/chromium_git/chromium/src/cef
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug_GN_x64 cef
 ```
+
+Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
 
 8\. Run the resulting cefclient sample application.
 
@@ -324,6 +329,8 @@ cd ~/code/chromium_git/chromium/src/cef
 cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug_GN_x64 cef chrome_sandbox
 ```
+
+Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
 
 10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md).
 
