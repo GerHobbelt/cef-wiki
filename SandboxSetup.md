@@ -54,7 +54,7 @@ The `cef_sandbox` library can also be built locally for development and testing 
 # Discover what `args.gn` contents are required:
 cd c:\path\to\chromium\src\cef
 set GN_DEFINES=is_official_build=true
-tools\gn_args.py
+python3 tools\gn_args.py
 
 # Create the `chromium\src\out\Release_GN_x86_sandbox\args.gn` file with the specified contents.
 
