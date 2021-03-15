@@ -35,7 +35,7 @@ Binary distributions of CEF3 are available from the [project Downloads page](htt
 No matter the platform all binary distributions share the same general structure:
 
   * **CMakeLists.txt** provides the [CMake configuration](https://cmake.org/overview/) for building the test applications included with the binary distribution. Platform-specific build instructions are provided as comments at the top of this file.
-  * **Debug** contains a debug build the CEF shared library (libcef) and any other libraries required to run on the platform. This application demonstrates the minimal functionality required to create a browser window.
+  * **Debug** contains a debug build the CEF shared library (libcef) and any other libraries required to run on the platform.
   * **include** contains all required CEF header files.
   * **libcef\_dll** contains the source code for the libcef\_dll\_wrapper static library that all applications using the CEF C++ API must link against. See the “C++ Wrapper” section for more information.
   * **Release** contains a release build the CEF shared library (libcef) and any other libraries required to run on the platform.
