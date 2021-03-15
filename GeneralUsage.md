@@ -30,25 +30,27 @@ This document introduces the general concepts involved when developing an applic
 
 ## Using a Binary Distribution
 
-Binary distributions of CEF3 are available from the [project Downloads page](http://www.magpcss.net/cef_downloads/). They contain all files necessary to build a particular version of CEF3 on a particular platform (Windows, Mac OS X or Linux). No matter the platform they all share the same general structure:
+Binary distributions of CEF3 are available from the [project Downloads page](https://cef-builds.spotifycdn.com/index.html). They contain all files necessary to build a particular version of CEF3 on a particular platform (Windows, MacOS or Linux). See the [Tutorial](Tutorial.md) Wiki page for detailed instructions on how to create a simple application using the CEF3 binary distribution.
 
-  * **cefclient** contains the cefclient sample application configured to build using the files in the binary distribution. This application demonstrates a wide range of CEF functionalities.
-  * **cefsimple** contains the cefsimple sample application configured to build using the files in the binary distribution. This application demonstrates the minimal functionality required to create a browser window.
+No matter the platform they all share the same general structure:
+
+  * **CMakeLists.txt** provides the [CMake configuration](https://cmake.org/overview/) for building the test applications included with the binary distribution. Platform-specific build instructions are provided as comments at the top of this file.
   * **Debug** contains a debug build the CEF shared library (libcef) and any other libraries required to run on the platform. This application demonstrates the minimal functionality required to create a browser window.
   * **include** contains all required CEF header files.
   * **libcef\_dll** contains the source code for the libcef\_dll\_wrapper static library that all applications using the CEF C++ API must link against. See the “C++ Wrapper” section for more information.
   * **Release** contains a release build the CEF shared library (libcef) and any other libraries required to run on the platform.
   * **Resources** contains resources required by applications using CEF (Windows and Linux only). This includes .pak files (binary files with globbed resources) and potentially other files such depending on the platform.
+  * **tests/cefclient** contains the cefclient sample application configured to build using the files in the binary distribution. This application demonstrates a wide range of CEF functionalities.
+  * **tests/cefsimple** contains the cefsimple sample application configured to build using the files in the binary distribution. This application demonstrates the minimal functionality required to create a browser window.
+  * **tests/ceftests** contains the ceftests sample application configured to build using the files in the binary distribution. This application provides unit test coverage for CEF APIs and functionality.
 
 Each binary distribution also contains a README.txt file that describes the platform-specific distribution in greater detail and a LICENSE.txt file that contains CEF’s BSD license. When distributing an application based on CEF you should include the license text somewhere in your application’s distribution. For example, you can list it on an “About” or “Credits” page in your application’s UI, or in the documentation bundled with your application. License and credit information is also available inside of a CEF3 browser window by loading “about:license” and “about:credits” respectively.
 
-Applications based on CEF binary distributions can be built using standard platform build tools. This includes Visual Studio on Windows, Xcode on Mac OS X and gcc/make on Linux. The project Downloads page contains information about the OS and build tool versions required for specific binary releases. When building on Linux also pay careful attention to the listed package dependencies.
-
-See the [Tutorial](Tutorial.md) Wiki page for detailed instructions on how to create a simple application using the CEF3 binary distribution.
+Applications based on CEF binary distributions can be built using standard platform build tools. This includes Visual Studio on Windows, Xcode on MacOS and gcc/make on Linux. The project Downloads page contains information about the OS and build tool versions required for specific binary releases. When building on Linux also pay careful attention to the listed package dependencies.
 
 ## Building from Source Code
 
-CEF can be built from source code either locally or using automated build systems like [TeamCity](http://www.jetbrains.com/teamcity/). This requires the download of Chromium and CEF source code via Git. The Chromium code base is quite large and building Chromium from source code is only recommended on moderately powerful machines with more than 6GB of RAM. Detailed instructions for building Chromium and CEF from source code are available on the [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page.
+CEF can be built from source code either locally or using automated build systems like [TeamCity](http://www.jetbrains.com/teamcity/). This requires the download of Chromium and CEF source code via Git. The Chromium code base is quite large and building Chromium from source code is only recommended on moderately powerful machines with more than 8GB of RAM. Detailed instructions for building Chromium and CEF from source code are available on the [BranchesAndBuilding](BranchesAndBuilding.md) Wiki page.
 
 # Sample Application
 
@@ -70,7 +72,7 @@ By default the main application executable will be spawned multiple times to rep
 
 The separate processes spawned by CEF3 communicate using Inter-Process Communication (IPC). Application logic implemented in the browser and render processes can communicate by sending asynchronous messages back and forth. [JavaScriptIntegration](https://bitbucket.org/chromiumembedded/cef/wiki/JavaScriptIntegration.md) in the render process can expose asynchronous APIs that are handled in the browser process. See the “Inter-Process Communication” section for more information.
 
-Platform-specific debugging tips are also available for [Windows](https://www.chromium.org/developers/how-tos/debugging-on-windows), [Mac OS X](http://www.chromium.org/developers/how-tos/debugging-on-os-x) and [Linux](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md).
+Platform-specific debugging tips are also available for [Windows](https://www.chromium.org/developers/how-tos/debugging-on-windows), [MacOS](http://www.chromium.org/developers/how-tos/debugging-on-os-x) and [Linux](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_debugging.md).
 
 ## Threads
 
@@ -235,7 +237,7 @@ See comments in [shared/common/client\_switches.cc](https://bitbucket.org/chromi
 
 # Application Layout
 
-Application layout can differ significantly depending on the platform. For example, on Mac OS X your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a “Sample Application” from https://cef-builds.spotifycdn.com/index.html. Some distributed files are required and some are optional. Requirements and additional information for each file can be found in the binary distribution README.txt file.
+Application layout can differ significantly depending on the platform. For example, on MacOS your application layout must follow a specific app bundle structure. Windows and Linux are more flexible, allowing you to customize the location where CEF libraries and resources are stored. For a complete working example of the required layout you can download a “Sample Application” from https://cef-builds.spotifycdn.com/index.html. Some distributed files are required and some are optional. Requirements and additional information for each file can be found in the binary distribution README.txt file.
 
 ## Windows
 
@@ -275,9 +277,9 @@ Application/
 
 The location of the CEF libraries and resource files can be customized using the CefSettings structure (see the README.txt file of “CefSettings” section for details).
 
-## Mac OS X
+## MacOS
 
-The application (app bundle) layout on Mac OS X is mandated by the Chromium implementation and consequently is not very flexible. The directory structure looks like this for 2623 branch:
+The application (app bundle) layout on MacOS is mandated by the Chromium implementation and consequently is not very flexible. The directory structure looks like this for 2623 branch:
 
 ```
 cefclient.app/
@@ -321,7 +323,7 @@ Every CEF3 application has the same general structure.
 
 As described in the “Processes” section a CEF3 application will run multiple processes. The processes can all use the same executable or a separate executable can be specified for the sub-processes. Execution of the process begins in the entry-point function. Complete platform-specific examples for Windows, Linux and Mac OS-X are available in [cefclient/cefclient\_win.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_win.cc?at=master), [cefclient/cefclient\_gtk.cc](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_gtk.cc?at=master) and [cefclient/cefclient\_mac.mm](https://bitbucket.org/chromiumembedded/cef/src/master/tests/cefclient/cefclient_mac.mm?at=master) respectively.
 
-When launching sub-processes CEF will specify configuration information using the command-line that must be passed into the CefExecuteProcess function via the CefMainArgs structure. The definition of CefMainArgs is platform-specific. On Linux and Mac OS X it accepts the argc and argv values which are passed into the [main() function](https://en.wikipedia.org/wiki/Main_function).
+When launching sub-processes CEF will specify configuration information using the command-line that must be passed into the CefExecuteProcess function via the CefMainArgs structure. The definition of CefMainArgs is platform-specific. On Linux and MacOS it accepts the argc and argv values which are passed into the [main() function](https://en.wikipedia.org/wiki/Main_function).
 
 ```
 CefMainArgs main_args(argc, argv);
@@ -335,7 +337,7 @@ CefMainArgs main_args(hInstance);
 
 ### Single Executable
 
-When running as a single executable the entry-point function is required to differentiate between the different process types. The single executable structure is supported on Windows and Linux but not on Mac OS X.
+When running as a single executable the entry-point function is required to differentiate between the different process types. The single executable structure is supported on Windows and Linux but not on MacOS.
 
 ```
 // Program entry-point function.
@@ -458,8 +460,8 @@ The CefSettings structure allows configuration of application-wide CEF settings.
   * **locale** The locale string that will be passed to Blink. If empty the default locale of "en-US" will be used. This value is ignored on Linux where locale is determined using environment variable parsing with the precedence order: LANGUAGE, LC\_ALL, LC\_MESSAGES and LANG. Also configurable using the "lang" command-line switch.
   * **log\_file** The directory and file name to use for the debug log. If empty, the default name of "debug.log" will be used and the file will be written to the application directory. Also configurable using the "log-file" command-line switch.
   * **log\_severity** The log severity. Only messages of this severity level or higher will be logged. Also configurable using the "log-severity" command-line switch with a value of "verbose", "info", "warning", "error", "error-report" or "disable".
-  * **resources\_dir\_path** The fully qualified path for the resources directory. If this value is empty the cef.pak and/or devtools\_resources.pak files must be located in the module directory on Windows/Linux or the app bundle Resources directory on Mac OS X. Also configurable using the "resources-dir-path" command-line switch.
-  * **locales\_dir\_path** The fully qualified path for the locales directory. If this value is empty the locales directory must be located in the module directory. This value is ignored on Mac OS X where pack files are always loaded from the app bundle Resources directory. Also configurable using the "locales-dir-path" command-line switch.
+  * **resources\_dir\_path** The fully qualified path for the resources directory. If this value is empty the cef.pak and/or devtools\_resources.pak files must be located in the module directory on Windows/Linux or the app bundle Resources directory on MacOS. Also configurable using the "resources-dir-path" command-line switch.
+  * **locales\_dir\_path** The fully qualified path for the locales directory. If this value is empty the locales directory must be located in the module directory. This value is ignored on MacOS where pack files are always loaded from the app bundle Resources directory. Also configurable using the "locales-dir-path" command-line switch.
   * **remote\_debugging\_port** Set to a value between 1024 and 65535 to enable remote debugging on the specified port. For example, if 8080 is specified the remote debugging URL will be http://localhost:8080. CEF can be remotely debugged from any CEF or Chrome browser window. Also configurable using the "remote-debugging-port" command-line switch.
 
 ## CefBrowser and CefFrame
@@ -499,7 +501,7 @@ browser->GetMainFrame()->GetSource(new Visitor());
 CefBrowser and CefFrame objects exist in both the browser process and the render process. Host behavior can be controlled in the browser process via the CefBrowser::GetHost() method. For example, the native handle for a windowed browser can be retrieved as follows:
 
 ```
-// CefWindowHandle is defined as HWND on Windows, NSView* on Mac OS X
+// CefWindowHandle is defined as HWND on Windows, NSView* on MacOS
 // and GtkWidget* on Linux.
 CefWindowHandle window_handle = browser->GetHost()->GetWindowHandle();
 ```
