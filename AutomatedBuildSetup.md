@@ -91,7 +91,7 @@ To build ARM CEF with a 64-bit Linux Docker image:
 
 ```
 export CEF_INSTALL_SYSROOT=arm
-export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+export GN_DEFINES="is_official_build=true use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false use_vaapi=false"
 export CEF_ARCHIVE_FORMAT=tar.bz2
 python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm-build
 ```
