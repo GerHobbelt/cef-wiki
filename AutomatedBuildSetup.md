@@ -186,7 +186,7 @@ See comments in [gclient_hook.py](https://bitbucket.org/chromiumembedded/cef/src
 To build 32-bit CEF on a 64-bit Windows host system:
 
 ```
-set GN_DEFINES=is_official_build=true
+set GN_DEFINES=is_official_build=true use_thin_lto=false
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
 python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean
@@ -197,7 +197,7 @@ python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --mi
 To build 64-bit CEF on a 64-bit Windows host system:
 
 ```
-set GN_DEFINES=is_official_build=true
+set GN_DEFINES=is_official_build=true use_thin_lto=false
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
 python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --x64-build
@@ -209,7 +209,7 @@ To build ARM64 CEF on a 64-bit Windows host system:
 
 ```
 set CEF_ENABLE_ARM64=1
-set GN_DEFINES=is_official_build=true
+set GN_DEFINES=is_official_build=true use_thin_lto=false
 set GYP_MSVS_VERSION=2019
 set CEF_ARCHIVE_FORMAT=tar.bz2
 python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --minimal-distrib --client-distrib --force-clean --build-target=cefsimple --arm64-build
