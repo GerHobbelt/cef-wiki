@@ -311,7 +311,7 @@ cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
 ```
 
-9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target may be required by step 10. The "cefclient" target will only build successfully if you set `use_sandbox=false` in step 7, so remove that target if necessary.
+9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target may be required by step 10. The "cefclient" target will only build successfully if you set `use_sysroot=false` in step 7, so remove that target if necessary.
 
 ```
 cd ~/code/chromium_git/chromium/src
