@@ -331,7 +331,7 @@ cd ~/code/chromium_git/chromium/src
 sudo BUILDTYPE=Debug_GN_x64 ./build/update-linux-sandbox.sh
 ```
 
-11\. Run the cefclient, cefsimple and/or ceftests sample applications. Note that the cefclient application will only have built successfully if you set `use_sandbox=false` in step 7.
+11\. Run the cefclient, cefsimple and/or ceftests sample applications. Note that the cefclient application will only have built successfully if you set `use_sysroot=false` in step 7.
 
 ```
 cd ~/code/chromium_git/chromium/src
