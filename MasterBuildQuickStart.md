@@ -185,25 +185,11 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-6\. Create the "~/code/chromium_git/chromium/src/cef/create.sh" script with the following contents.
+6\. Run the "~/code/chromium_git/chromium/src/cef/cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
 
 ```
-#!/bin/bash
+cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
-```
-
-Give it executable permissions.
-
-```
-cd ~/code/chromium_git/chromium/src/cef
-chmod 755 create.sh
-```
-
-Run the "create.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
-
-```
-cd ~/code/chromium_git/chromium/src/cef
-./create.sh
 ```
 
 7\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing.
@@ -215,11 +201,13 @@ ninja -C out/Debug_GN_x64 cef
 
 Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
 
-8\. Run the resulting cefclient sample application.
+8\. Run the resulting cefclient, cefsimple and/or ceftests sample applications.
 
 ```
 cd ~/code/chromium_git/chromium/src
 open out/Debug_GN_x64/cefclient.app
+# Or run directly in the console to see log output:
+./out/Debug_GN_x64/cefclient.app/Contents/MacOS/cefclient
 ```
 
 See the [Mac OS X debugging guide](https://www.chromium.org/developers/how-tos/debugging-on-os-x) for detailed debugging instructions.
@@ -255,33 +243,27 @@ chmod 755 install-build-deps.sh
 sudo ./install-build-deps.sh --no-arm --no-chromeos-fonts --no-nacl
 ```
 
-3\. Install the "libgtkglext1-dev" package required by the cefclient sample application.
-
-```
-sudo apt-get install libgtkglext1-dev
-```
-
-4\. Download "~/code/depot_tools" using Git.
+3\. Download "~/code/depot_tools" using Git.
 
 ```
 cd ~/code
 git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ```
 
-5\. Add the "~/code/depot_tools" directory to your PATH. Note the use of an absolute path here.
+4\. Add the "~/code/depot_tools" directory to your PATH. Note the use of an absolute path here.
 
 ```
 export PATH=/home/marshall/code/depot_tools:$PATH
 ```
 
-6\. Download the "~/automate/automate-git.py" script.
+5\. Download the "~/automate/automate-git.py" script.
 
 ```
 cd ~/code/automate
 wget https://bitbucket.org/chromiumembedded/cef/raw/master/tools/automate/automate-git.py
 ```
 
-7\. Create the "~/code/chromium_git/update.sh" script with the following contents.
+6\. Create the "~/code/chromium_git/update.sh" script with the following contents.
 
 ```
 #!/bin/bash
@@ -302,37 +284,43 @@ cd ~/code/chromium_git
 ./update.sh
 ```
 
-8\. Create the "~/code/chromium_git/chromium/src/cef/create.sh" script with the following contents.
+7\. Configure `GN_DEFINES` for your desired build environment.
+
+Chromium provides [sysroot images](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/linux/sysroot.md) for consistent builds across Linux distros. The necessary files will have downloaded automatically as part of step 6 above. Usage of Chromium's sysroot is recommended if you don't want to deal with potential build breakages due to incompatibilities with the package or kernel versions that you've installed locally. To use the sysroot image configure the following GN_DEFINES:
 
 ```
-#!/bin/bash
+export GN_DEFINES="use_sysroot=true use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false"
+```
+
+It is also possible to build using locally installed packages instead of the provided sysroot. Choosing this option may require additional debugging effort on your part to work through any build errors that result. On Ubuntu 18.04 the following GN_DEFINES have been tested to work reliably:
+
+```
+export GN_DEFINES="use_sysroot=false use_allocator=none symbol_level=1 is_cfi=false use_thin_lto=false use_vaapi=false"
+```
+
+Note that the "cefclient" target cannot be built directly when using the sysroot image. You can work around this limitation by creating a [binary distribution](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-manual-packaging) after completing step 9 below, and then building the cefclient target using that binary distribution.
+
+You can also create an [AddressSanitizer build](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/asan.md) for enhanced debugging capabilities. Just add `is_asan=true` to the GN_DEFINES listed above and build the `out/Release_GN_x64` directory in step 9 below. Run with the `asan_symbolize.py` script as described in the AddressSanitizer link to get symbolized output.
+
+The various other listed GN arguments are based on recommendations from the [AutomateBuildSetup Wiki page](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration). You can [search for them by name](https://source.chromium.org/search?q=use_allocator%20gni&ss=chromium) in the Chromium source code to find more details.
+
+8\. Run the "~/code/chromium_git/chromium/src/cef/cef_create_projects.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
+
+```
+cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
 ```
 
-Give it executable permissions.
-
-```
-cd ~/code/chromium_git/chromium/src/cef
-chmod 755 create.sh
-```
-
-Run the "create.sh" script to create Ninja project files. Repeat this step if you change the project configuration or add/remove files in the GN configuration (BUILD.gn file).
-
-```
-cd ~/code/chromium_git/chromium/src/cef
-./create.sh
-```
-
-9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target required by step 10.
+9\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing. Note the additional "chrome_sandbox" target may be required by step 10. The "cefclient" target will only build successfully if you set `use_sandbox=false` in step 7, so remove that target if necessary.
 
 ```
 cd ~/code/chromium_git/chromium/src
-ninja -C out/Debug_GN_x64 cef chrome_sandbox
+ninja -C out/Debug_GN_x64 cefclient cefsimple ceftests chrome_sandbox
 ```
 
 Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
 
-10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md).
+10\. Set up the [Linux SUID sandbox](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/linux/suid_sandbox_development.md) if you are using an older kernel (< 3.8). See [here](https://chromium.googlesource.com/chromium/src.git/+/HEAD/docs/linux/sandboxing.md) for more background on Linux sandboxing technology.
 
 ```
 # This environment variable should be set at all times.
@@ -343,7 +331,7 @@ cd ~/code/chromium_git/chromium/src
 sudo BUILDTYPE=Debug_GN_x64 ./build/update-linux-sandbox.sh
 ```
 
-11\. Run the cefclient sample application.
+11\. Run the cefclient, cefsimple and/or ceftests sample applications. Note that the cefclient application will only have built successfully if you set `use_sandbox=false` in step 7.
 
 ```
 cd ~/code/chromium_git/chromium/src
