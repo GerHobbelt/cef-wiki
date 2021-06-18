@@ -300,7 +300,7 @@ export GN_DEFINES="use_sysroot=false use_allocator=none symbol_level=1 is_cfi=fa
 
 Note that the "cefclient" target cannot be built directly when using the sysroot image. You can work around this limitation by creating a [binary distribution](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-manual-packaging) after completing step 9 below, and then building the cefclient target using that binary distribution.
 
-You can also create an [AddressSanitizer build](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/asan.md) for enhanced debugging capabilities. Just add `is_asan=true` to the GN_DEFINES listed above and build the `out/Release_GN_x64` directory in step 9 below. Run with the `asan_symbolize.py` script as described in the AddressSanitizer link to get symbolized output.
+You can also create an [AddressSanitizer build](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/asan.md) for enhanced debugging capabilities. Just add `is_asan=true dcheck_always_on=true` to the GN_DEFINES listed above and build the `out/Release_GN_x64` directory in step 9 below. Run with the `asan_symbolize.py` script as described in the AddressSanitizer link to get symbolized output.
 
 The various other listed GN arguments are based on recommendations from the [AutomateBuildSetup Wiki page](https://bitbucket.org/chromiumembedded/cef/wiki/AutomatedBuildSetup.md#markdown-header-linux-configuration). You can [search for them by name](https://source.chromium.org/search?q=use_allocator%20gni&ss=chromium) in the Chromium source code to find more details.
 
