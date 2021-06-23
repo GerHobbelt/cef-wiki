@@ -275,3 +275,35 @@ Example metadata for a GPU process crash:
   "version": "1.0.0",
 }
 ```
+
+# Decoding Minidumps
+
+The crash report upload, if enabled, includes the minidump file with exception state, callstacks, stack memory, and loaded modules. The minidump file can be decoded using the `dump_syms` and `minidump_stackwalk` tools from Breakpad as described [here](https://www.chromium.org/developers/decoding-crash-dumps).
+
+The Breakpad tools can be built from a local Chromium checkout on Windows, MacOS and Linux as follows:
+
+1\. Download the Chromium code (for example, by using [CEF tooling](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md)).
+
+2\. Write the following contents to the `out/Release/args.gn` file:
+
+```
+is_component_build=false
+is_debug=false
+target_cpu="x64"
+is_official_build=true
+```
+
+3\. Generate the config and build:
+
+```
+gn gen out/Release
+ninja -C out/Release dump_syms minidump_stackwalk
+```
+
+4\. Windows requires the `msdia140.dll` COM DLL. It must be placed next to `dump_syms.exe` or registered with the system:
+
+```
+regsvr32 /s msdia140.dll
+```
+
+The Windows 10 SDK includes a 64-bit version of this DLL at "C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\msdia140.dll". The 64-bit version is recommended to avoid failures (error code -1073741819) with Chromium versions 91 and newer.
