@@ -128,7 +128,7 @@ python3 automate-git.py --download-dir=%download_dir% --branch=%cef_branch% --mi
 
 **ARM64 Build Commands**
 
-ARM64 builds require Xcode 12.2 and CEF branch 4280 or newer. Building directly on an ARM64 Mac is not yet supported (see [this](https://bugs.chromium.org/p/chromium/issues/detail?id=1103236) Chromium issue).
+ARM64 builds require Xcode 12.2 and CEF branch 4280 or newer. Building directly on an ARM64 Mac is not yet supported (see [here](https://bitbucket.org/chromiumembedded/cef/issues/2981/macos-support-on-arm64#comment-60927924) for details).
 
 To build ARM64 CEF on a Intel 64-bit MacOS host system:
 
