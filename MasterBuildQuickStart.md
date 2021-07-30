@@ -134,6 +134,7 @@ See the [Windows debugging guide](https://www.chromium.org/developers/how-tos/de
 **What's Required**
 
 - macOS Build Requirements as listed on the [BranchesAndBuilding](https://bitbucket.org/chromiumembedded/cef/wiki/BranchesAndBuilding.md#markdown-header-development) Wiki page.
+- Building on an Intel Mac is supported with all versions. Building on an Apple Silicon (ARM64) Mac is supported starting with M93 (4577 branch).
 - At least 8GB of RAM (16GB+ recommended) and 100GB of free disk space (for a Debug build).
 - Approximately 4 hours with a fast internet connection (100Mbps) and fast build machine (2.4Ghz, 16 logical cores, SSD).
 
@@ -171,6 +172,8 @@ export PATH=/Users/marshall/code/depot_tools:$PATH
 python ../automate/automate-git.py --download-dir=/Users/marshall/code/chromium_git --depot-tools-dir=/Users/marshall/code/depot_tools --no-distrib --no-build --x64-build
 ```
 
+**⚠** Replace `--x64-build` with `--arm64-build` if using an Apple Silicon Mac instead of an Intel Mac.
+
 Give it executable permissions.
 
 ```
@@ -192,6 +195,8 @@ cd ~/code/chromium_git/chromium/src/cef
 ./cef_create_projects.sh
 ```
 
+**⚠** Add `export GN_DEFINES=is_component_build=true` before running `cef_create_projects.sh` if using an Apple Silicon Mac instead of an Intel Mac.
+
 7\. Create a Debug build of CEF/Chromium using Ninja. Edit the CEF source code at "~/code/chromium_git/chromium/src/cef" and repeat this step multiple times to perform incremental builds while developing.
 
 ```
@@ -199,7 +204,7 @@ cd ~/code/chromium_git/chromium/src
 ninja -C out/Debug_GN_x64 cef
 ```
 
-Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
+**⚠** Replace "x64" with "arm64" if using an Apple Silicon Mac instead of an Intel Mac. Replace "Debug" with "Release" to generate a Release build instead of a Debug build.
 
 8\. Run the resulting cefclient, cefsimple and/or ceftests sample applications.
 
