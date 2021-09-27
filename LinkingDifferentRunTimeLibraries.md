@@ -29,7 +29,7 @@ If you prefer to link CEF with your application dynamically then the process is 
   1. Open cef.sln in Visual Studio.
   1. Right click on the libcef\_dll\_wrapper project and choose the "Project Only -> Build Only libcef\_dll\_wrapper" option.
 
-Sandbox support (linking `cef_sandbox.lib`) is only possible when your application is built with the `/MT` flag.
+Sandbox support (linking `cef_sandbox.lib`) is only possible when your application is built with the `/MT` flag. To disable sandbox usage run CMake with the additional `-DUSE_SANDBOX=Off` command-line flag.
 
 # Additional Information
 
