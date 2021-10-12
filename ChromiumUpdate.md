@@ -12,17 +12,21 @@ The Chromium developers work very hard to introduce new features and capabilitie
 
 # Recommended workflow
 
-1\. Setup a local developer checkout of the CEF/Chromium master branch as described on the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page. The standard `automate-git.py` parameters discussed on that Wiki page are represented by the `<...>` placeholder in the below examples.
+## 1\. Setup a local developer checkout
 
-2\. Start the update by running `automate-git.py` with the following parameters:
+Setup a local developer checkout of the CEF/Chromium master branch as described on the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page. The standard `automate-git.py` parameters discussed on that Wiki page are represented by the `[...]` placeholder in the below examples.
+
+## 2\. Start the update
+
+### A\. Identify the target Chromium version
+
+Start the update by running `automate-git.py` with the following parameters:
 
 ```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary
+python automate-git.py [...] --log-chromium-changes --no-build --fast-update --chromium-channel=canary
 ```
 
-This will:
-
-A\. Identify the most appropriate Chromium version for the update. You will see output like the following:
+You will see output like the following:
 
 ```
 --> Computed Chromium update for win canary at distance 0
@@ -35,11 +39,13 @@ A\. Identify the most appropriate Chromium version for the update. You will see 
 * *Target* is the Chromium version that has been selected for this update.
 * *Channel* is newest available version from the Chromium canary channel as listed at https://omahaproxy.appspot.com/.
 
-If you would prefer to manually pick the Chromium version see the "Choosing the Chromium version manually" section below. This is useful when updating to a specific Chromium milestone version, for example.
+**If you would prefer to manually pick the Chromium version see the "Choosing the Chromium version manually" section below. This is useful when updating to a specific Chromium milestone version, for example.**
 
-B\. Run CEF's `patch_updater.py` script to update the Chromium patch files in the `patch/patches` directory.
+### B\. Run CEF's `patch_updater.py` script
 
-Sometimes patches cannot be updated automatically. In that case the `automate-git.py` script will fail with output like the following:
+This will update the Chromium patch files in the `patch/patches` directory. If patch files cannot be updated automatically the `automate-git.py` script will fail.
+
+**If one or more patch files have unresolved conflicts you will get a failure like the following:**
 
 ```
 --------------------------------------------------------------------------------
@@ -53,15 +59,73 @@ storage_partition_1973:
 --------------------------------------------------------------------------------
 ```
 
-Use a text editor to manually fix the specified files. Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
+Use a text editor to manually fix the specified files, and then re-run the `patch_updater.py` script:
 
 ```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --resave
+$ cd /path/to/chromium/src/cef/tools
+$ python patch_updater.py
 ```
 
-C\. Identify potentially relevant changes in the Chromium source code between versions. This creates a `chromium_update_changes.diff` file in your download directory that will act as your guide when updating the CEF source code. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files. The list of relevant paths is taken from CEF's [CHROMIUM_UPDATE.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_UPDATE.txt) file.
+**If a patched file is missing (moved or deleted) you will get a failure like the following:**
 
-D\. Identify problematic patterns in the Chromium source code. If these patterns are found then the `automate-git.py` script will create a `chromium_update_patterns.txt` file in your download directory and fail with output like the following:
+```
+--> Reading patch file /path/to/chromium/src/cef/patch/patches/content_mojo_3123.patch
+--> Skipping non-existing file /path/to/chromium/src/content/public/browser/document_service_base.h
+--> Applying patch to /path/to/chromium/src
+(Stripping trailing CRs from patch; use --binary to disable.)
+can't find file to patch at input line 5
+...
+Skip this patch? [y] 
+Skipping patch.
+2 out of 2 hunks ignored
+--> Saving changes to /path/to/chromium/src/cef/patch/patches/content_mojo_3123.patch
+Traceback (most recent call last):
+  File "/path/to/chromium/src/cef/tools/patch_updater.py", line 294, in <module>
+    raise Exception('Failed to add paths: %s' % result['err'])
+Exception: Failed to add paths: fatal: pathspec '/path/to/chromium/src/content/public/browser/document_service_base.h' did not match any files
+
+```
+
+You can use this Git command to discover what happened to the missing Chromium file:
+
+```
+> cd /path/to/chromium/src
+> git log --full-history -1 -- content/public/browser/document_service_base.h
+```
+
+Once you know the offending Git commit hash you can use the `git show <hash>` command or load `https://crrev.com/<hash>` in a web browser to see the contents of the change. Edit the patch file manually in a text editor to fix the paths and then re-run the `patch_updater.py` script.
+
+**To create a new patch file use this command:**
+
+```
+$ cd /path/to/chromium/src
+$ git diff --no-prefix --relative [path1] [path2] > [name].patch
+```
+
+Copy the resulting `[name].patch` file to the `src/cef/patch/patches` directory and add an appropriate entry to the `src/cef/patch/patch.cfg` file.
+
+**To add additional files to an existing patch file use this command:**
+
+```
+$ cd /path/to/chromium/src/cef/tools
+$ python patch_updater.py --resave --patch [name] --add [path1] --add [path2]
+```
+
+All paths are relative to the `src` directory by default.
+
+**After all patch files have been fixed you can re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:**
+
+```
+python automate-git.py [...] --log-chromium-changes --no-build --fast-update --chromium-channel=canary --resave
+```
+
+### C\. Identify potentially relevant Chromium changes
+
+This step creates a `chromium_update_changes.diff` file in your download directory that will act as your guide when updating the CEF source code. CEF began life as a customized version of content\_shell and there's still a one-to-one relationship between many of the files. The list of relevant paths is taken from CEF's [CHROMIUM_UPDATE.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_UPDATE.txt) file.
+
+### D\. Identify problematic patterns in the Chromium source code
+
+This step looks for patterns in Chromium src files that may cause issues for CEF. If these patterns are found then the `automate-git.py` script will create a `chromium_update_patterns.txt` file in your download directory and fail with output like the following:
 
 ```
 Evaluating pattern: static_cast<StoragePartitionImpl\*>(
@@ -79,33 +143,32 @@ content/browser/loader/navigation_url_loader_impl.cc:1295:  auto* partition = st
 content/browser/renderer_interface_binders.cc:189:        static_cast<StoragePartitionImpl*>(host->GetStoragePartition())
 ```
 
-Use a text editor to manually fix the specified files. If new files must be added to the patch file use this command:
+Use the process described in part B to fix these failures.
 
-```
-cd /path/to/chromium/src/cef
-tools/patch_updater.sh --resave --patch storage_partition_1973 --add content/browser/loader/navigation_url_loader_impl.cc --add content/browser/renderer_interface_binders.cc
-```
+## 3\. Build CEF and fix whatever else is broken
 
-Then re-run `automate-git.py` with the additional `--resave` command-line flag to resave the patch files and continue the update process:
+The diff file created in step C above will assist you in this process. Refer to the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for build instructions. If Chromium changes are required refer to the "Resolving Chromium breakage" section below.
 
-```
-python automate-git.py <...> --log-chromium-changes --no-build --fast-update --chromium-channel=canary --resave
-```
+## 4\. Run CEF tests
 
-3\. Build CEF and fix whatever else is broken. The diff file created in step C above will assist you in this process. Refer to the [MasterBuildQuickStart](https://bitbucket.org/chromiumembedded/cef/wiki/MasterBuildQuickStart.md) Wiki page for build instructions. If Chromium changes are required refer to the "Resolving Chromium breakage" section below.
+Run `ceftests` and the the various tests available via the Tests menu in `cefclient` to verify that everything still works. If any particular subsystem had significant changes (like printing, for example) then make sure to give that subsystem additional testing.
 
-4\. Run ceftests and the the various tests available via the Tests menu in cefclient to verify that everything still works. If any particular subsystem had significant changes (like printing, for example) then make sure to give that subsystem additional testing.
+## 5\. Update the compatible Chromium version
 
-5\. Update the compatible Chromium version listed in CEF's [CHROMIUM_BUILD_COMPATIBILITY.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_BUILD_COMPATIBILITY.txt) file.
+Update the compatible Chromium version listed in CEF's [CHROMIUM_BUILD_COMPATIBILITY.txt](https://bitbucket.org/chromiumembedded/cef/src/master/CHROMIUM_BUILD_COMPATIBILITY.txt) file.
 
 **WARNING: Remove the `--chromium-channel` switches from your `automate-git.py` command-line at this time to avoid accidentally performing another Chromium update. **
 
-6\. Create a commit with your changes and submit a PR as described on the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page. See the [CEF commit history](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) for examples of the expected commit message format.
+## 6\. Create and submit a PR
 
-7\. Tests your changes on other supported platforms. You can update, build and run tests automatically on those platforms with the following command:
+Create a commit with your changes and submit a PR as described on the [ContributingWithGit](https://bitbucket.org/chromiumembedded/cef/wiki/ContributingWithGit.md) Wiki page. See the [CEF commit history](https://bitbucket.org/chromiumembedded/cef/commits/branch/master) for examples of the expected commit message format.
+
+## 7\. Test your changes on other supported platforms
+
+You can update, build and run tests automatically on those platforms with the following command:
 
 ```
-python automate-git.py <...> --run-tests --build-failure-limit=1000 --fast-update --force-cef-update
+python automate-git.py [...] --run-tests --build-failure-limit=1000 --fast-update --force-cef-update
 ```
 
 If running in headless mode on Linux install the `xvfb` package and add the `--test-prefix=xvfb-run --test-args="--no-sandbox"` command-line flags.
@@ -137,11 +200,11 @@ You can also choose a Chromium version or commit hash manually. It's best to cho
 To manually specify the Chromium version and update the checkout of master:
 
 ```
-python automate-git.py <...> --no-build --fast-update --log-chromium-changes --chromium-checkout=refs/tags/73.0.3683.0
+python automate-git.py [...] --no-build --fast-update --log-chromium-changes --chromium-checkout=refs/tags/73.0.3683.0
 ```
 
 To manually specify the Chromium version and update the checkout of an existing release branch:
 
 ```
-python automate-git.py <...> --no-build --fast-update --force-cef-update --branch=3683 --chromium-checkout=refs/tags/73.0.3683.75
+python automate-git.py [...] --no-build --fast-update --force-cef-update --branch=3683 --chromium-checkout=refs/tags/73.0.3683.75
 ```
