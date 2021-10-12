@@ -89,11 +89,11 @@ Exception: Failed to add paths: fatal: pathspec '/path/to/chromium/src/content/p
 You can use this Git command to discover what happened to the missing Chromium file:
 
 ```
-> cd /path/to/chromium/src
-> git log --full-history -1 -- content/public/browser/document_service_base.h
+$ cd /path/to/chromium/src
+$ git log --full-history -1 -- content/public/browser/document_service_base.h
 ```
 
-Once you know the offending Git commit hash you can use the `git show <hash>` command or load `https://crrev.com/<hash>` in a web browser to see the contents of the change. Edit the patch file manually in a text editor to fix the paths and then re-run the `patch_updater.py` script.
+Once you know the offending Git commit hash you can use the `git show <hash>` command or load `https://crrev.com/<hash>` in a web browser to see the contents of the change. Edit the patch file manually in a text editor to fix the paths and then re-run the `patch_updater.py` script as shown above.
 
 **To create a new patch file use this command:**
 
