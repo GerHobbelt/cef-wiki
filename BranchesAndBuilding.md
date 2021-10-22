@@ -18,7 +18,7 @@ Current CEF master branch build requirements are as follows. See the [MasterBuil
 
 Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
 |:---------------------------|:----------------------------|:-------------------------|
-Win 7+ deployment, Win 10+ build system w/ VS2019 16.8.4+, Win 10.0.19041 SDK, Ninja | macOS 10.11+ deployment, 10.15.4+ build system w/ 11.0 base SDK (Xcode 12.2-12.5), Ninja, 64-bit only | Ubuntu 18.04+, Debian 10+, Ninja |
+Win 7+ deployment, Win 10+ build system w/ VS2019 16.8.4+, Win 10.0.19041 SDK, Ninja | macOS 10.11+ deployment, 10.15.4+ build system w/ 11.0 base SDK (Xcode 12.2-13.0), Ninja, 64-bit only | Ubuntu 18.04+, Debian 10+, Ninja |
 
 The following URLs should be used for downloading development versions of CEF.
 
@@ -65,7 +65,7 @@ Support for newer branches begins when they enter the Chromium beta channel. Sup
 
 | Branch Date | Release Branch | Chromium Version | CEF Version | Windows Build Requirements | macOS Build Requirements | Linux Build Requirements |
 |:------------|:---------------|:-----------------|:------------|:---------------------------|:----------------------------|:-------------------------|
-| Oct 2021    | [4664](https://bitbucket.org/chromiumembedded/cef/src/4664?at=4664) | 96               | 96         | Win 7+ deployment, Win 10+ build system w/ VS2019 16.8.4+, Win 10.0.19041 SDK, Ninja | macOS 10.11+ deployment, 10.15.4+ build system w/ 11.0 base SDK (Xcode 12.2-12.5), Ninja, 64-bit only | Ubuntu 18.04+, Debian 10+, Ninja |
+| Oct 2021    | [4664](https://bitbucket.org/chromiumembedded/cef/src/4664?at=4664) | 96               | 96         | Win 7+ deployment, Win 10+ build system w/ VS2019 16.8.4+, Win 10.0.19041 SDK, Ninja | macOS 10.11+ deployment, 10.15.4+ build system w/ 11.0 base SDK (Xcode 12.2-13.0), Ninja, 64-bit only | Ubuntu 18.04+, Debian 10+, Ninja |
 | Sep 2021    | [4638](https://bitbucket.org/chromiumembedded/cef/src/4638?at=4638) | 95               | 95         | Win 7+ deployment, Win 10+ build system w/ VS2019 16.8.4+, Win 10.0.19041 SDK, Ninja | macOS 10.11+ deployment, 10.15.4+ build system w/ 11.0 base SDK (Xcode 12.2-12.5), Ninja, 64-bit only | Ubuntu 18.04+, Debian 10+, Ninja |
 
 ## Legacy Release Branches (Unsupported)
